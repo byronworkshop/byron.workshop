@@ -110,7 +110,7 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     private TextInputLayout tiLicensePlateNumber;
     private EditText etLicensePlateNumber;
 
-    // database
+    // firebase
     private CollectionReference mMotorcyclesCollReference;
     private StorageReference mMotorcycleImagesStorageReference;
 
@@ -410,8 +410,8 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     }
 
     private void saveMotorcycle(boolean isEditionMode, boolean uploadImage) {
-        TaskCompletionSource<String> taskCompletionSource = new TaskCompletionSource<>();
-        Task<String> task = taskCompletionSource.getTask();
+        TaskCompletionSource<String> uploadFileTaskCompletionSource = new TaskCompletionSource<>();
+        Task<String> task = uploadFileTaskCompletionSource.getTask();
         task.addOnSuccessListener(new OnSuccessListener<String>() {
             @Override
             public void onSuccess(final String motorcycleId) {
@@ -456,15 +456,15 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
         });
 
         if (!isEditionMode) {
-            this.saveMotorcycleInDb(false, null, uploadImage ? taskCompletionSource : null);
+            this.saveMotorcycleInDb(false, null, uploadImage ? uploadFileTaskCompletionSource : null);
         } else {
-            this.saveMotorcycleInDb(true, uploadImage ? null : this.mMotorcycle.getImage(), uploadImage ? taskCompletionSource : null);
+            this.saveMotorcycleInDb(true, uploadImage ? null : this.mMotorcycle.getImage(), uploadImage ? uploadFileTaskCompletionSource : null);
         }
     }
 
     private void saveMotorcycleInDb(boolean isEditionMode,
                                     Image image,
-                                    final TaskCompletionSource<String> taskCompletionSource) {
+                                    final TaskCompletionSource<String> uploadFileTaskCompletionSource) {
         // empty metadata
         MotorcycleMetadata metadata = new MotorcycleMetadata(
                 -1,
@@ -488,8 +488,9 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            if (taskCompletionSource != null) {
-                                taskCompletionSource.setResult(documentReference.getId());
+                            // backend updated, there's internet connection so we can upload
+                            if (uploadFileTaskCompletionSource != null) {
+                                uploadFileTaskCompletionSource.setResult(documentReference.getId());
                             }
                         }
                     })
@@ -498,10 +499,10 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(requireContext(), getString(R.string.dialog_edit_motorcycle_error_cannot_save_db), Toast.LENGTH_LONG).show();
                         }
-                    });
+                    })
+                    .getResult();
 
-            // close dialog if no image was uploaded
-            if (taskCompletionSource == null) {
+            if (uploadFileTaskCompletionSource == null) {
                 getDialog().dismiss();
             }
         } else {
@@ -519,8 +520,9 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            if (taskCompletionSource != null) {
-                                                taskCompletionSource.setResult(mMotorcycleId);
+                                            // backend updated, there's internet connection so we can upload
+                                            if (uploadFileTaskCompletionSource != null) {
+                                                uploadFileTaskCompletionSource.setResult(mMotorcycleId);
                                             }
                                         }
                                     })
@@ -531,8 +533,8 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                                         }
                                     });
 
-                            // close dialog if no image was uploaded
-                            if (taskCompletionSource == null) {
+                            // close dialog if no image will be uploaded
+                            if (uploadFileTaskCompletionSource == null) {
                                 getDialog().dismiss();
                             }
                         }
