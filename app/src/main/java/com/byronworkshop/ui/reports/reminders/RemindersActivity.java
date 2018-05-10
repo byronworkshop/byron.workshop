@@ -2,7 +2,9 @@ package com.byronworkshop.ui.reports.reminders;
 
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.byronworkshop.BuildConfig;
 import com.byronworkshop.R;
@@ -44,8 +47,7 @@ public class RemindersActivity extends AppCompatActivity implements MotorcycleRe
     // firebase remote config
     public static final int DEFAULT_MAX_WO_ELAPSED_DAYS = 30;
     public static final String MAX_LAST_WO_ELAPSED_DAYS_KEY = "MAX_LAST_WO_ELAPSED_DAYS_KEY";
-    private boolean isFetching;
-    private int maxDays = DEFAULT_MAX_WO_ELAPSED_DAYS;
+    private int maxDays;
 
     // args
     private String mUid;
@@ -88,6 +90,9 @@ public class RemindersActivity extends AppCompatActivity implements MotorcycleRe
             throw new IllegalArgumentException(getString(R.string.activity_reminders_creation_error));
         }
 
+        // fetch max days from preferences and store it in maxDays var
+        this.fetchMaxDaysFromPreferences();
+
         // firebase
         this.mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         this.mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -100,7 +105,8 @@ public class RemindersActivity extends AppCompatActivity implements MotorcycleRe
         defaultConfigMap.put(MAX_LAST_WO_ELAPSED_DAYS_KEY, DEFAULT_MAX_WO_ELAPSED_DAYS);
         this.mFirebaseRemoteConfig.setDefaults(defaultConfigMap);
 
-        this.fetchConfig();
+        // fetch max days from remote config and save into preferences
+        this.fetchMaxDaysFromRemoteConfig();
 
         // firebase log
         this.logRemindersActivityCreation();
@@ -136,9 +142,7 @@ public class RemindersActivity extends AppCompatActivity implements MotorcycleRe
         super.onStart();
 
         // attach firebase
-        if (!this.isFetching) {
-            this.attachMotorcycleRVAdapter();
-        }
+        this.attachMotorcycleRVAdapter();
     }
 
     @Override
@@ -156,8 +160,13 @@ public class RemindersActivity extends AppCompatActivity implements MotorcycleRe
         this.mFirebaseAnalytics.logEvent(EVENT_REMINDERS_ACTIVITY_CREATION, null);
     }
 
-    private void fetchConfig() {
-        long cacheExpiration = 43200; // 12 hours in seconds
+    private void fetchMaxDaysFromPreferences() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        this.maxDays = preferences.getInt(MAX_LAST_WO_ELAPSED_DAYS_KEY, DEFAULT_MAX_WO_ELAPSED_DAYS);
+    }
+
+    private void fetchMaxDaysFromRemoteConfig() {
+        long cacheExpiration = 3600; // 1 hours in seconds
 
         // If developer mode is enabled reduce cacheExpiration to 0 so that each fetch goes to the
         // server. This should not be used in release builds.
@@ -165,17 +174,21 @@ public class RemindersActivity extends AppCompatActivity implements MotorcycleRe
             cacheExpiration = 0;
         }
 
-        this.isFetching = true;
         this.mFirebaseRemoteConfig.fetch(cacheExpiration)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         mFirebaseRemoteConfig.activateFetched();
-                        maxDays = (int) mFirebaseRemoteConfig.getLong(MAX_LAST_WO_ELAPSED_DAYS_KEY);
+                        int remoteConfigMaxDays = (int) mFirebaseRemoteConfig.getLong(MAX_LAST_WO_ELAPSED_DAYS_KEY);
 
-                        attachMotorcycleRVAdapter();
+                        if (remoteConfigMaxDays != maxDays) {
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(RemindersActivity.this);
+                            preferences.edit().putInt(MAX_LAST_WO_ELAPSED_DAYS_KEY, remoteConfigMaxDays).apply();
 
-                        isFetching = false;
+                            Toast.makeText(RemindersActivity.this, getString(R.string.activity_reminders_updated_max_last_wo_date, remoteConfigMaxDays), Toast.LENGTH_LONG).show();
+                            maxDays = remoteConfigMaxDays;
+                            attachMotorcycleRVAdapter();
+                        }
                     }
                 });
     }

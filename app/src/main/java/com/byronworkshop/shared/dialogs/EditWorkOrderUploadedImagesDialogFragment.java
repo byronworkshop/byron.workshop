@@ -366,6 +366,8 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                         hideProgress();
                                         enableDiagButtons();
+
+                                        Toast.makeText(requireContext(), getString(R.string.dialog_edit_uploaded_images_image_in_process), Toast.LENGTH_LONG).show();
                                     }
                                 });
                     }

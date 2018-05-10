@@ -449,6 +449,7 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(requireContext(), getString(R.string.dialog_edit_motorcycle_uploaded_image_in_process), Toast.LENGTH_LONG).show();
                                 getDialog().dismiss();
                             }
                         });
@@ -499,8 +500,7 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                         public void onFailure(@NonNull Exception e) {
                             Toast.makeText(requireContext(), getString(R.string.dialog_edit_motorcycle_error_cannot_save_db), Toast.LENGTH_LONG).show();
                         }
-                    })
-                    .getResult();
+                    });
 
             if (uploadFileTaskCompletionSource == null) {
                 getDialog().dismiss();

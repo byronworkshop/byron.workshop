@@ -6,11 +6,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -72,16 +74,32 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            setRemoteConfig(context, user, job);
+            fetchMaxDaysFromPreferences(context, user, job);
         }
     }
 
-    private void setRemoteConfig(Context context, FirebaseUser user, JobParameters job) {
+    private void fetchMaxDaysFromPreferences(Context context, FirebaseUser user, JobParameters job) {
         if (!canContinue) {
             return;
         }
 
-        FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int maxDays = preferences.getInt(MAX_LAST_WO_ELAPSED_DAYS_KEY, DEFAULT_MAX_WO_ELAPSED_DAYS);
+
+        // trigger next step, query outdated work orders
+        getOutdatedWorkOrders(context, user, maxDays, job);
+
+        // async check remote config for parameter updates
+        fetchMaxDaysFromRemoteConfig(maxDays);
+    }
+
+    private void fetchMaxDaysFromRemoteConfig(final int currMaxDays) {
+        if (!canContinue) {
+            return;
+        }
+
+        // config FirebaseRemoteConfig
+        final FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
@@ -91,18 +109,7 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
         defaultConfigMap.put(MAX_LAST_WO_ELAPSED_DAYS_KEY, DEFAULT_MAX_WO_ELAPSED_DAYS);
         mFirebaseRemoteConfig.setDefaults(defaultConfigMap);
 
-        fetchConfig(context, user, mFirebaseRemoteConfig, job);
-    }
-
-    private void fetchConfig(final Context context,
-                             final FirebaseUser user,
-                             final FirebaseRemoteConfig mFirebaseRemoteConfig,
-                             final JobParameters job) {
-        if (!canContinue) {
-            return;
-        }
-
-        long cacheExpiration = 1800; // 30 minutes in seconds
+        long cacheExpiration = 3600; // 1 hour in seconds
 
         // If developer mode is enabled reduce cacheExpiration to 0 so that each fetch goes to the
         // server. This should not be used in release builds.
@@ -111,31 +118,23 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
         }
 
         mFirebaseRemoteConfig.fetch(cacheExpiration)
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        jobFinished(job, false);
-                    }
-                })
-                .addOnCanceledListener(new OnCanceledListener() {
-                    @Override
-                    public void onCanceled() {
-                        jobFinished(job, false);
-                    }
-                })
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         // get days
                         mFirebaseRemoteConfig.activateFetched();
-                        int maxDays = (int) mFirebaseRemoteConfig.getLong(MAX_LAST_WO_ELAPSED_DAYS_KEY);
+                        int remoteConfigMaxDays = (int) mFirebaseRemoteConfig.getLong(MAX_LAST_WO_ELAPSED_DAYS_KEY);
 
-                        getOutdatedWorkOrders(context, user, maxDays, job);
+                        if (remoteConfigMaxDays != currMaxDays) {
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            preferences.edit().putInt(MAX_LAST_WO_ELAPSED_DAYS_KEY, remoteConfigMaxDays).apply();
+                        }
                     }
                 });
     }
 
-    private void getOutdatedWorkOrders(final Context context, final FirebaseUser user, final int maxDays, final JobParameters job) {
+    private void getOutdatedWorkOrders(
+            final Context context, final FirebaseUser user, final int maxDays, final JobParameters job) {
         if (!canContinue) {
             return;
         }

@@ -54,6 +54,8 @@
     <string name="dialog_edit_motorcycle_error_cannot_save_db">Cannot save motorcycle. Try again later</string>
     <string name="dialog_edit_motorcycle_error_cannot_upload_image">Image could not be uploaded. You can upload an image later on edition</string>
 
+    <string name="dialog_edit_motorcycle_uploaded_image_in_process">Image in process. Please be patient</string>
+
     <string name="dialog_edit_motorcycle_save_offline_title">Save without image?</string>
     <string name="dialog_edit_motorcycle_save_offline_msg">Images cannot be saved without an internet connection. You can upload an image later on edition</string>
     <string name="dialog_edit_motorcycle_save_offline_continue">CONTINUE</string>
@@ -211,6 +213,7 @@
     <!-- reminders -->
     <string name="activity_reminders_title">Reminders</string>
     <string name="activity_reminders_creation_error">You must provide uid to initiate this activity</string>
+    <string name="activity_reminders_updated_max_last_wo_date">Last service updated to more than %1$d days</string>
     <string name="activity_reminders_rv_item_last_work">Last service %1$s</string>
 
     <string name="content_reminders_rv_empty_view_image_desc">Motorcycle image</string>
@@ -246,6 +249,7 @@
     <string name="dialog_edit_uploaded_images_writing_storage_denied">Permission denied</string>
     <string name="dialog_edit_uploaded_images_writing_storage_accepter_download">Permission granted. You can download the image</string>
     <string name="dialog_edit_uploaded_images_progress_error">Cannot upload image. Try again later</string>
+    <string name="dialog_edit_uploaded_images_image_in_process">Image in process. Please be patient</string>
     <string name="dialog_edit_uploaded_images_save_error">Cannot save image. Try again later</string>
     <string name="dialog_edit_uploaded_images_delete_title">Delete image?</string>
     <string name="dialog_edit_uploaded_images_delete_msg">Image will be permanently deleted</string>

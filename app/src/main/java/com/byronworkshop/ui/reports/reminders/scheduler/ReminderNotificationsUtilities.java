@@ -16,7 +16,7 @@ public class ReminderNotificationsUtilities {
     private static final String REMINDER_NOTIF_JOB_TAG = "reminder_notif_tag";
 
     private static final int REMINDER_NOTIF_INTERVAL_DAYS = 1;
-    private static final int REMINDER_FLEXY_INTERVAL_HOURS = 6;
+    private static final int REMINDER_FLEXY_INTERVAL_HOURS = 1;
     private static final int REMINDER_NOTIF_INTERVAL_SECONDS = (int) (TimeUnit.DAYS.toSeconds(REMINDER_NOTIF_INTERVAL_DAYS));
     private static final int SYNC_FLEXTIME_SECONDS = (int) (TimeUnit.HOURS.toSeconds(REMINDER_FLEXY_INTERVAL_HOURS));
 
