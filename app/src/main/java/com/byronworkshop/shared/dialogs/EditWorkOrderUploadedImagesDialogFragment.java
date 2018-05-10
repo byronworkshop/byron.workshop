@@ -337,7 +337,7 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(final DocumentReference documentReference) {
-                        // success, now upload image
+                        // backend updated, there's an internet connection so we can upload the file
                         StorageReference imageRef = mMotorcycleWorkOrderImagesRef
                                 .child(documentReference.getId())
                                 .child(imageUri.getLastPathSegment());
