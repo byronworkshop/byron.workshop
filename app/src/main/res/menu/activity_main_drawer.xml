@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/grp_general_options"
+        android:checkableBehavior="single">
+        <item android:title="@string/nav_menu_group_motorcycle">
+            <menu>
+                <item
+                    android:id="@+id/nav_add_bike"
+                    android:icon="@drawable/ic_menu_add"
+                    android:title="@string/nav_menu_add" />
+            </menu>
+        </item>
+    </group>
+
+    <group
+        android:id="@+id/grp_reports_options"
+        android:checkableBehavior="single">
+        <item android:title="@string/nav_menu_group_reports">
+            <menu>
+                <item
+                    android:id="@+id/nav_income"
+                    android:icon="@drawable/ic_menu_income"
+                    android:title="@string/nav_menu_income" />
+
+                <item
+                    android:id="@+id/nav_reminders"
+                    android:icon="@drawable/ic_menu_reminder"
+                    android:title="@string/nav_menu_reminders" />
+            </menu>
+        </item>
+    </group>
+
+    <item
+        android:id="@+id/nav_exit"
+        android:icon="@drawable/ic_menu_signout"
+        android:title="@string/nav_menu_sign_out" />
+
+</menu>

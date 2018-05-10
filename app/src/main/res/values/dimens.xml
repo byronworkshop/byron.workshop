@@ -1,0 +1,116 @@
+<resources>
+    <!-- menu_main activity -->
+    <dimen name="activity_horizontal_padding">16dp</dimen>
+    <dimen name="activity_vertical_padding">16dp</dimen>
+
+    <dimen name="list_item_margin_horizontal">16dp</dimen>
+    <dimen name="list_item_avatar">40dp</dimen>
+    <dimen name="list_item_textview_left_margin">72dp</dimen>
+    <dimen name="list_item_textview_brand_right_margin">8dp</dimen>
+    <dimen name="list_item_textview_right_margin">16dp</dimen>
+    <dimen name="list_item_textview_cc_padding_horizontal">8dp</dimen>
+
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="nav_header_avatar_dimen">72dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="content_main_rv_top_padding">8dp</dimen>
+    <dimen name="content_main_rv_padding_bottom">72dp</dimen>
+    <dimen name="content_main_empty_view_image_width">128dp</dimen>
+    <dimen name="content_main_empty_view_image_height">128dp</dimen>
+    <dimen name="content_main_emtpy_textview_text_margin_left">8dp</dimen>
+
+    <!-- details -->
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="app_bar_expanded_title_margin_bottom">52dp</dimen>
+    <dimen name="app_bar_expanded_title_margin_right">16dp</dimen>
+    <dimen name="app_bar_expanded_title_margin_left">72dp</dimen>
+    <dimen name="app_bar_expanded_subtitle_margin_right">16dp</dimen>
+    <dimen name="app_bar_expanded_subtitle_margin_left">72dp</dimen>
+    <dimen name="app_bar_expanded_subtitle_margin_bottom">24dp</dimen>
+
+    <dimen name="content_details_item_info_top_margin">24dp</dimen>
+    <dimen name="content_details_item_info_bottom_margin">4dp</dimen>
+    <dimen name="content_details_switch_top_margin">4dp</dimen>
+    <dimen name="content_details_switch_bottom_margin">4dp</dimen>
+
+    <dimen name="content_details_rv_wo_empty_avatar_width">128dp</dimen>
+    <dimen name="content_details_rv_wo_empty_avatar_height">128dp</dimen>
+    <dimen name="content_details_rv_top_padding">8dp</dimen>
+    <dimen name="content_details_rv_bottom_padding">8dp</dimen>
+    <dimen name="content_details_rv_top_margin">4dp</dimen>
+    <dimen name="content_details_rv_bottom_margin">4dp</dimen>
+    <dimen name="content_details_rv_title_margin_top">24dp</dimen>
+    <dimen name="content_details_rv_title_margin_bottom">4dp</dimen>
+    <dimen name="content_details_rv_title_margin_left">16dp</dimen>
+    <dimen name="content_details_rv_title_margin_right">16dp</dimen>
+    <dimen name="content_details_rv_emtpy_textview_text_margin_left">8dp</dimen>
+
+    <dimen name="content_details_wo_rv_item_more_options_padding">16dp</dimen>
+    <dimen name="content_details_wo_rv_item_image_counter_horizontal_margin">8dp</dimen>
+
+    <!-- dialog edit motorcycle -->
+    <dimen name="dialog_edit_motorcycle_avatar_vertical_margin">16dp</dimen>
+    <dimen name="dialog_edit_motorcycle_pick_image_margin">8dp</dimen>
+    <dimen name="dialog_edit_motorcycle_vertical_padding">@dimen/activity_vertical_padding</dimen>
+    <dimen name="dialog_edit_motorcycle_horizontal_padding">@dimen/activity_horizontal_padding
+    </dimen>
+    <dimen name="dialog_edit_motorcycle_max_width_placeholder">400dp</dimen>
+
+    <!-- dialog edit work order -->
+    <dimen name="dialog_edit_wo_vertical_padding">@dimen/activity_vertical_padding</dimen>
+    <dimen name="dialog_edit_wo_horizontal_padding">@dimen/activity_horizontal_padding
+    </dimen>
+    <dimen name="dialog_edit_wo_checkbox_vertical_margin">16dp</dimen>
+    <dimen name="dialog_edit_wo_subtitle_vertical_margin">16dp</dimen>
+
+    <!-- dialog edit cost sheet -->
+    <dimen name="dialog_edit_cost_sheet_vertical_padding">@dimen/activity_vertical_padding</dimen>
+    <dimen name="dialog_edit_cost_sheet_horizontal_padding">@dimen/activity_horizontal_padding
+    </dimen>
+    <dimen name="dialog_edit_cost_sheet_btn_add_margin_vertical">8dp</dimen>
+    <dimen name="dialog_edit_cost_sheet_rv_emtpy_text_margin_top">24dp</dimen>
+    <dimen name="dialog_edit_cost_sheet_rv_empty_text_margin_left">8dp</dimen>
+    <dimen name="dialog_edit_cost_sheet_rv_padding_top">8dp</dimen>
+    <dimen name="dialog_edit_cost_sheet_rv_item_more_options_padding">16dp</dimen>
+    <dimen name="dialog_edit_cost_sheet_rv_textview_left_margin">36dp</dimen>
+
+    <dimen name="dialog_edit_cost_sheet_add_cost_margin_right">16dp</dimen>
+
+    <!-- content income -->
+    <dimen name="content_income_btn_margin_top">8dp</dimen>
+    <dimen name="content_income_text_left_margin">16dp</dimen>
+    <dimen name="content_income_total_text_top_margin">32dp</dimen>
+
+    <!-- activity reminders -->
+    <dimen name="content_reminders_empty_view_image_width">
+        @dimen/content_main_empty_view_image_width
+    </dimen>
+    <dimen name="content_reminders_empty_view_image_height">
+        @dimen/content_main_empty_view_image_height
+    </dimen>
+    <dimen name="content_reminders_rv_top_padding">@dimen/content_main_rv_top_padding</dimen>
+    <dimen name="content_reminders_rv_padding_bottom">@dimen/content_main_rv_padding_bottom</dimen>
+    <dimen name="content_reminders_emtpy_textview_text_margin_left">
+        @dimen/content_main_emtpy_textview_text_margin_left
+    </dimen>
+
+    <!-- dialog edit uploaded images -->
+    <dimen name="dialog_edit_uploaded_images_btn_upload_margin_vertical">4dp</dimen>
+    <dimen name="dialog_edit_uploaded_images_vertical_margin">@dimen/activity_vertical_padding
+    </dimen>
+    <dimen name="dialog_edit_uploaded_images_horizontal_margin">@dimen/activity_horizontal_padding
+    </dimen>
+    <dimen name="dialog_edit_uploaded_images_rv_padding_top">8dp</dimen>
+    <dimen name="dialog_edit_uploaded_images_rv_emtpy_text_margin_top">24dp</dimen>
+    <dimen name="dialog_edit_uploaded_images_rv_empty_text_margin_left">8dp</dimen>
+
+    <dimen name="dialog_edit_uploaded_images_rv_card_margin_horizontal">16dp</dimen>
+    <dimen name="dialog_edit_uploaded_images_rv_card_margin_vertical">8dp</dimen>
+    <dimen name="dialog_edit_uploaded_images_rv_card_max_width">400dp</dimen>
+    <dimen name="dialog_edit_uploaded_images_rv_item_margin_horizontal">16dp</dimen>
+    <dimen name="dialog_edit_uploaded_images_rv_item_margin_vertical">16dp</dimen>
+    <dimen name="dialog_edit_uploaded_images_rv_item_more_options_padding">16dp</dimen>
+    <dimen name="dialog_edit_uploaded_images_rv_item_image_height">150dp</dimen>
+</resources>

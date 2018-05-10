@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_wo_item_edit_cost_sheet"
+        android:title="@string/menu_wo_item_edit_cs" />
+
+    <item
+        android:id="@+id/menu_wo_item_upload_images"
+        android:title="@string/menu_wo_item_upload_images" />
+
+    <item
+        android:id="@+id/menu_wo_item_delete_wo"
+        android:title="@string/menu_wo_item_delete_wo" />
+</menu>

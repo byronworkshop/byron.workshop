@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.detailsactivity.DetailsActivity"
+    tools:showIn="@layout/activity_details">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_details_item_info_bottom_margin"
+            android:layout_marginTop="@dimen/content_details_item_info_top_margin">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/content_details_info_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <ImageView
+                android:id="@+id/content_details_details_info_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/list_item_margin_horizontal"
+                android:layout_marginStart="@dimen/list_item_margin_horizontal"
+                android:contentDescription="@string/content_details_icon_info_desc"
+                app:layout_constraintBottom_toTopOf="@+id/content_details_info_guideline"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/content_details_info_guideline"
+                app:srcCompat="@drawable/ic_info" />
+
+            <TextView
+                android:id="@+id/content_details_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/list_item_margin_horizontal"
+                android:layout_marginLeft="@dimen/list_item_textview_left_margin"
+                android:layout_marginRight="@dimen/list_item_margin_horizontal"
+                android:layout_marginStart="@dimen/list_item_textview_left_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/content_details_info_guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="CHOPPER" />
+
+            <TextView
+                android:id="@+id/content_details_cc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintLeft_toLeftOf="@+id/content_details_type"
+                app:layout_constraintStart_toStartOf="@+id/content_details_type"
+                app:layout_constraintTop_toTopOf="@+id/content_details_info_guideline"
+                tools:text="150 cc" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/content_details_extras_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.75" />
+
+            <ImageView
+                android:id="@+id/content_details_extras_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/list_item_margin_horizontal"
+                android:layout_marginStart="@dimen/list_item_margin_horizontal"
+                android:contentDescription="@string/content_details_icon_extras_desc"
+                app:layout_constraintBottom_toTopOf="@+id/content_details_extras_guideline"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/content_details_extras_guideline"
+                app:srcCompat="@drawable/ic_details_accent" />
+
+            <TextView
+                android:id="@+id/content_details_color"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/list_item_margin_horizontal"
+                android:layout_marginLeft="@dimen/list_item_textview_left_margin"
+                android:layout_marginRight="@dimen/list_item_margin_horizontal"
+                android:layout_marginStart="@dimen/list_item_textview_left_margin"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/content_details_extras_guideline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="ROJO" />
+
+            <TextView
+                android:id="@+id/content_details_license_plate_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintLeft_toLeftOf="@+id/content_details_color"
+                app:layout_constraintStart_toStartOf="@+id/content_details_color"
+                app:layout_constraintTop_toTopOf="@+id/content_details_extras_guideline"
+                tools:text="2397HFN" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/content_details_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="@dimen/content_details_switch_bottom_margin"
+            android:layout_marginLeft="@dimen/list_item_margin_horizontal"
+            android:layout_marginRight="@dimen/list_item_margin_horizontal"
+            android:layout_marginTop="@dimen/content_details_switch_top_margin"
+            android:gravity="center"
+            android:text="@string/content_details_switch"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/colorAccent"
+            app:switchPadding="8dp" />
+
+        <LinearLayout
+            android:id="@+id/content_details_rv_wo_empty_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_details_rv_title_margin_bottom"
+            android:layout_marginTop="@dimen/content_details_rv_title_margin_top"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="@dimen/content_details_rv_wo_empty_avatar_width"
+                android:layout_height="@dimen/content_details_rv_wo_empty_avatar_height"
+                android:contentDescription="@string/content_details_work_orders_emtpy_text"
+                app:srcCompat="@drawable/ic_brand_full" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/content_details_work_orders_emtpy_text"
+                    app:srcCompat="@drawable/ic_warning_accent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_details_rv_emtpy_textview_text_margin_left"
+                    android:layout_marginStart="@dimen/content_details_rv_emtpy_textview_text_margin_left"
+                    android:text="@string/content_details_work_orders_emtpy_text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/content_details_rv_wo_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_details_rv_title_margin_bottom"
+            android:layout_marginEnd="@dimen/content_details_rv_title_margin_right"
+            android:layout_marginLeft="@dimen/content_details_rv_title_margin_left"
+            android:layout_marginRight="@dimen/content_details_rv_title_margin_right"
+            android:layout_marginStart="@dimen/content_details_rv_title_margin_left"
+            android:layout_marginTop="@dimen/content_details_rv_title_margin_top"
+            android:text="@string/content_details_work_orders_title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/content_details_rv_wos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/content_details_rv_bottom_margin"
+            android:layout_marginTop="@dimen/content_details_rv_top_margin"
+            android:paddingBottom="@dimen/content_details_rv_bottom_padding"
+            android:paddingTop="@dimen/content_details_rv_top_padding" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

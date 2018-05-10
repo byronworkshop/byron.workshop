@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/dialog_edit_uploaded_images_progress_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/dialog_edit_motorcycle_vertical_padding"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/dialog_edit_uploaded_images_progress_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            tools:text="0%" />
+
+        <ProgressBar
+            android:id="@+id/dialog_edit_uploaded_images_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/dialog_edit_uploaded_images_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dialog_edit_uploaded_images_btn_upload_margin_vertical"
+        android:layout_marginLeft="@dimen/dialog_edit_uploaded_images_horizontal_margin"
+        android:layout_marginStart="@dimen/dialog_edit_uploaded_images_horizontal_margin"
+        android:layout_marginTop="@dimen/dialog_edit_uploaded_images_vertical_margin"
+        android:alpha="0.75"
+        android:drawableLeft="@android:drawable/ic_menu_upload"
+        android:drawableStart="@android:drawable/ic_menu_upload"
+        android:text="@string/dialog_edit_uploaded_images_btn_upload"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:backgroundTint="@color/colorAccent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/dialog_edit_uploaded_images_rv_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_edit_uploaded_images_rv_emtpy_text_margin_top"
+            android:gravity="center"
+            android:visibility="gone"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/dialog_edit_uploaded_images_rv_empty_records"
+                app:srcCompat="@drawable/ic_warning_accent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialog_edit_uploaded_images_rv_empty_text_margin_left"
+                android:layout_marginStart="@dimen/dialog_edit_uploaded_images_rv_empty_text_margin_left"
+                android:text="@string/dialog_edit_uploaded_images_rv_empty_records"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dialog_edit_uploaded_images_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dialog_edit_uploaded_images_rv_padding_top" />
+
+    </LinearLayout>
+</LinearLayout>

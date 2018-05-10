@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dialog_edit_cost_sheet_vertical_padding"
+        android:paddingEnd="@dimen/dialog_edit_cost_sheet_horizontal_padding"
+        android:paddingLeft="@dimen/dialog_edit_cost_sheet_horizontal_padding"
+        android:paddingRight="@dimen/dialog_edit_cost_sheet_horizontal_padding"
+        android:paddingStart="@dimen/dialog_edit_cost_sheet_horizontal_padding"
+        android:paddingTop="@dimen/dialog_edit_cost_sheet_vertical_padding">
+
+        <TextView
+            android:id="@+id/dialog_edit_cost_sheet_title_replacements"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_edit_cost_sheet_lbl_replacement_costs"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dialog_edit_cost_sheet_cost_replacements"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/dialog_edit_cost_sheet_title_replacements"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/dialog_edit_cost_sheet_title_replacements"
+            tools:text="0 Bs" />
+
+        <TextView
+            android:id="@+id/dialog_edit_cost_sheet_title_external"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_edit_cost_sheet_lbl_external_costs"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintLeft_toLeftOf="@+id/dialog_edit_cost_sheet_title_replacements"
+            app:layout_constraintStart_toStartOf="@+id/dialog_edit_cost_sheet_title_replacements"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_edit_cost_sheet_title_replacements" />
+
+        <TextView
+            android:id="@+id/dialog_edit_cost_sheet_cost_external"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/dialog_edit_cost_sheet_title_external"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_edit_cost_sheet_cost_replacements"
+            app:layout_constraintRight_toRightOf="@+id/dialog_edit_cost_sheet_cost_replacements"
+            app:layout_constraintTop_toTopOf="@+id/dialog_edit_cost_sheet_title_external"
+            tools:text="0 Bs" />
+
+        <TextView
+            android:id="@+id/dialog_edit_cost_sheet_title_labor_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_edit_cost_sheet_lbl_labor_costs"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintLeft_toLeftOf="@+id/dialog_edit_cost_sheet_title_external"
+            app:layout_constraintStart_toStartOf="@+id/dialog_edit_cost_sheet_title_external"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_edit_cost_sheet_title_external" />
+
+        <TextView
+            android:id="@+id/dialog_edit_cost_sheet_cost_labor_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/dialog_edit_cost_sheet_title_labor_cost"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_edit_cost_sheet_cost_external"
+            app:layout_constraintRight_toRightOf="@+id/dialog_edit_cost_sheet_cost_external"
+            app:layout_constraintTop_toTopOf="@+id/dialog_edit_cost_sheet_title_labor_cost"
+            tools:text="0 Bs" />
+
+        <View
+            android:id="@+id/dialog_edit_cost_sheet_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/colorDivider"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_edit_cost_sheet_cost_labor_cost"
+            app:layout_constraintLeft_toLeftOf="@+id/dialog_edit_cost_sheet_guideline"
+            app:layout_constraintRight_toRightOf="@+id/dialog_edit_cost_sheet_cost_labor_cost"
+            app:layout_constraintStart_toStartOf="@+id/dialog_edit_cost_sheet_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_edit_cost_sheet_cost_labor_cost" />
+
+        <TextView
+            android:id="@+id/dialog_edit_cost_sheet_cost_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintEnd_toEndOf="@+id/dialog_edit_cost_sheet_divider"
+            app:layout_constraintRight_toRightOf="@+id/dialog_edit_cost_sheet_divider"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_edit_cost_sheet_divider"
+            tools:text="0 Bs" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/dialog_edit_cost_sheet_add_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dialog_edit_cost_sheet_btn_add_margin_vertical"
+            android:layout_marginTop="@dimen/dialog_edit_cost_sheet_btn_add_margin_vertical"
+            android:alpha="0.75"
+            android:drawableLeft="@android:drawable/ic_menu_add"
+            android:drawableStart="@android:drawable/ic_menu_add"
+            android:text="@string/dialog_edit_cost_sheet_btn_add_cost"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            app:backgroundTint="@color/colorAccent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/dialog_edit_cost_sheet_title_labor_cost"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_edit_cost_sheet_cost_total" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/dialog_edit_cost_sheet_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <LinearLayout
+            android:id="@+id/dialog_edit_cost_sheet_rv_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_edit_cost_sheet_rv_emtpy_text_margin_top"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/dialog_edit_cost_sheet_guideline"
+            app:layout_constraintLeft_toLeftOf="@+id/dialog_edit_cost_sheet_guideline"
+            app:layout_constraintRight_toLeftOf="@+id/dialog_edit_cost_sheet_guideline"
+            app:layout_constraintStart_toStartOf="@+id/dialog_edit_cost_sheet_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_edit_cost_sheet_add_cost"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/dialog_edit_cost_sheet_rv_empty_records"
+                app:srcCompat="@drawable/ic_warning_accent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialog_edit_cost_sheet_rv_empty_text_margin_left"
+                android:layout_marginStart="@dimen/dialog_edit_cost_sheet_rv_empty_text_margin_left"
+                android:text="@string/dialog_edit_cost_sheet_rv_empty_records"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/dialog_edit_cost_sheet_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dialog_edit_cost_sheet_rv_padding_top"
+            app:layout_constraintEnd_toStartOf="@+id/dialog_edit_cost_sheet_guideline"
+            app:layout_constraintLeft_toLeftOf="@+id/dialog_edit_cost_sheet_guideline"
+            app:layout_constraintRight_toLeftOf="@+id/dialog_edit_cost_sheet_guideline"
+            app:layout_constraintStart_toStartOf="@+id/dialog_edit_cost_sheet_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_edit_cost_sheet_add_cost" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

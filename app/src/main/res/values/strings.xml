@@ -1,0 +1,264 @@
+<resources>
+    <!-- menu_main activity -->
+    <string name="app_name">Byron Workshop</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="sign_out_title">Sign out</string>
+    <string name="sign_out_message">Do you want to close your session?</string>
+    <string name="sign_out_ok">OK</string>
+    <string name="sign_out_cancel">Cancel</string>
+
+    <string name="nav_header_desc">Account header</string>
+    <string name="nav_menu_group_motorcycle">Motorcycle</string>
+    <string name="nav_menu_add">Add</string>
+    <string name="nav_menu_group_reports">Reports</string>
+    <string name="nav_menu_income">Income</string>
+    <string name="nav_menu_reminders">Reminders</string>
+    <string name="nav_menu_sign_out">Sign out</string>
+
+    <string name="content_main_rv_empty_view_image_desc">Add motorcycle</string>
+    <string name="content_main_rv_empty_text">No motorcycles found</string>
+
+    <string name="menu_action_sign_out">Sign out</string>
+    <string name="menu_action_search">Search</string>
+
+    <string name="bitmap_utils_error_delete_file">Error while deleting image</string>
+
+    <string name="dialog_edit_motorcycle_add_title">Add motorcycle</string>
+    <string name="dialog_edit_motorcycle_edit_title">Edit motorcycle</string>
+    <string name="dialog_edit_motorcycle_ok">SAVE</string>
+    <string name="dialog_edit_motorcycle_cancel">Cancel</string>
+    <string name="dialog_edit_motorcycle_writing_storage_denied">Permission denied</string>
+
+    <string name="dialog_edit_motorcycle_avatar_desc">Motorcycle Avatar</string>
+    <string name="dialog_edit_motorcycle_pick_image">Pick an image</string>
+    <string name="dialog_edit_motorcycle_avatar_image_picker_chooser_title">Source</string>
+    <string name="dialog_edit_motorcycle_avatar_image_picker_error">Cannot pick an image. Try again later</string>
+    <string name="dialog_edit_motorcycle_brand">Brand</string>
+    <string name="dialog_edit_motorcycle_model">Model</string>
+    <string name="dialog_edit_motorcycle_type">Type</string>
+    <string name="dialog_edit_motorcycle_cc">Cylinder</string>
+    <string name="dialog_edit_motorcycle_color">Color</string>
+    <string name="dialog_edit_motorcycle_license_plate_number">License plate number</string>
+
+    <string name="dialog_edit_motorcycle_error_avatar">Image is required</string>
+    <string name="dialog_edit_motorcycle_error_brand">Brand is required</string>
+    <string name="dialog_edit_motorcycle_error_model">Model is required</string>
+    <string name="dialog_edit_motorcycle_error_type">Type is required</string>
+    <string name="dialog_edit_motorcycle_error_cylinder">Cylinder is required</string>
+    <string name="dialog_edit_motorcycle_error_color">Color is required</string>
+    <string name="dialog_edit_motorcycle_error_license_plate_number">License plate number is required</string>
+
+    <string name="dialog_edit_motorcycle_error_cannot_save_db">Cannot save motorcycle. Try again later</string>
+    <string name="dialog_edit_motorcycle_error_cannot_upload_image">Image could not be uploaded. You can upload an image later on edition</string>
+
+    <string name="dialog_edit_motorcycle_save_offline_title">Save without image?</string>
+    <string name="dialog_edit_motorcycle_save_offline_msg">Images cannot be saved without an internet connection. You can upload an image later on edition</string>
+    <string name="dialog_edit_motorcycle_save_offline_continue">CONTINUE</string>
+    <string name="dialog_edit_motorcycle_save_offline_cancel">Cancel</string>
+
+    <string name="dialog_edit_motorcycle_progress_label">%1$d%%</string>
+
+    <!-- details activity -->
+    <string name="title_activity_details">Details</string>
+    <string name="action_edit">Edit</string>
+    <string name="activity_details_creation_error">You must provide uid and motorcycleId to initiate this activity</string>
+    <string name="activity_details_tv_cc">%1$d cc</string>
+    <string name="activity_details_delete_wo_error">Cannot delete work order. Try again later</string>
+
+    <string name="content_details_rv_item_iv_description">Work order</string>
+    <string name="content_details_rv_item_iv_options_desc">More options</string>
+    <plurals name="content_details_rv_item_image_counter">
+        <item quantity="one">%1$d image</item>
+        <item quantity="other">%1$d images</item>
+    </plurals>
+
+    <string name="content_details_icon_info_desc">Motorcycle information</string>
+    <string name="content_details_icon_extras_desc">Motorcycle extra information</string>
+    <string name="content_details_switch">Reminder</string>
+    <string name="content_details_work_orders_title">Work orders</string>
+    <string name="content_details_work_orders_emtpy_text">No work orders yet</string>
+
+    <!-- dialog edit work order -->
+    <string name="dialog_edit_work_order_title_new">New work order</string>
+    <string name="dialog_edit_work_order_title_edit">Edit work order</string>
+    <string name="dialog_edit_work_order_save">SAVE</string>
+    <string name="dialog_edit_work_order_cancel">Cancel</string>
+    <string name="dialog_edit_work_order_date">Date</string>
+    <string name="dialog_edit_work_order_time">Time</string>
+    <string name="dialog_edit_work_order_initial_compression">Initial compression</string>
+    <string name="dialog_edit_work_order_final_compression">Final compression</string>
+    <string name="dialog_edit_work_order_issue">Issue</string>
+    <string name="dialog_edit_work_order_others">Others</string>
+    <string name="dialog_edit_work_order_title_accessories">Accessories</string>
+    <string name="dialog_edit_work_order_accessories_ignition">Ignition</string>
+    <string name="dialog_edit_work_order_accessories_battery">Battery</string>
+    <string name="dialog_edit_work_order_accessories_central_bipod">Central bipod</string>
+    <string name="dialog_edit_work_order_accessories_horn">Horn</string>
+    <string name="dialog_edit_work_order_accessories_cdi">CDI</string>
+    <string name="dialog_edit_work_order_accessories_headlight">Headlight</string>
+    <string name="dialog_edit_work_order_accessories_light_bulbs">Light bulbs</string>
+    <string name="dialog_edit_work_order_accessories_mudguard">Mudguard</string>
+    <string name="dialog_edit_work_order_accessories_winkers">Winkers</string>
+    <string name="dialog_edit_work_order_accessories_paint">Paint</string>
+    <string name="dialog_edit_work_order_accessories_hand_grips">Hand grips</string>
+    <string name="dialog_edit_work_order_accessories_rectifier">Rectifier</string>
+    <string name="dialog_edit_work_order_accessories_rearview_mirrors">Rearview mirrors</string>
+    <string name="dialog_edit_work_order_accessories_chain_cover">Chain cover</string>
+    <string name="dialog_edit_work_order_accessories_telescopic_fork">Telescopic fork</string>
+    <string name="dialog_edit_work_order_accessories_caps">Caps</string>
+    <string name="dialog_edit_work_order_accessories_ignition_switch">Ignition switch</string>
+    <string name="dialog_edit_work_order_accessories_clutch_cable">Clutch cable</string>
+    <string name="dialog_edit_work_order_accessories_exhaust">Exhaust</string>
+    <string name="dialog_edit_work_order_accessories_tires">Tires</string>
+    <string name="dialog_edit_work_order_accessories_key">Key</string>
+    <string name="dialog_edit_work_order_accessories_handlebar">Handlebar</string>
+    <string name="dialog_edit_work_order_accessories_seat">Seat</string>
+    <string name="dialog_edit_work_order_accessories_levers">Levers</string>
+    <string name="dialog_edit_work_order_accessories_racks">Racks</string>
+    <string name="dialog_edit_work_order_accessories_radiator">Radiator</string>
+    <string name="dialog_edit_work_order_accessories_license_plate_support">Lic. plate support</string>
+    <string name="dialog_edit_work_order_accessories_valve_cover">Valve cover</string>
+    <string name="dialog_edit_work_order_accessories_upholstery">Upholstery</string>
+    <string name="dialog_edit_work_order_accessories_chain_tensioner">Chain tensioner</string>
+    <string name="dialog_edit_work_order_accessories_rims">Rims</string>
+    <string name="dialog_edit_work_order_accessories_filters">Filters</string>
+    <string name="dialog_edit_work_order_accessories_brakes">Brakes</string>
+    <string name="dialog_edit_work_order_accessories_tools">Tools</string>
+    <string name="dialog_edit_work_order_accessories_emblems">Emblems</string>
+    <string name="dialog_edit_work_order_accessories_commands">Commands</string>
+    <string name="dialog_edit_work_order_accessories_hoses">Hoses</string>
+    <string name="dialog_edit_work_order_accessories_cat_eyes">Cat eyes</string>
+    <string name="dialog_edit_work_order_accessories_tool_holder">Tool holder</string>
+    <string name="dialog_edit_work_order_accessories_electric_system">Electric system</string>
+    <string name="dialog_edit_work_order_accessories_fuel_cap">Fuel cap</string>
+    <string name="dialog_edit_work_order_accessories_engine_covers">Engine covers</string>
+    <string name="dialog_edit_work_order_accessories_side_covers">Side covers</string>
+    <string name="dialog_edit_work_order_accessories_transmission">Transmission</string>
+    <string name="dialog_edit_work_order_accessories_speedometer">Speedometer</string>
+    <string name="dialog_edit_work_order_prev_maint_title">PREVENTIVE MAINTENANCE</string>
+    <string name="dialog_edit_work_order_prev_maint_oil">Oil</string>
+    <string name="dialog_edit_work_order_prev_maint_lubrication">Lubrication</string>
+    <string name="dialog_edit_work_order_prev_maint_bolt_adjustment">Bolt adjustment</string>
+    <string name="dialog_edit_work_order_prev_maint_engine_tuning">Engine tuning</string>
+    <string name="dialog_edit_work_order_prev_maint_carburetion">Carburetion</string>
+    <string name="dialog_edit_work_order_prev_maint_change_spark_plugs">Change spark plugs</string>
+    <string name="dialog_edit_work_order_prev_maint_transmission_cleaning">Transmission cleaning</string>
+    <string name="dialog_edit_work_order_prev_maint_break_adjustment">Break adjustment</string>
+    <string name="dialog_edit_work_order_prev_maint_tire_pressure">Tire pressure</string>
+    <string name="dialog_edit_work_order_prev_maint_fuses_revision">Fuses revision</string>
+    <string name="dialog_edit_work_order_corr_maint_title">CORRECTIVE MAINTENANCE</string>
+    <string name="dialog_edit_work_order_corr_maint_valves">Valves</string>
+    <string name="dialog_edit_work_order_corr_maint_piston_rings">Piston rings</string>
+    <string name="dialog_edit_work_order_corr_maint_piston">Piston</string>
+    <string name="dialog_edit_work_order_corr_maint_transmission">Transmission</string>
+    <string name="dialog_edit_work_order_corr_maint_clutch_plates">Clutch plates</string>
+    <string name="dialog_edit_work_order_corr_maint_engine_head">Engine head</string>
+    <string name="dialog_edit_work_order_corr_maint_clutch_press">Clutch press</string>
+    <string name="dialog_edit_work_order_corr_maint_starter">Starter</string>
+    <string name="dialog_edit_work_order_corr_maint_solenoid">Solenoid</string>
+    <string name="dialog_edit_work_order_corr_maint_gearbox">Gearbox</string>
+    <string name="dialog_edit_work_order_corr_maint_grinding">Grinding</string>
+    <string name="dialog_edit_work_order_err_date">Date is required</string>
+    <string name="dialog_edit_work_order_err_time">Time is required</string>
+    <string name="dialog_edit_work_order_err_issue">Issue is required</string>
+    <string name="dialog_edit_work_order_err_initial_compression">Initial compression is required</string>
+    <string name="dialog_edit_work_order_more_options_delete_wo_title">Delete \"%1$s initiated on date %2$s\"?</string>
+    <string name="dialog_edit_work_order_more_options_delete_wo_msg">Work order will be permanently removed from the motorcycle records</string>
+    <string name="dialog_edit_work_order_more_options_delete_wo_ok">DELETE</string>
+    <string name="dialog_edit_work_order_more_options_delete_wo_cancel">Cancel</string>
+
+    <string name="menu_wo_item_edit_cs">Edit cost sheet</string>
+    <string name="menu_wo_item_delete_wo">Delete work order</string>
+    <string name="menu_wo_item_upload_images">Upload images</string>
+
+    <!-- dialog edit cost sheet -->
+    <string name="dialog_edit_cost_sheet_dialog_title">Edit cost sheet</string>
+    <string name="dialog_edit_cost_sheet_dialog_btn_close">Close</string>
+    <string name="dialog_edit_cost_sheet_lbl_replacement_costs">Replacements</string>
+    <string name="dialog_edit_cost_sheet_lbl_external_costs">External labors</string>
+    <string name="dialog_edit_cost_sheet_lbl_labor_costs">Labor cost</string>
+    <string name="dialog_edit_cost_sheet_cost">%1$s Bs</string>
+    <string name="dialog_edit_cost_sheet_btn_add_cost">Add cost</string>
+    <string name="dialog_edit_cost_sheet_rv_empty_records">No cost records yet</string>
+    <string name="dialog_edit_cost_sheet_icon_cost_type">Cost type</string>
+    <string name="dialog_edit_cost_sheet_icon_delete">Delete cost</string>
+    <string name="dialog_edit_cost_sheet_icon_delete_title">Delete \"%1$s %2$d Bs\"?</string>
+    <string name="dialog_edit_cost_sheet_icon_delete_msg">The cost will be permanently removed from the cost sheet</string>
+    <string name="dialog_edit_cost_sheet_icon_delete_ok">DELETE</string>
+    <string name="dialog_edit_cost_sheet_icon_delete_cancel">Cancel</string>
+
+    <string name="dialog_edit_cost_sheet_add_cost_title">Add cost</string>
+    <string name="dialog_edit_cost_sheet_add_cost_ok">SAVE</string>
+    <string name="dialog_edit_cost_sheet_add_cost_cancel">Cancel</string>
+    <string name="dialog_edit_cost_sheet_add_cost_desc">Description</string>
+    <string name="dialog_edit_cost_sheet_add_cost_amount">Amount</string>
+    <string name="dialog_edit_cost_sheet_add_cost_err_desc">Description is required</string>
+    <string name="dialog_edit_cost_sheet_add_cost_err_amount">Amount is required</string>
+    <string name="dialog_edit_cost_sheet_add_cost_type_replacement">Replacement</string>
+    <string name="dialog_edit_cost_sheet_add_cost_type_external">External labor</string>
+    <string name="dialog_edit_cost_sheet_add_cost_type_labor_cost">Labor cost</string>
+
+    <!-- income report -->
+    <string name="title_activity_income">Income</string>
+    <string name="activity_income_from">From</string>
+    <string name="activity_income_until">Until</string>
+
+    <string name="menu_income_menu_search">Search</string>
+
+    <!-- reminders -->
+    <string name="activity_reminders_title">Reminders</string>
+    <string name="activity_reminders_creation_error">You must provide uid to initiate this activity</string>
+    <string name="activity_reminders_rv_item_last_work">Last service %1$s</string>
+
+    <string name="content_reminders_rv_empty_view_image_desc">Motorcycle image</string>
+    <string name="content_reminders_rv_empty_text">No reminders yet</string>
+
+    <string name="content_reminders_readable_date_today">today</string>
+    <plurals name="content_reminders_readable_date_days">
+        <item quantity="one">%1$d day ago</item>
+        <item quantity="other">%1$d days ago</item>
+    </plurals>
+    <plurals name="content_reminders_readable_date_weeks">
+        <item quantity="one">%1$d week ago</item>
+        <item quantity="other">%1$d weeks ago</item>
+    </plurals>
+    <plurals name="content_reminders_readable_date_months">
+        <item quantity="one">%1$d month ago</item>
+        <item quantity="other">%1$d months ago</item>
+    </plurals>
+
+    <!-- notifications -->
+    <string name="remainder_notifications_channel_name">Primary</string>
+    <string name="remainder_notifications_title">This motorcycle needs service</string>
+    <string name="remainder_notifications_msg">%1$s, %2$s</string>
+    <string name="remainder_notifications_big_msg">It\'s been %1$d days since last service to %2$s, %3$s</string>
+
+    <!-- dialog edit uploaded images -->
+    <string name="dialog_edit_uploaded_images_dialog_title">Upload images</string>
+    <string name="dialog_edit_uploaded_images_dialog_btn_close">Close</string>
+    <string name="dialog_edit_uploaded_images_btn_upload">Upload image</string>
+    <string name="dialog_edit_uploaded_images_rv_empty_records">No uploaded images yet</string>
+    <string name="dialog_edit_uploaded_images_image_chooser_title">Source</string>
+    <string name="dialog_edit_uploaded_images_image_chooser_error">Cannot pick an image. Try again later</string>
+    <string name="dialog_edit_uploaded_images_writing_storage_denied">Permission denied</string>
+    <string name="dialog_edit_uploaded_images_writing_storage_accepter_download">Permission granted. You can download the image</string>
+    <string name="dialog_edit_uploaded_images_progress_error">Cannot upload image. Try again later</string>
+    <string name="dialog_edit_uploaded_images_save_error">Cannot save image. Try again later</string>
+    <string name="dialog_edit_uploaded_images_delete_title">Delete image?</string>
+    <string name="dialog_edit_uploaded_images_delete_msg">Image will be permanently deleted</string>
+    <string name="dialog_edit_uploaded_images_delete_ok">DELETE</string>
+    <string name="dialog_edit_uploaded_images_delete_cancel">Cancel</string>
+    <string name="dialog_edit_uploaded_images_no_internet">An internet connection is required</string>
+
+    <string name="dialog_edit_uploaded_images_rv_item_image_desc">Image</string>
+    <string name="dialog_edit_uploaded_images_rv_item_more_options_desc">More options</string>
+    <string name="dialog_edit_uploaded_images_rv_item_more_options_menu_delete">Delete</string>
+    <string name="dialog_edit_uploaded_images_rv_item_more_options_menu_download">Download</string>
+    <string name="dialog_edit_uploaded_images_rv_item_cant_delete">Cannot delete, image not fully processed. Try again in a few seconds</string>
+    <string name="dialog_edit_uploaded_images_rv_item_download_title">Byron image download</string>
+    <string name="dialog_edit_uploaded_images_rv_item_download_msg">Downloading image %1$s</string>
+
+</resources>

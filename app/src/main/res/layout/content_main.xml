@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ui.mainactivity.MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/content_main_rv_motorcycles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/content_main_rv_padding_bottom"
+            android:paddingTop="@dimen/content_main_rv_top_padding" />
+
+        <!-- Empty view for the list -->
+        <RelativeLayout
+            android:id="@+id/content_main_rv_empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingBottom="?attr/actionBarSize"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/content_main_rv_empty_view_image"
+                android:layout_width="@dimen/content_main_empty_view_image_width"
+                android:layout_height="@dimen/content_main_empty_view_image_height"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/content_main_rv_empty_view_image_desc"
+                app:srcCompat="@drawable/ic_brand_full" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/content_main_rv_empty_view_image"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/content_main_rv_empty_text"
+                    app:srcCompat="@drawable/ic_warning_accent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/content_main_emtpy_textview_text_margin_left"
+                    android:layout_marginStart="@dimen/content_main_emtpy_textview_text_margin_left"
+                    android:text="@string/content_main_rv_empty_text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

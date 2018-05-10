@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:minHeight="?android:attr/listPreferredItemHeightLarge">
+
+    <ImageView
+        android:id="@+id/content_details_wo_rv_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/list_item_margin_horizontal"
+        android:layout_marginStart="@dimen/list_item_margin_horizontal"
+        android:contentDescription="@string/content_details_rv_item_iv_description"
+        app:layout_constraintBottom_toTopOf="@+id/content_main_motorcycle_rv_item_guideline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/content_main_motorcycle_rv_item_guideline"
+        app:srcCompat="@drawable/ic_work_order" />
+
+    <TextView
+        android:id="@+id/content_details_wo_rv_item_issue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/list_item_textview_left_margin"
+        android:layout_marginStart="@dimen/list_item_textview_left_margin"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintBottom_toTopOf="@+id/content_main_motorcycle_rv_item_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/content_details_wo_rv_iv_more_options"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/content_details_wo_rv_iv_more_options"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Mantenimiento general por falla general del sistema" />
+
+    <TextView
+        android:id="@+id/content_details_wo_rv_item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorSecondaryText"
+        app:layout_constraintBottom_toTopOf="@+id/content_details_wo_rv_item_issue"
+        app:layout_constraintLeft_toLeftOf="@+id/content_details_wo_rv_item_issue"
+        app:layout_constraintStart_toStartOf="@+id/content_details_wo_rv_item_issue"
+        tools:text="21 Mayo, 2018" />
+
+    <TextView
+        android:id="@+id/content_details_wo_rv_item_total_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintLeft_toLeftOf="@+id/content_details_wo_rv_item_issue"
+        app:layout_constraintStart_toStartOf="@+id/content_details_wo_rv_item_issue"
+        app:layout_constraintTop_toTopOf="@+id/content_main_motorcycle_rv_item_guideline"
+        tools:text="24 Bs" />
+
+    <TextView
+        android:id="@+id/content_details_wo_rv_item_image_counter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/content_details_wo_rv_item_image_counter_horizontal_margin"
+        android:layout_marginStart="@dimen/content_details_wo_rv_item_image_counter_horizontal_margin"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toStartOf="@id/content_details_wo_rv_iv_more_options"
+        app:layout_constraintLeft_toRightOf="@+id/content_details_wo_rv_item_total_cost"
+        app:layout_constraintRight_toLeftOf="@id/content_details_wo_rv_iv_more_options"
+        app:layout_constraintStart_toEndOf="@+id/content_details_wo_rv_item_total_cost"
+        app:layout_constraintTop_toTopOf="@+id/content_main_motorcycle_rv_item_guideline"
+        tools:text="2 images" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="@dimen/list_item_margin_horizontal"
+        android:layout_marginLeft="@dimen/list_item_textview_left_margin"
+        android:layout_marginRight="@dimen/list_item_margin_horizontal"
+        android:layout_marginStart="@dimen/list_item_textview_left_margin"
+        android:background="@color/colorDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/content_main_motorcycle_rv_item_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <ImageView
+        android:id="@+id/content_details_wo_rv_iv_more_options"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/content_details_rv_item_iv_options_desc"
+        android:padding="@dimen/content_details_wo_rv_item_more_options_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_menu" />
+
+</android.support.constraint.ConstraintLayout>

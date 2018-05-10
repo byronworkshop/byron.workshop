@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_header_height"
+        android:contentDescription="@string/nav_header_desc"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/header_bg" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/image_scrimer"
+        android:paddingBottom="@dimen/activity_vertical_padding"
+        android:paddingEnd="@dimen/activity_horizontal_padding"
+        android:paddingLeft="@dimen/activity_horizontal_padding"
+        android:paddingRight="@dimen/activity_horizontal_padding"
+        android:paddingStart="@dimen/activity_horizontal_padding">
+
+        <ImageView
+            android:id="@+id/account_avatar"
+            android:layout_width="@dimen/nav_header_avatar_dimen"
+            android:layout_height="@dimen/nav_header_avatar_dimen"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/nav_header_desc"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            app:srcCompat="@drawable/ic_avatar_placeholder" />
+
+        <TextView
+            android:id="@+id/account_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_avatar"
+            android:gravity="center_horizontal"
+            android:paddingTop="@dimen/nav_header_vertical_spacing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            tools:text="Sergio D. Pardo" />
+
+        <TextView
+            android:id="@+id/account_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/account_name"
+            android:gravity="center_horizontal"
+            tools:text="sample@gmail.com" />
+    </RelativeLayout>
+</FrameLayout>

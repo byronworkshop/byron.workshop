@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:minHeight="?android:attr/listPreferredItemHeightLarge">
+
+    <ImageView
+        android:id="@+id/content_main_motorcycle_rv_item_avatar"
+        android:layout_width="@dimen/list_item_avatar"
+        android:layout_height="@dimen/list_item_avatar"
+        android:layout_marginLeft="@dimen/list_item_margin_horizontal"
+        android:layout_marginStart="@dimen/list_item_margin_horizontal"
+        android:contentDescription="@string/nav_header_desc"
+        app:layout_constraintBottom_toTopOf="@+id/content_main_motorcycle_rv_item_guideline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/content_main_motorcycle_rv_item_guideline" />
+
+    <TextView
+        android:id="@+id/content_main_motorcycle_rv_item_brand"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/list_item_textview_brand_right_margin"
+        android:layout_marginLeft="@dimen/list_item_textview_left_margin"
+        android:layout_marginRight="@dimen/list_item_textview_brand_right_margin"
+        android:layout_marginStart="@dimen/list_item_textview_left_margin"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintBottom_toTopOf="@+id/content_main_motorcycle_rv_item_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/content_main_motorcycle_rv_item_license_plate_number"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/content_main_motorcycle_rv_item_license_plate_number"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="NITSU" />
+
+    <TextView
+        android:id="@+id/content_main_motorcycle_rv_item_license_plate_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/list_item_textview_right_margin"
+        android:layout_marginRight="@dimen/list_item_textview_right_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@+id/content_main_motorcycle_rv_item_brand"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/content_main_motorcycle_rv_item_brand"
+        tools:text="2397HFN" />
+
+    <TextView
+        android:id="@+id/content_main_motorcycle_rv_item_cc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/list_item_textview_cc_padding_horizontal"
+        android:paddingLeft="@dimen/list_item_textview_cc_padding_horizontal"
+        android:paddingRight="@dimen/list_item_textview_cc_padding_horizontal"
+        android:paddingStart="@dimen/list_item_textview_cc_padding_horizontal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintLeft_toRightOf="@+id/content_main_motorcycle_rv_item_model"
+        app:layout_constraintStart_toEndOf="@+id/content_main_motorcycle_rv_item_model"
+        app:layout_constraintTop_toTopOf="@+id/content_main_motorcycle_rv_item_model"
+        tools:text="150 cc" />
+
+    <TextView
+        android:id="@+id/content_main_motorcycle_rv_item_model"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@+id/content_main_motorcycle_rv_item_brand"
+        app:layout_constraintStart_toStartOf="@+id/content_main_motorcycle_rv_item_brand"
+        app:layout_constraintTop_toBottomOf="@+id/content_main_motorcycle_rv_item_guideline"
+        tools:text="2008" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="@dimen/list_item_margin_horizontal"
+        android:layout_marginLeft="@dimen/list_item_textview_left_margin"
+        android:layout_marginRight="@dimen/list_item_margin_horizontal"
+        android:layout_marginStart="@dimen/list_item_textview_left_margin"
+        android:background="@color/colorDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/content_main_motorcycle_rv_item_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+</android.support.constraint.ConstraintLayout>

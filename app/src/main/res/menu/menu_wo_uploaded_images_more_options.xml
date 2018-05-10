@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_wo_uploaded_images_download"
+        android:title="@string/dialog_edit_uploaded_images_rv_item_more_options_menu_download" />
+
+    <item
+        android:id="@+id/menu_wo_uploaded_images_delete"
+        android:title="@string/dialog_edit_uploaded_images_rv_item_more_options_menu_delete" />
+</menu>
