@@ -59,7 +59,6 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
     private EditText etDate;
     private TextInputLayout tiTime;
     private EditText etTime;
-    private TextInputLayout tiInitialCompression;
     private EditText etInitialCompression;
     private EditText etFinalCompression;
     private TextInputLayout tiIssue;
@@ -232,7 +231,6 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
         this.etTime = mDialogView.findViewById(R.id.dialog_edit_wo_time);
         this.tiIssue = mDialogView.findViewById(R.id.dialog_edit_wo_input_layout_wo_issue);
         this.etIssue = mDialogView.findViewById(R.id.dialog_edit_wo_issue);
-        this.tiInitialCompression = mDialogView.findViewById(R.id.dialog_edit_wo_input_layout_wo_initial_compression);
         this.etInitialCompression = mDialogView.findViewById(R.id.dialog_edit_wo_initial_compression);
         this.etFinalCompression = mDialogView.findViewById(R.id.dialog_edit_wo_final_compression);
         this.etOthers = mDialogView.findViewById(R.id.dialog_edit_wo_others);
@@ -614,13 +612,6 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
             errorCounter++;
         } else {
             this.tiIssue.setError(null);
-        }
-
-        if (TextUtils.isEmpty(this.etInitialCompression.getText().toString())) {
-            this.tiInitialCompression.setError(getString(R.string.dialog_edit_work_order_err_initial_compression));
-            errorCounter++;
-        } else {
-            this.tiInitialCompression.setError(null);
         }
 
         return errorCounter == 0;

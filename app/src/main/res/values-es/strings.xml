@@ -166,7 +166,6 @@
     <string name="dialog_edit_work_order_err_date">La fecha es requerida</string>
     <string name="dialog_edit_work_order_err_time">La hora es requerida</string>
     <string name="dialog_edit_work_order_err_issue">El problema es requerido</string>
-    <string name="dialog_edit_work_order_err_initial_compression">La compresión inicial es requerida</string>
     <string name="dialog_edit_work_order_more_options_delete_wo_title">¿Eliminar \"%1$s iniciado en fecha %2$s\"?</string>
     <string name="dialog_edit_work_order_more_options_delete_wo_msg">La orden de trabajo será eliminada permanentemente</string>
     <string name="dialog_edit_work_order_more_options_delete_wo_ok">ELIMINAR</string>

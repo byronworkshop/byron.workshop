@@ -166,7 +166,6 @@
     <string name="dialog_edit_work_order_err_date">Date is required</string>
     <string name="dialog_edit_work_order_err_time">Time is required</string>
     <string name="dialog_edit_work_order_err_issue">Issue is required</string>
-    <string name="dialog_edit_work_order_err_initial_compression">Initial compression is required</string>
     <string name="dialog_edit_work_order_more_options_delete_wo_title">Delete \"%1$s initiated on date %2$s\"?</string>
     <string name="dialog_edit_work_order_more_options_delete_wo_msg">Work order will be permanently removed from the motorcycle records</string>
     <string name="dialog_edit_work_order_more_options_delete_wo_ok">DELETE</string>
