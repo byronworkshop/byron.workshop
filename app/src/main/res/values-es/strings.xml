@@ -22,6 +22,7 @@
     <string name="content_main_rv_empty_text">No se encontraron motocicletas</string>
 
     <string name="menu_action_sign_out">Cerrar sesión</string>
+    <string name="menu_action_settings">Configuración</string>
     <string name="menu_action_search">Buscar</string>
 
     <string name="bitmap_utils_error_delete_file">Error al eliminar la imagen</string>
@@ -271,5 +272,12 @@
     <string name="dialog_edit_uploaded_images_rv_item_cant_delete">Imagen en procesamiento. Intente de nuevo en unos segundos</string>
     <string name="dialog_edit_uploaded_images_rv_item_download_title">Byron descarga de imagen</string>
     <string name="dialog_edit_uploaded_images_rv_item_download_msg">Descargando imagen %1$s</string>
+
+    <!-- settings activity -->
+    <string name="activity_title_settings">Configuración</string>
+
+    <string name="pref_title_max_elapsed_time_last_service">Días desde el último servicio</string>
+    <string name="pref_max_elapsed_time_last_service_default_value_summary">%1$d days</string>
+    <string name="pref_max_elapsed_time_last_service_error">El valor debe ser mayor que 1</string>
 
 </resources>

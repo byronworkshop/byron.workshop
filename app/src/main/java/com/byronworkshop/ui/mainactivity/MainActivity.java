@@ -34,6 +34,7 @@ import com.byronworkshop.ui.detailsactivity.DetailsActivity;
 import com.byronworkshop.ui.mainactivity.adapter.MotorcycleRVAdapter;
 import com.byronworkshop.ui.mainactivity.adapter.pojo.Motorcycle;
 import com.byronworkshop.ui.mainactivity.pojo.ByronUser;
+import com.byronworkshop.ui.reports.SettingsActivity;
 import com.byronworkshop.ui.reports.income.IncomeActivity;
 import com.byronworkshop.ui.reports.reminders.RemindersActivity;
 import com.byronworkshop.ui.reports.reminders.scheduler.ReminderNotificationsUtilities;
@@ -260,6 +261,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_main_action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
             case R.id.menu_main_action_sign_out:
                 this.showSignOutConfimDialog();
                 return true;

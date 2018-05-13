@@ -22,6 +22,7 @@
     <string name="content_main_rv_empty_text">No motorcycles found</string>
 
     <string name="menu_action_sign_out">Sign out</string>
+    <string name="menu_action_settings">Settings</string>
     <string name="menu_action_search">Search</string>
 
     <string name="bitmap_utils_error_delete_file">Error while deleting image</string>
@@ -271,5 +272,14 @@
     <string name="dialog_edit_uploaded_images_rv_item_cant_delete">Cannot delete, image not fully processed. Try again in a few seconds</string>
     <string name="dialog_edit_uploaded_images_rv_item_download_title">Byron image download</string>
     <string name="dialog_edit_uploaded_images_rv_item_download_msg">Downloading image %1$s</string>
+
+    <!-- settings activity -->
+    <string name="activity_title_settings">Settings</string>
+
+    <string name="pref_title_max_elapsed_time_last_service">Days since last service</string>
+    <string name="pref_max_elapsed_time_last_service_key" translatable="false">max_elapsed_time_last_service_key</string>
+    <string name="pref_max_elapsed_time_last_service_default_value" translatable="false">30</string>
+    <string name="pref_max_elapsed_time_last_service_default_value_summary">%1$d days</string>
+    <string name="pref_max_elapsed_time_last_service_error">Value must be greater than 1</string>
 
 </resources>
