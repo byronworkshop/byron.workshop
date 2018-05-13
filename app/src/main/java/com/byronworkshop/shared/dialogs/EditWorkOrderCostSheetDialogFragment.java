@@ -159,18 +159,24 @@ public class EditWorkOrderCostSheetDialogFragment extends DialogFragment impleme
         this.mCostSheetRecyclerView.setLayoutManager(linearLayoutManager);
         this.mCostSheetRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        // add button listener
-        this.mBtnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditWorkOrderCostSheetAddCostDialogFragment.showEditWorkOrderCostSheetAddCostDialog(
-                        requireContext(),
-                        requireFragmentManager(),
-                        mUid,
-                        mMotorcycleId,
-                        mWorkOrderFormId);
-            }
-        });
+        // add button
+        if (!this.mWorkOrderForm.isClosed()) {
+            // enable
+            this.mBtnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EditWorkOrderCostSheetAddCostDialogFragment.showEditWorkOrderCostSheetAddCostDialog(
+                            requireContext(),
+                            requireFragmentManager(),
+                            mUid,
+                            mMotorcycleId,
+                            mWorkOrderFormId);
+                }
+            });
+        } else {
+            // disable
+            this.mBtnAdd.setVisibility(View.GONE);
+        }
 
         // create dialog
         String title = getString(R.string.dialog_edit_cost_sheet_dialog_title);
@@ -259,12 +265,21 @@ public class EditWorkOrderCostSheetDialogFragment extends DialogFragment impleme
                         mTvCost.setText(DecimalFormatterUtils.formatCurrency(context, total));
 
                         // update total cost field
-                        WorkOrderMetadata workOrderMetadata = new WorkOrderMetadata(mWorkOrderForm.getDate(), total, totalReplacements, totalExternal, totalLaborCost);
+                        WorkOrderMetadata workOrderMetadata = new WorkOrderMetadata(
+                                mWorkOrderForm.getStartDate(),
+                                mWorkOrderForm.getEndDate(),
+                                total,
+                                totalReplacements,
+                                totalExternal,
+                                totalLaborCost);
 
                         // batch writings
                         WriteBatch batch = FirebaseFirestore.getInstance().batch();
 
+                        // useful for income calculations
                         batch.set(mMotorcycleWorkOrderMetadataDocReference, workOrderMetadata);
+
+                        // useful for showing the total cost in RecyclerViews
                         batch.update(mMotorcycleWorkOrderFormDocReference, "totalCost", total);
 
                         batch.commit();
@@ -297,6 +312,7 @@ public class EditWorkOrderCostSheetDialogFragment extends DialogFragment impleme
         this.mCostSheetAdapter = new CostSheetRVAdapter(
                 options,
                 this,
+                this.mWorkOrderForm.isClosed(),
                 this.mCostSheetRVEmptyText);
         this.mCostSheetAdapter.startListening();
         this.mCostSheetRecyclerView.setAdapter(mCostSheetAdapter);

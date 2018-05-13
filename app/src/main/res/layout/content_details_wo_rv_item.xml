@@ -18,7 +18,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/content_main_motorcycle_rv_item_guideline"
-        app:srcCompat="@drawable/ic_work_order" />
+        app:srcCompat="@drawable/ic_work_order_opened" />
 
     <TextView
         android:id="@+id/content_details_wo_rv_item_issue"

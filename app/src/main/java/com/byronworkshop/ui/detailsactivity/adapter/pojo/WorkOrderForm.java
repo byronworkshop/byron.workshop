@@ -3,11 +3,13 @@ package com.byronworkshop.ui.detailsactivity.adapter.pojo;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class WorkOrderForm implements Serializable {
 
     // header
-    private long date;
+    private Date startDate;
+    private Date endDate;
     private String issue;
     private int initialCompLevel;
     private int finalCompLevel;
@@ -16,86 +18,85 @@ public class WorkOrderForm implements Serializable {
     private int totalCost;
     private int imageCounter;
 
-    //accessories
+    // accessories
+    private boolean rims;                   // aros
     private boolean ignition;               // arranque
     private boolean battery;                // batería
-    private boolean centralBipod;           // bípode central
-    private boolean horn;                   // bocina
-    private boolean cdi;                    // CDI
-    private boolean headlight;              // farol
-    private boolean lightBulbs;             // focos
-    private boolean mudguard;               // guarda barros
-    private boolean winkers;                // guiñadores
-    private boolean paint;                  // pintura
-    private boolean handGrips;              // puños
-    private boolean rectifier;              // rectificador
-    private boolean rearviewMirrors;        // retrovisores
-    private boolean chainCover;             // tapa cadena
-    private boolean telescopicFork;         // telescopios
-
+    private boolean horn;                   // bípode central
+    private boolean centralBipod;           // bocina
     private boolean caps;                   // capuchones
-    private boolean ignitionSwitch;         // chapa de contacto
+    private boolean cdi;                    // CDI
+    private boolean ignitionSwitch;         // chapa contacto
     private boolean clutchCable;            // chicotillo
     private boolean exhaust;                // escape
-    private boolean tires;                  // llantas
-    private boolean key;                    // llave
-    private boolean handlebar;              // manillar
-    private boolean seat;                   // montura
-    private boolean levers;                 // palancas
-    private boolean racks;                  // parrillas
-    private boolean radiator;               // radiador
-    private boolean licensePlateSupport;    // soporte de placa
-    private boolean valveCover;             // tapa válvulas
-    private boolean upholstery;             // tapiz
-    private boolean chainTensioner;         // tesador de cadena
-
-    private boolean rims;                   // aros
+    private boolean headlight;              // farol
     private boolean filters;                // filtros
+    private boolean lightBulbs;             // focos
     private boolean brakes;                 // frenos
+    private boolean mudguard;               // guardabarros
+    private boolean winkers;                // guiñadores
     private boolean tools;                  // herramientas
     private boolean emblems;                // insignias
+    private boolean tires;                  // llantas
+    private boolean key;                    // llave
     private boolean commands;               // mandos
     private boolean hoses;                  // mangueras
-    private boolean catEyes;                // ojos de gato ****
+    private boolean handlebar;              // manillar
+    private boolean seat;                   // montura
+    private boolean catEyes;                // ojos de gato
+    private boolean levers;                 // palancas
+    private boolean racks;                  // parrillas
+    private boolean paint;                  // pintura
     private boolean toolHolder;             // porta herramientas
+    private boolean handGrips;              // puños
+    private boolean radiator;               // radiador
+    private boolean rectifier;              // rectificador
+    private boolean rearviewMirrors;        // retrovisores
     private boolean electricSystem;         // sistema eléctrico
-    private boolean fuelCap;                // tapa de combustible
+    private boolean licensePlateSupport;    // soporte de placa
+    private boolean chainCover;             // tapa cadena
+    private boolean fuelCap;                // tapa combustible
+    private boolean valveCover;             // tapa válvulas
     private boolean engineCovers;           // tapas de motor
     private boolean sideCovers;             // tapas laterales
+    private boolean upholstery;             // tapiz
+    private boolean telescopicFork;         // telescopios
+    private boolean chainTensioner;         // tesador cadena
     private boolean transmission;           // transmisión
     private boolean speedometer;            // velocímetro
 
     // preventive maintenance
     private boolean oil;                    // aceite
-    private boolean lubrication;            // engrase
-    private boolean boltAdjustment;         // ajuste de pernos
     private boolean engineTuning;           // afinado de motor
-    private boolean carburetion;            // carburación
+    private boolean boltAdjustment;         // ajuste de pernos
     private boolean changeSparkPlugs;       // cambio de bugias
-    private boolean transmissionCleaning;   // limpieza de transmisión
-    private boolean breakAdjustment;         // reajuste de frenos
-    private boolean tirePressure;           // presión de llantas
+    private boolean carburetion;            // carburación
+    private boolean lubrication;            // engrase
     private boolean fusesRevision;          // revisión de fusibles
+    private boolean transmissionCleaning;   // limpieza de transmisión
+    private boolean tirePressure;           // presión de llantas
+    private boolean breakAdjustment;        // reajuste de frenos
 
     // corrective maintenance
-    private boolean valves;                 // válvulas
     private boolean pistonRings;            // anillas
-    private boolean piston;                 // pistón
-    private boolean transmissionCorrection; // transmisión
-    private boolean clutchPlates;           // discos de embrague
-    private boolean engineHead;             // culata
-    private boolean clutchPress;            // prensa de embrague
-    private boolean starter;                // motor de arranque
-    private boolean solenoid;               // solenoide
     private boolean gearBox;                // caja de velocidades
+    private boolean engineHead;             // culata
+    private boolean clutchPlates;           // discos de embrague
+    private boolean starter;                // motor de arranque
+    private boolean piston;                 // pistón
+    private boolean clutchPress;            // prensa de embrague
     private boolean grinding;               // rectificado
+    private boolean solenoid;               // solenoide
+    private boolean transmissionCorrection; // transmisión
+    private boolean valves;                 // válvulas
 
     public WorkOrderForm() {
     }
 
     public WorkOrderForm(
             // header
-            long date,
+            @NonNull Date startDate,
+            Date endDate,
             @NonNull String issue,
             int initialCompLevel,
             int finalCompLevel,
@@ -104,79 +105,78 @@ public class WorkOrderForm implements Serializable {
             int imageCounter,
 
             // accessories
+            boolean rims,
             boolean ignition,
             boolean battery,
-            boolean centralBipod,
             boolean horn,
-            boolean cdi,
-            boolean headlight,
-            boolean lightBulbs,
-            boolean mudguard,
-            boolean winkers,
-            boolean paint,
-            boolean handGrips,
-            boolean rectifier,
-            boolean rearviewMirrors,
-            boolean chainCover,
-            boolean telescopicFork,
-
+            boolean centralBipod,
             boolean caps,
+            boolean cdi,
             boolean ignitionSwitch,
             boolean clutchCable,
             boolean exhaust,
-            boolean tires,
-            boolean key,
-            boolean handlebar,
-            boolean seat,
-            boolean levers,
-            boolean racks,
-            boolean radiator,
-            boolean licensePlateSupport,
-            boolean valveCover,
-            boolean upholstery,
-            boolean chainTensioner,
-
-            boolean rims,
+            boolean headlight,
             boolean filters,
+            boolean lightBulbs,
             boolean brakes,
+            boolean mudguard,
+            boolean winkers,
             boolean tools,
             boolean emblems,
+            boolean tires,
+            boolean key,
             boolean commands,
             boolean hoses,
+            boolean handlebar,
+            boolean seat,
             boolean catEyes,
+            boolean levers,
+            boolean racks,
+            boolean paint,
             boolean toolHolder,
+            boolean handGrips,
+            boolean radiator,
+            boolean rectifier,
+            boolean rearviewMirrors,
             boolean electricSystem,
+            boolean licensePlateSupport,
+            boolean chainCover,
             boolean fuelCap,
+            boolean valveCover,
             boolean engineCovers,
             boolean sideCovers,
+            boolean upholstery,
+            boolean telescopicFork,
+            boolean chainTensioner,
             boolean transmission,
             boolean speedometer,
 
             // preventive maintenance
             boolean oil,
-            boolean lubrication,
-            boolean boltAdjustment,
             boolean engineTuning,
-            boolean carburetion,
+            boolean boltAdjustment,
             boolean changeSparkPlugs,
-            boolean transmissionCleaning,
-            boolean breakAdjustment,
-            boolean tirePressure,
+            boolean carburetion,
+            boolean lubrication,
             boolean fusesRevision,
+            boolean transmissionCleaning,
+            boolean tirePressure,
+            boolean breakAdjustment,
 
             // corrective maintenance
-            boolean valves,
             boolean pistonRings,
-            boolean piston,
-            boolean transmissionCorrection,
-            boolean clutchPlates,
-            boolean engineHead,
-            boolean clutchPress,
-            boolean starter,
-            boolean solenoid,
             boolean gearBox,
-            boolean grinding) {
-        this.date = date;
+            boolean engineHead,
+            boolean clutchPlates,
+            boolean starter,
+            boolean piston,
+            boolean clutchPress,
+            boolean grinding,
+            boolean solenoid,
+            boolean transmissionCorrection,
+            boolean valves) {
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.issue = issue;
         this.initialCompLevel = initialCompLevel;
         this.finalCompLevel = finalCompLevel;
@@ -184,76 +184,89 @@ public class WorkOrderForm implements Serializable {
         this.totalCost = totalCost;
         this.imageCounter = imageCounter;
 
+        // accessories
+        this.rims = rims;
         this.ignition = ignition;
         this.battery = battery;
-        this.centralBipod = centralBipod;
         this.horn = horn;
-        this.cdi = cdi;
-        this.headlight = headlight;
-        this.lightBulbs = lightBulbs;
-        this.mudguard = mudguard;
-        this.winkers = winkers;
-        this.paint = paint;
-        this.handGrips = handGrips;
-        this.rectifier = rectifier;
-        this.rearviewMirrors = rearviewMirrors;
-        this.chainCover = chainCover;
-        this.telescopicFork = telescopicFork;
+        this.centralBipod = centralBipod;
         this.caps = caps;
+        this.cdi = cdi;
         this.ignitionSwitch = ignitionSwitch;
         this.clutchCable = clutchCable;
         this.exhaust = exhaust;
-        this.tires = tires;
-        this.key = key;
-        this.handlebar = handlebar;
-        this.seat = seat;
-        this.levers = levers;
-        this.racks = racks;
-        this.radiator = radiator;
-        this.licensePlateSupport = licensePlateSupport;
-        this.valveCover = valveCover;
-        this.upholstery = upholstery;
-        this.chainTensioner = chainTensioner;
-        this.rims = rims;
+        this.headlight = headlight;
         this.filters = filters;
+        this.lightBulbs = lightBulbs;
         this.brakes = brakes;
+        this.mudguard = mudguard;
+        this.winkers = winkers;
         this.tools = tools;
         this.emblems = emblems;
+        this.tires = tires;
+        this.key = key;
         this.commands = commands;
         this.hoses = hoses;
+        this.handlebar = handlebar;
+        this.seat = seat;
         this.catEyes = catEyes;
+        this.levers = levers;
+        this.racks = racks;
+        this.paint = paint;
         this.toolHolder = toolHolder;
+        this.handGrips = handGrips;
+        this.radiator = radiator;
+        this.rectifier = rectifier;
+        this.rearviewMirrors = rearviewMirrors;
         this.electricSystem = electricSystem;
+        this.licensePlateSupport = licensePlateSupport;
+        this.chainCover = chainCover;
         this.fuelCap = fuelCap;
+        this.valveCover = valveCover;
         this.engineCovers = engineCovers;
         this.sideCovers = sideCovers;
+        this.upholstery = upholstery;
+        this.telescopicFork = telescopicFork;
+        this.chainTensioner = chainTensioner;
         this.transmission = transmission;
         this.speedometer = speedometer;
+
+        // preventive maintenance
         this.oil = oil;
-        this.lubrication = lubrication;
-        this.boltAdjustment = boltAdjustment;
         this.engineTuning = engineTuning;
-        this.carburetion = carburetion;
+        this.boltAdjustment = boltAdjustment;
         this.changeSparkPlugs = changeSparkPlugs;
-        this.transmissionCleaning = transmissionCleaning;
-        this.breakAdjustment = breakAdjustment;
-        this.tirePressure = tirePressure;
+        this.carburetion = carburetion;
+        this.lubrication = lubrication;
         this.fusesRevision = fusesRevision;
-        this.valves = valves;
+        this.transmissionCleaning = transmissionCleaning;
+        this.tirePressure = tirePressure;
+        this.breakAdjustment = breakAdjustment;
+
+        // corrective maintenance
         this.pistonRings = pistonRings;
-        this.piston = piston;
-        this.transmissionCorrection = transmissionCorrection;
-        this.clutchPlates = clutchPlates;
-        this.engineHead = engineHead;
-        this.clutchPress = clutchPress;
-        this.starter = starter;
-        this.solenoid = solenoid;
         this.gearBox = gearBox;
+        this.engineHead = engineHead;
+        this.clutchPlates = clutchPlates;
+        this.starter = starter;
+        this.piston = piston;
+        this.clutchPress = clutchPress;
         this.grinding = grinding;
+        this.solenoid = solenoid;
+        this.transmissionCorrection = transmissionCorrection;
+        this.valves = valves;
     }
 
-    public long getDate() {
-        return date;
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public boolean isClosed() {
+        return endDate != null;
     }
 
     public String getIssue() {
@@ -280,6 +293,10 @@ public class WorkOrderForm implements Serializable {
         return imageCounter;
     }
 
+    public boolean isRims() {
+        return rims;
+    }
+
     public boolean isIgnition() {
         return ignition;
     }
@@ -288,60 +305,20 @@ public class WorkOrderForm implements Serializable {
         return battery;
     }
 
-    public boolean isCentralBipod() {
-        return centralBipod;
-    }
-
     public boolean isHorn() {
         return horn;
     }
 
-    public boolean isCdi() {
-        return cdi;
-    }
-
-    public boolean isHeadlight() {
-        return headlight;
-    }
-
-    public boolean isLightBulbs() {
-        return lightBulbs;
-    }
-
-    public boolean isMudguard() {
-        return mudguard;
-    }
-
-    public boolean isWinkers() {
-        return winkers;
-    }
-
-    public boolean isPaint() {
-        return paint;
-    }
-
-    public boolean isHandGrips() {
-        return handGrips;
-    }
-
-    public boolean isRectifier() {
-        return rectifier;
-    }
-
-    public boolean isRearviewMirrors() {
-        return rearviewMirrors;
-    }
-
-    public boolean isChainCover() {
-        return chainCover;
-    }
-
-    public boolean isTelescopicFork() {
-        return telescopicFork;
+    public boolean isCentralBipod() {
+        return centralBipod;
     }
 
     public boolean isCaps() {
         return caps;
+    }
+
+    public boolean isCdi() {
+        return cdi;
     }
 
     public boolean isIgnitionSwitch() {
@@ -356,60 +333,28 @@ public class WorkOrderForm implements Serializable {
         return exhaust;
     }
 
-    public boolean isTires() {
-        return tires;
-    }
-
-    public boolean isKey() {
-        return key;
-    }
-
-    public boolean isHandlebar() {
-        return handlebar;
-    }
-
-    public boolean isSeat() {
-        return seat;
-    }
-
-    public boolean isLevers() {
-        return levers;
-    }
-
-    public boolean isRacks() {
-        return racks;
-    }
-
-    public boolean isRadiator() {
-        return radiator;
-    }
-
-    public boolean isLicensePlateSupport() {
-        return licensePlateSupport;
-    }
-
-    public boolean isValveCover() {
-        return valveCover;
-    }
-
-    public boolean isUpholstery() {
-        return upholstery;
-    }
-
-    public boolean isChainTensioner() {
-        return chainTensioner;
-    }
-
-    public boolean isRims() {
-        return rims;
+    public boolean isHeadlight() {
+        return headlight;
     }
 
     public boolean isFilters() {
         return filters;
     }
 
+    public boolean isLightBulbs() {
+        return lightBulbs;
+    }
+
     public boolean isBrakes() {
         return brakes;
+    }
+
+    public boolean isMudguard() {
+        return mudguard;
+    }
+
+    public boolean isWinkers() {
+        return winkers;
     }
 
     public boolean isTools() {
@@ -420,6 +365,14 @@ public class WorkOrderForm implements Serializable {
         return emblems;
     }
 
+    public boolean isTires() {
+        return tires;
+    }
+
+    public boolean isKey() {
+        return key;
+    }
+
     public boolean isCommands() {
         return commands;
     }
@@ -428,20 +381,68 @@ public class WorkOrderForm implements Serializable {
         return hoses;
     }
 
+    public boolean isHandlebar() {
+        return handlebar;
+    }
+
+    public boolean isSeat() {
+        return seat;
+    }
+
     public boolean isCatEyes() {
         return catEyes;
+    }
+
+    public boolean isLevers() {
+        return levers;
+    }
+
+    public boolean isRacks() {
+        return racks;
+    }
+
+    public boolean isPaint() {
+        return paint;
     }
 
     public boolean isToolHolder() {
         return toolHolder;
     }
 
+    public boolean isHandGrips() {
+        return handGrips;
+    }
+
+    public boolean isRadiator() {
+        return radiator;
+    }
+
+    public boolean isRectifier() {
+        return rectifier;
+    }
+
+    public boolean isRearviewMirrors() {
+        return rearviewMirrors;
+    }
+
     public boolean isElectricSystem() {
         return electricSystem;
     }
 
+    public boolean isLicensePlateSupport() {
+        return licensePlateSupport;
+    }
+
+    public boolean isChainCover() {
+        return chainCover;
+    }
+
     public boolean isFuelCap() {
         return fuelCap;
+    }
+
+    public boolean isValveCover() {
+        return valveCover;
     }
 
     public boolean isEngineCovers() {
@@ -450,6 +451,18 @@ public class WorkOrderForm implements Serializable {
 
     public boolean isSideCovers() {
         return sideCovers;
+    }
+
+    public boolean isUpholstery() {
+        return upholstery;
+    }
+
+    public boolean isTelescopicFork() {
+        return telescopicFork;
+    }
+
+    public boolean isChainTensioner() {
+        return chainTensioner;
     }
 
     public boolean isTransmission() {
@@ -464,83 +477,83 @@ public class WorkOrderForm implements Serializable {
         return oil;
     }
 
-    public boolean isLubrication() {
-        return lubrication;
+    public boolean isEngineTuning() {
+        return engineTuning;
     }
 
     public boolean isBoltAdjustment() {
         return boltAdjustment;
     }
 
-    public boolean isEngineTuning() {
-        return engineTuning;
+    public boolean isChangeSparkPlugs() {
+        return changeSparkPlugs;
     }
 
     public boolean isCarburetion() {
         return carburetion;
     }
 
-    public boolean isChangeSparkPlugs() {
-        return changeSparkPlugs;
-    }
-
-    public boolean isTransmissionCleaning() {
-        return transmissionCleaning;
-    }
-
-    public boolean isBreakAdjustment() {
-        return breakAdjustment;
-    }
-
-    public boolean isTirePressure() {
-        return tirePressure;
+    public boolean isLubrication() {
+        return lubrication;
     }
 
     public boolean isFusesRevision() {
         return fusesRevision;
     }
 
-    public boolean isValves() {
-        return valves;
+    public boolean isTransmissionCleaning() {
+        return transmissionCleaning;
+    }
+
+    public boolean isTirePressure() {
+        return tirePressure;
+    }
+
+    public boolean isBreakAdjustment() {
+        return breakAdjustment;
     }
 
     public boolean isPistonRings() {
         return pistonRings;
     }
 
-    public boolean isPiston() {
-        return piston;
-    }
-
-    public boolean isTransmissionCorrection() {
-        return transmissionCorrection;
-    }
-
-    public boolean isClutchPlates() {
-        return clutchPlates;
+    public boolean isGearBox() {
+        return gearBox;
     }
 
     public boolean isEngineHead() {
         return engineHead;
     }
 
-    public boolean isClutchPress() {
-        return clutchPress;
+    public boolean isClutchPlates() {
+        return clutchPlates;
     }
 
     public boolean isStarter() {
         return starter;
     }
 
-    public boolean isSolenoid() {
-        return solenoid;
+    public boolean isPiston() {
+        return piston;
     }
 
-    public boolean isGearBox() {
-        return gearBox;
+    public boolean isClutchPress() {
+        return clutchPress;
     }
 
     public boolean isGrinding() {
         return grinding;
+    }
+
+    public boolean isSolenoid() {
+        return solenoid;
+    }
+
+    public boolean isTransmissionCorrection() {
+        return transmissionCorrection;
+    }
+
+    public boolean isValves() {
+        return valves;
     }
 }

@@ -1,29 +1,31 @@
 package com.byronworkshop.shared.dialogs.adapters.uploadedfiles.pojo;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.byronworkshop.shared.pojo.Image;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class UploadedImage implements Serializable {
 
-    private long date;
+    private Date date;
     private Image image;
 
     public UploadedImage() {
     }
 
-    public UploadedImage(long date, @Nullable Image image) {
+    public UploadedImage(@NonNull Date date, @Nullable Image image) {
         this.date = date;
         this.image = image;
     }
 
-    public void setDate(long date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public long getDate() {
+    public Date getDate() {
         return date;
     }
 

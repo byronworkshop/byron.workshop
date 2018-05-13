@@ -155,7 +155,7 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
 
         // paths
         FieldPath reminderEnabledPath = FieldPath.of("metadata", "reminderEnabled");
-        FieldPath lastWorkOrderDatePath = FieldPath.of("metadata", "lastWorkOrderDate");
+        FieldPath lastWorkOrderEndDatePath = FieldPath.of("metadata", "lastWorkOrderEndDate");
 
         // construct query
         final CollectionReference mMotorcyclesCollReference =
@@ -164,10 +164,9 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
 
         Query query = mMotorcyclesCollReference
                 .whereEqualTo(reminderEnabledPath, true)
-                .whereGreaterThan(lastWorkOrderDatePath, -1)
-                .whereGreaterThanOrEqualTo(lastWorkOrderDatePath, lowRange.getTimeInMillis())
-                .whereLessThanOrEqualTo(lastWorkOrderDatePath, highRange.getTimeInMillis())
-                .orderBy(lastWorkOrderDatePath, Query.Direction.DESCENDING);
+                .whereGreaterThanOrEqualTo(lastWorkOrderEndDatePath, lowRange.getTime())
+                .whereLessThanOrEqualTo(lastWorkOrderEndDatePath, highRange.getTime())
+                .orderBy(lastWorkOrderEndDatePath, Query.Direction.DESCENDING);
 
         // set listener
         query.get()

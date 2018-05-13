@@ -1,23 +1,24 @@
 package com.byronworkshop.ui.mainactivity.adapter.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class MotorcycleMetadata implements Serializable {
 
-    private long lastWorkOrderDate;
+    private Date lastWorkOrderEndDate;
     private boolean reminderEnabled;
 
     public MotorcycleMetadata() {
 
     }
 
-    public MotorcycleMetadata(long lastWorkOrderDate, boolean reminderEnabled) {
-        this.lastWorkOrderDate = lastWorkOrderDate;
+    public MotorcycleMetadata(Date lastWorkOrderEndDate, boolean reminderEnabled) {
+        this.lastWorkOrderEndDate = lastWorkOrderEndDate;
         this.reminderEnabled = reminderEnabled;
     }
 
-    public long getLastWorkOrderDate() {
-        return lastWorkOrderDate;
+    public Date getLastWorkOrderEndDate() {
+        return lastWorkOrderEndDate;
     }
 
     public boolean isReminderEnabled() {

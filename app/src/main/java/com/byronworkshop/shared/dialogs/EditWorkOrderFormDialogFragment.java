@@ -7,10 +7,10 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,12 +20,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.byronworkshop.R;
+import com.byronworkshop.databinding.DialogEditWorkOrderBinding;
 import com.byronworkshop.ui.detailsactivity.adapter.pojo.WorkOrderForm;
 import com.byronworkshop.utils.DatePickerFragment;
 import com.byronworkshop.utils.DateUtils;
@@ -35,6 +34,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class EditWorkOrderFormDialogFragment extends DialogFragment {
 
@@ -44,7 +44,7 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
 
     // dialogs finals
     private static final String TAG_EDIT_WORK_ORDER_FORM_DIALOG = "wo_form_dialog";
-    private static final String KEY_SELECTED_DATE = "selected_date";
+    private static final String KEY_SELECTED_START_DATE = "selected_start_date";
 
     // args mandatory
     private String mUid;
@@ -54,90 +54,10 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
     private WorkOrderForm mWorkOrderForm;
 
     // resources
-    private Calendar selectedDate;
-    private TextInputLayout tiDate;
-    private EditText etDate;
-    private TextInputLayout tiTime;
-    private EditText etTime;
-    private EditText etInitialCompression;
-    private EditText etFinalCompression;
-    private TextInputLayout tiIssue;
-    private EditText etIssue;
-    private EditText etOthers;
+    private Calendar selectedStartDate;
 
-    // accessories
-    private CheckBox cbIgnition;               // arranque
-    private CheckBox cbBattery;                // batería
-    private CheckBox cbCentralBipod;           // bípode central
-    private CheckBox cbHorn;                   // bocina
-    private CheckBox cbCdi;                    // CDI
-    private CheckBox cbHeadlight;              // farol
-    private CheckBox cbLightBulbs;             // focos
-    private CheckBox cbMudguard;               // guarda barros
-    private CheckBox cbWinkers;                // guiñadores
-    private CheckBox cbPaint;                  // pintura
-    private CheckBox cbHandGrips;              // puños
-    private CheckBox cbRectifier;              // rectificador
-    private CheckBox cbRearviewMirrors;        // retrovisores
-    private CheckBox cbChainCover;             // tapa cadena
-    private CheckBox cbTelescopicFork;         // telescopios
-
-    private CheckBox cbCaps;                   // capuchones
-    private CheckBox cbIgnitionSwitch;         // chapa de contacto
-    private CheckBox cbClutchCable;            // chicotillo
-    private CheckBox cbExhaust;                // escape
-    private CheckBox cbTires;                  // llantas
-    private CheckBox cbKey;                    // llave
-    private CheckBox cbHandlebar;              // manillar
-    private CheckBox cbSeat;                   // montura
-    private CheckBox cbLevers;                 // palancas
-    private CheckBox cbRacks;                  // parrillas
-    private CheckBox cbRadiator;               // radiador
-    private CheckBox cbLicensePlateSupport;    // soporte de placa
-    private CheckBox cbValveCover;             // tapa válvulas
-    private CheckBox cbUpholstery;             // tapiz
-    private CheckBox cbChainTensioner;         // tesador de cadena
-
-    private CheckBox cbRims;                   // aros
-    private CheckBox cbFilters;                // filtros
-    private CheckBox cbBrakes;                 // frenos
-    private CheckBox cbTools;                  // herramientas
-    private CheckBox cbEmblems;                // insignias
-    private CheckBox cbCommands;               // mandos
-    private CheckBox cbHoses;                  // mangueras
-    private CheckBox cbCatEyes;                // ojos de gato ****
-    private CheckBox cbToolHolder;             // porta herramientas
-    private CheckBox cbElectricSystem;         // sistema eléctrico
-    private CheckBox cbFuelCap;                // tapa de combustible
-    private CheckBox cbEngineCovers;           // tapas de motor
-    private CheckBox cbSideCovers;             // tapas laterales
-    private CheckBox cbTransmission;           // transmisión
-    private CheckBox cbSpeedometer;            // velocímetro
-
-    // preventive maintenance
-    private CheckBox cbOil;                    // aceite
-    private CheckBox cbLubrication;            // engrase
-    private CheckBox cbBoltAdjustment;         // ajuste de pernos
-    private CheckBox cbEngineTuning;           // afinado de motor
-    private CheckBox cbCarburetion;            // carburación
-    private CheckBox cbChangeSparkPlugs;       // cambio de bugias
-    private CheckBox cbTransmissionCleaning;   // limpieza de transmisión
-    private CheckBox cbBreakAdjustment;         // reajuste de frenos
-    private CheckBox cbTirePressure;           // presión de llantas
-    private CheckBox cbFusesRevision;          // revisión de fusibles
-
-    // corrective maintenance
-    private CheckBox cbValves;                 // válvulas
-    private CheckBox cbPistonRings;            // anillas
-    private CheckBox cbPiston;                 // pistón
-    private CheckBox cbTransmissionCorrection; // transmisión
-    private CheckBox cbClutchPlates;           // discos de embrague
-    private CheckBox cbEngineHead;             // culata
-    private CheckBox cbClutchPress;            // prensa de embrague
-    private CheckBox cbStarter;                // motor de arranque
-    private CheckBox cbSolenoid;               // solenoide
-    private CheckBox cbGearBox;                // caja de velocidades
-    private CheckBox cbGrinding;               // rectificado
+    // databinding
+    private DialogEditWorkOrderBinding binding;
 
     // firebase
     private CollectionReference mMotorcycleWorkOrderFormsCollReference;
@@ -191,7 +111,7 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putSerializable(KEY_SELECTED_DATE, this.selectedDate);
+        outState.putSerializable(KEY_SELECTED_START_DATE, this.selectedStartDate);
     }
 
     @Override
@@ -207,8 +127,8 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
             this.mWorkOrderForm = (WorkOrderForm) getArguments().getSerializable("mWorkOrderForm");
         }
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SELECTED_DATE)) {
-            this.selectedDate = (Calendar) savedInstanceState.getSerializable(KEY_SELECTED_DATE);
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_SELECTED_START_DATE)) {
+            this.selectedStartDate = (Calendar) savedInstanceState.getSerializable(KEY_SELECTED_START_DATE);
         }
 
         this.mMotorcycleWorkOrderFormsCollReference = FirebaseFirestore.getInstance().collection("users").document(this.mUid).collection("work_orders").document(this.mMotorcycleId).collection("forms");
@@ -221,93 +141,8 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
         Activity mOwnerActivity = requireActivity();
 
         // get the layout inflater
-        LayoutInflater inflater = mOwnerActivity.getLayoutInflater();
-        View mDialogView = inflater.inflate(R.layout.dialog_edit_work_order, null);
-
-        // header resources
-        this.tiDate = mDialogView.findViewById(R.id.dialog_edit_wo_input_layout_wo_date);
-        this.etDate = mDialogView.findViewById(R.id.dialog_edit_wo_date);
-        this.tiTime = mDialogView.findViewById(R.id.dialog_edit_wo_input_layout_wo_time);
-        this.etTime = mDialogView.findViewById(R.id.dialog_edit_wo_time);
-        this.tiIssue = mDialogView.findViewById(R.id.dialog_edit_wo_input_layout_wo_issue);
-        this.etIssue = mDialogView.findViewById(R.id.dialog_edit_wo_issue);
-        this.etInitialCompression = mDialogView.findViewById(R.id.dialog_edit_wo_initial_compression);
-        this.etFinalCompression = mDialogView.findViewById(R.id.dialog_edit_wo_final_compression);
-        this.etOthers = mDialogView.findViewById(R.id.dialog_edit_wo_others);
-
-        // accessories resources
-        this.cbIgnition = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_ignition);
-        this.cbBattery = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_battery);
-        this.cbCentralBipod = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_central_bipod);
-        this.cbHorn = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_horn);
-        this.cbCdi = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_cdi);
-        this.cbHeadlight = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_headlight);
-        this.cbLightBulbs = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_lightbulbs);
-        this.cbMudguard = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_mudguard);
-        this.cbWinkers = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_winkers);
-        this.cbPaint = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_paint);
-        this.cbHandGrips = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_handgrips);
-        this.cbRectifier = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_rectifier);
-        this.cbRearviewMirrors = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_rearview_mirrors);
-        this.cbChainCover = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_chaincover);
-        this.cbTelescopicFork = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_telescopic_fork);
-
-        this.cbCaps = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_caps);
-        this.cbIgnitionSwitch = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_ignition_switch);
-        this.cbClutchCable = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_clutch_cable);
-        this.cbExhaust = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_exhaust);
-        this.cbTires = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_tires);
-        this.cbKey = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_key);
-        this.cbHandlebar = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_handlebar);
-        this.cbSeat = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_seat);
-        this.cbLevers = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_levers);
-        this.cbRacks = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_racks);
-        this.cbRadiator = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_radiator);
-        this.cbLicensePlateSupport = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_license_plate_support);
-        this.cbValveCover = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_valve_cover);
-        this.cbUpholstery = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_upholstery);
-        this.cbChainTensioner = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_chain_tensioner);
-
-        this.cbRims = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_rims);
-        this.cbFilters = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_filters);
-        this.cbBrakes = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_brakes);
-        this.cbTools = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_tools);
-        this.cbEmblems = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_emblems);
-        this.cbCommands = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_commands);
-        this.cbHoses = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_hoses);
-        this.cbCatEyes = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_cat_eyes);
-        this.cbToolHolder = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_tool_holder);
-        this.cbElectricSystem = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_electric_system);
-        this.cbFuelCap = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_fuel_cap);
-        this.cbEngineCovers = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_engine_covers);
-        this.cbSideCovers = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_side_covers);
-        this.cbTransmission = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_transmission);
-        this.cbSpeedometer = mDialogView.findViewById(R.id.dialog_edit_wo_accessories_speedometer);
-
-        // preventive maintenance
-        this.cbOil = mDialogView.findViewById(R.id.dialog_edit_wo_prev_maint_oil);
-        this.cbLubrication = mDialogView.findViewById(R.id.dialog_edit_wo_prev_maint_lubrication);
-        this.cbBoltAdjustment = mDialogView.findViewById(R.id.dialog_edit_wo_prev_maint_bolt_adjustment);
-        this.cbEngineTuning = mDialogView.findViewById(R.id.dialog_edit_wo_prev_maint_engine_tuning);
-        this.cbCarburetion = mDialogView.findViewById(R.id.dialog_edit_wo_prev_maint_carburetion);
-        this.cbChangeSparkPlugs = mDialogView.findViewById(R.id.dialog_edit_wo_prev_maint_change_spark_plugs);
-        this.cbTransmissionCleaning = mDialogView.findViewById(R.id.dialog_edit_wo_prev_maint_transmission_cleaning);
-        this.cbBreakAdjustment = mDialogView.findViewById(R.id.dialog_edit_wo_prev_maint_break_adjustment);
-        this.cbTirePressure = mDialogView.findViewById(R.id.dialog_edit_wo_prev_maint_tire_pressure);
-        this.cbFusesRevision = mDialogView.findViewById(R.id.dialog_edit_wo_prev_maint_fuses_revision);
-
-        // corrective maintenance
-        this.cbValves = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_valves);
-        this.cbPistonRings = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_piston_rings);
-        this.cbPiston = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_piston);
-        this.cbTransmissionCorrection = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_transmission);
-        this.cbClutchPlates = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_clutch_plates);
-        this.cbEngineHead = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_engine_head);
-        this.cbClutchPress = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_clutch_press);
-        this.cbStarter = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_starter);
-        this.cbSolenoid = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_solenoid);
-        this.cbGearBox = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_gearbox);
-        this.cbGrinding = mDialogView.findViewById(R.id.dialog_edit_wo_corr_maint_grinding);
+        this.binding = DataBindingUtil.inflate(LayoutInflater.from(requireContext()),
+                R.layout.dialog_edit_work_order, null, false);
 
         // load form for edition
         if (this.isEditionMode()) {
@@ -317,41 +152,40 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
         }
 
         // date picker
-        this.etDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
-            }
-        });
-        this.etTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimePickerDialog();
-            }
-        });
+        this.setDateTimePickers();
 
         // create dialog
         String title = !this.isEditionMode() ? getString(R.string.dialog_edit_work_order_title_new)
-                : getString(R.string.dialog_edit_work_order_title_edit);
+                : this.mWorkOrderForm.isClosed() ?
+                getString(R.string.dialog_edit_work_order_title_closed) :
+                getString(R.string.dialog_edit_work_order_title_edit);
         AlertDialog.Builder builder = new AlertDialog.Builder(mOwnerActivity);
         builder.setTitle(title)
-                .setView(mDialogView)
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.dialog_edit_work_order_save), null)
-                .setNegativeButton(getString(R.string.dialog_edit_work_order_cancel), null);
+                .setView(binding.getRoot())
+                .setCancelable(false);
+
+        if (!this.isEditionMode()
+                || !this.mWorkOrderForm.isClosed()) {
+            builder.setPositiveButton(getString(R.string.dialog_edit_work_order_save), null);
+            builder.setNegativeButton(getString(R.string.dialog_edit_work_order_cancel), null);
+        } else {
+            builder.setNegativeButton(getString(R.string.dialog_edit_work_order_close), null);
+        }
 
 
         AlertDialog alertDialog = builder.create();
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                Button buttonPositive = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
-                buttonPositive.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        submitForm(isEditionMode());
-                    }
-                });
+                if (!isEditionMode() || !mWorkOrderForm.isClosed()) {
+                    Button buttonPositive = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                    buttonPositive.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            submitForm(isEditionMode());
+                        }
+                    });
+                }
 
                 Button buttonNegative = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
                 buttonNegative.setFocusable(false);
@@ -370,109 +204,223 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
     // ---------------------------------------------------------------------------------------------
     // custom methods
     // ---------------------------------------------------------------------------------------------
+    private void setDateTimePickers() {
+        if (!this.isEditionMode()
+                || !this.mWorkOrderForm.isClosed()) {
+            this.binding.dialogEditWoStartDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDatePickerDialog();
+                }
+            });
+            this.binding.dialogEditWoStartTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showTimePickerDialog();
+                }
+            });
+        }
+    }
+
     private void setNewForm() {
-        // set default date and time
-        this.selectedDate = Calendar.getInstance();
-        this.etDate.setText(DateUtils.getFormattedDate(this.selectedDate));
-        this.etTime.setText(DateUtils.getFormattedTime(this.selectedDate));
+        // set default start date and time
+        this.selectedStartDate = Calendar.getInstance();
+        this.binding.dialogEditWoStartDate.setText(DateUtils.getFormattedDate(this.selectedStartDate.getTime()));
+        this.binding.dialogEditWoStartTime.setText(DateUtils.getFormattedTime(this.selectedStartDate.getTime()));
     }
 
     private void setEditionForm() {
-        // set date
-        Calendar savedDate;
-        if (this.selectedDate == null) {
-            savedDate = Calendar.getInstance();
-            savedDate.setTimeInMillis(this.mWorkOrderForm.getDate());
+        // set start date
+        Date savedStartDate;
+        if (this.selectedStartDate == null) {
+            savedStartDate = this.mWorkOrderForm.getStartDate();
         } else {
-            savedDate = this.selectedDate;
+            savedStartDate = this.selectedStartDate.getTime();
         }
 
-        String dateStr = DateUtils.getFormattedDate(savedDate);
-        String timeStr = DateUtils.getFormattedTime(savedDate);
-        this.selectedDate = savedDate;
-        this.etDate.setText(dateStr);
-        this.etTime.setText(timeStr);
+        String dateStr = DateUtils.getFormattedDate(savedStartDate);
+        String timeStr = DateUtils.getFormattedTime(savedStartDate);
+
+        Calendar savedCalendarStartDate = Calendar.getInstance();
+        savedCalendarStartDate.setTime(savedStartDate);
+        this.selectedStartDate = savedCalendarStartDate;
+        this.binding.dialogEditWoStartDate.setText(dateStr);
+        this.binding.dialogEditWoStartTime.setText(timeStr);
 
         // header resources
-        this.etDate.setText(dateStr);
-        this.etIssue.setText(this.mWorkOrderForm.getIssue());
-        this.etInitialCompression.setText(String.valueOf(this.mWorkOrderForm.getInitialCompLevel()));
-        this.etFinalCompression.setText(this.mWorkOrderForm.getFinalCompLevel() != -1 ? String.valueOf(this.mWorkOrderForm.getFinalCompLevel()) : "");
-        this.etOthers.setText(this.mWorkOrderForm.getOthers());
+        this.binding.dialogEditWoStartDate.setText(dateStr);
+        this.binding.dialogEditWoIssue.setText(this.mWorkOrderForm.getIssue());
+        this.binding.dialogEditWoInitialCompression.setText(this.mWorkOrderForm.getInitialCompLevel() != -1 ? String.valueOf(this.mWorkOrderForm.getInitialCompLevel()) : "");
+        this.binding.dialogEditWoFinalCompression.setText(this.mWorkOrderForm.getFinalCompLevel() != -1 ? String.valueOf(this.mWorkOrderForm.getFinalCompLevel()) : "");
+        this.binding.dialogEditWoOthers.setText(this.mWorkOrderForm.getOthers());
 
         // accessories resources
-        this.cbIgnition.setChecked(this.mWorkOrderForm.isIgnition());
-        this.cbBattery.setChecked(this.mWorkOrderForm.isBattery());
-        this.cbCentralBipod.setChecked(this.mWorkOrderForm.isCentralBipod());
-        this.cbHorn.setChecked(this.mWorkOrderForm.isHorn());
-        this.cbCdi.setChecked(this.mWorkOrderForm.isCdi());
-        this.cbHeadlight.setChecked(this.mWorkOrderForm.isHeadlight());
-        this.cbLightBulbs.setChecked(this.mWorkOrderForm.isLightBulbs());
-        this.cbMudguard.setChecked(this.mWorkOrderForm.isMudguard());
-        this.cbWinkers.setChecked(this.mWorkOrderForm.isWinkers());
-        this.cbPaint.setChecked(this.mWorkOrderForm.isPaint());
-        this.cbHandGrips.setChecked(this.mWorkOrderForm.isHandGrips());
-        this.cbRectifier.setChecked(this.mWorkOrderForm.isRectifier());
-        this.cbRearviewMirrors.setChecked(this.mWorkOrderForm.isRearviewMirrors());
-        this.cbChainCover.setChecked(this.mWorkOrderForm.isChainCover());
-        this.cbTelescopicFork.setChecked(this.mWorkOrderForm.isTelescopicFork());
-
-        this.cbCaps.setChecked(this.mWorkOrderForm.isCaps());
-        this.cbIgnitionSwitch.setChecked(this.mWorkOrderForm.isIgnitionSwitch());
-        this.cbClutchCable.setChecked(this.mWorkOrderForm.isClutchCable());
-        this.cbExhaust.setChecked(this.mWorkOrderForm.isExhaust());
-        this.cbTires.setChecked(this.mWorkOrderForm.isTires());
-        this.cbKey.setChecked(this.mWorkOrderForm.isKey());
-        this.cbHandlebar.setChecked(this.mWorkOrderForm.isHandlebar());
-        this.cbSeat.setChecked(this.mWorkOrderForm.isSeat());
-        this.cbLevers.setChecked(this.mWorkOrderForm.isLevers());
-        this.cbRacks.setChecked(this.mWorkOrderForm.isRacks());
-        this.cbRadiator.setChecked(this.mWorkOrderForm.isRadiator());
-        this.cbLicensePlateSupport.setChecked(this.mWorkOrderForm.isLicensePlateSupport());
-        this.cbValveCover.setChecked(this.mWorkOrderForm.isValveCover());
-        this.cbUpholstery.setChecked(this.mWorkOrderForm.isUpholstery());
-        this.cbChainTensioner.setChecked(this.mWorkOrderForm.isChainTensioner());
-
-        this.cbRims.setChecked(this.mWorkOrderForm.isRims());
-        this.cbFilters.setChecked(this.mWorkOrderForm.isFilters());
-        this.cbBrakes.setChecked(this.mWorkOrderForm.isBrakes());
-        this.cbTools.setChecked(this.mWorkOrderForm.isTools());
-        this.cbEmblems.setChecked(this.mWorkOrderForm.isEmblems());
-        this.cbCommands.setChecked(this.mWorkOrderForm.isCommands());
-        this.cbHoses.setChecked(this.mWorkOrderForm.isHoses());
-        this.cbCatEyes.setChecked(this.mWorkOrderForm.isCatEyes());
-        this.cbToolHolder.setChecked(this.mWorkOrderForm.isToolHolder());
-        this.cbElectricSystem.setChecked(this.mWorkOrderForm.isElectricSystem());
-        this.cbFuelCap.setChecked(this.mWorkOrderForm.isFuelCap());
-        this.cbEngineCovers.setChecked(this.mWorkOrderForm.isEngineCovers());
-        this.cbSideCovers.setChecked(this.mWorkOrderForm.isSideCovers());
-        this.cbTransmission.setChecked(this.mWorkOrderForm.isTransmission());
-        this.cbSpeedometer.setChecked(this.mWorkOrderForm.isSpeedometer());
+        this.binding.dialogEditWoAccessoriesRims.setChecked(this.mWorkOrderForm.isRims());
+        this.binding.dialogEditWoAccessoriesIgnition.setChecked(this.mWorkOrderForm.isIgnition());
+        this.binding.dialogEditWoAccessoriesBattery.setChecked(this.mWorkOrderForm.isBattery());
+        this.binding.dialogEditWoAccessoriesHorn.setChecked(this.mWorkOrderForm.isHorn());
+        this.binding.dialogEditWoAccessoriesCentralBipod.setChecked(this.mWorkOrderForm.isCentralBipod());
+        this.binding.dialogEditWoAccessoriesCaps.setChecked(this.mWorkOrderForm.isCaps());
+        this.binding.dialogEditWoAccessoriesCdi.setChecked(this.mWorkOrderForm.isCdi());
+        this.binding.dialogEditWoAccessoriesIgnitionSwitch.setChecked(this.mWorkOrderForm.isIgnitionSwitch());
+        this.binding.dialogEditWoAccessoriesClutchCable.setChecked(this.mWorkOrderForm.isClutchCable());
+        this.binding.dialogEditWoAccessoriesExhaust.setChecked(this.mWorkOrderForm.isExhaust());
+        this.binding.dialogEditWoAccessoriesHeadlight.setChecked(this.mWorkOrderForm.isHeadlight());
+        this.binding.dialogEditWoAccessoriesFilters.setChecked(this.mWorkOrderForm.isFilters());
+        this.binding.dialogEditWoAccessoriesLightbulbs.setChecked(this.mWorkOrderForm.isLightBulbs());
+        this.binding.dialogEditWoAccessoriesBrakes.setChecked(this.mWorkOrderForm.isBrakes());
+        this.binding.dialogEditWoAccessoriesMudguard.setChecked(this.mWorkOrderForm.isMudguard());
+        this.binding.dialogEditWoAccessoriesWinkers.setChecked(this.mWorkOrderForm.isWinkers());
+        this.binding.dialogEditWoAccessoriesTools.setChecked(this.mWorkOrderForm.isTools());
+        this.binding.dialogEditWoAccessoriesEmblems.setChecked(this.mWorkOrderForm.isEmblems());
+        this.binding.dialogEditWoAccessoriesTires.setChecked(this.mWorkOrderForm.isTires());
+        this.binding.dialogEditWoAccessoriesKey.setChecked(this.mWorkOrderForm.isKey());
+        this.binding.dialogEditWoAccessoriesCommands.setChecked(this.mWorkOrderForm.isCommands());
+        this.binding.dialogEditWoAccessoriesHoses.setChecked(this.mWorkOrderForm.isHoses());
+        this.binding.dialogEditWoAccessoriesHandlebar.setChecked(this.mWorkOrderForm.isHandlebar());
+        this.binding.dialogEditWoAccessoriesSeat.setChecked(this.mWorkOrderForm.isSeat());
+        this.binding.dialogEditWoAccessoriesCatEyes.setChecked(this.mWorkOrderForm.isCatEyes());
+        this.binding.dialogEditWoAccessoriesLevers.setChecked(this.mWorkOrderForm.isLevers());
+        this.binding.dialogEditWoAccessoriesRacks.setChecked(this.mWorkOrderForm.isRacks());
+        this.binding.dialogEditWoAccessoriesPaint.setChecked(this.mWorkOrderForm.isPaint());
+        this.binding.dialogEditWoAccessoriesToolHolder.setChecked(this.mWorkOrderForm.isToolHolder());
+        this.binding.dialogEditWoAccessoriesHandGrips.setChecked(this.mWorkOrderForm.isHandGrips());
+        this.binding.dialogEditWoAccessoriesRadiator.setChecked(this.mWorkOrderForm.isRadiator());
+        this.binding.dialogEditWoAccessoriesRectifier.setChecked(this.mWorkOrderForm.isRectifier());
+        this.binding.dialogEditWoAccessoriesRearviewMirrors.setChecked(this.mWorkOrderForm.isRearviewMirrors());
+        this.binding.dialogEditWoAccessoriesElectricSystem.setChecked(this.mWorkOrderForm.isElectricSystem());
+        this.binding.dialogEditWoAccessoriesLicensePlateSupport.setChecked(this.mWorkOrderForm.isLicensePlateSupport());
+        this.binding.dialogEditWoAccessoriesChainCover.setChecked(this.mWorkOrderForm.isChainCover());
+        this.binding.dialogEditWoAccessoriesFuelCap.setChecked(this.mWorkOrderForm.isFuelCap());
+        this.binding.dialogEditWoAccessoriesValveCover.setChecked(this.mWorkOrderForm.isValveCover());
+        this.binding.dialogEditWoAccessoriesEngineCovers.setChecked(this.mWorkOrderForm.isEngineCovers());
+        this.binding.dialogEditWoAccessoriesSideCovers.setChecked(this.mWorkOrderForm.isSideCovers());
+        this.binding.dialogEditWoAccessoriesUpholstery.setChecked(this.mWorkOrderForm.isUpholstery());
+        this.binding.dialogEditWoAccessoriesTelescopicFork.setChecked(this.mWorkOrderForm.isTelescopicFork());
+        this.binding.dialogEditWoAccessoriesChainTensioner.setChecked(this.mWorkOrderForm.isChainTensioner());
+        this.binding.dialogEditWoAccessoriesTransmission.setChecked(this.mWorkOrderForm.isTransmission());
+        this.binding.dialogEditWoAccessoriesSpeedometer.setChecked(this.mWorkOrderForm.isSpeedometer());
 
         // preventive maintenance
-        this.cbOil.setChecked(this.mWorkOrderForm.isOil());
-        this.cbLubrication.setChecked(this.mWorkOrderForm.isLubrication());
-        this.cbBoltAdjustment.setChecked(this.mWorkOrderForm.isBoltAdjustment());
-        this.cbEngineTuning.setChecked(this.mWorkOrderForm.isEngineTuning());
-        this.cbCarburetion.setChecked(this.mWorkOrderForm.isCarburetion());
-        this.cbChangeSparkPlugs.setChecked(this.mWorkOrderForm.isChangeSparkPlugs());
-        this.cbTransmissionCleaning.setChecked(this.mWorkOrderForm.isTransmissionCleaning());
-        this.cbBreakAdjustment.setChecked(this.mWorkOrderForm.isBreakAdjustment());
-        this.cbTirePressure.setChecked(this.mWorkOrderForm.isTirePressure());
-        this.cbFusesRevision.setChecked(this.mWorkOrderForm.isFusesRevision());
+        this.binding.dialogEditWoPrevMaintOil.setChecked(this.mWorkOrderForm.isOil());
+        this.binding.dialogEditWoPrevMaintEngineTuning.setChecked(this.mWorkOrderForm.isEngineTuning());
+        this.binding.dialogEditWoPrevMaintBoltAdjustment.setChecked(this.mWorkOrderForm.isBoltAdjustment());
+        this.binding.dialogEditWoPrevMaintChangeSparkPlugs.setChecked(this.mWorkOrderForm.isChangeSparkPlugs());
+        this.binding.dialogEditWoPrevMaintCarburetion.setChecked(this.mWorkOrderForm.isCarburetion());
+        this.binding.dialogEditWoPrevMaintLubrication.setChecked(this.mWorkOrderForm.isLubrication());
+        this.binding.dialogEditWoPrevMaintFusesRevision.setChecked(this.mWorkOrderForm.isFusesRevision());
+        this.binding.dialogEditWoPrevMaintTransmissionCleaning.setChecked(this.mWorkOrderForm.isTransmissionCleaning());
+        this.binding.dialogEditWoPrevMaintTirePressure.setChecked(this.mWorkOrderForm.isTirePressure());
+        this.binding.dialogEditWoPrevMaintBreakAdjustment.setChecked(this.mWorkOrderForm.isBreakAdjustment());
 
         // corrective maintenance
-        this.cbValves.setChecked(this.mWorkOrderForm.isValves());
-        this.cbPistonRings.setChecked(this.mWorkOrderForm.isPistonRings());
-        this.cbPiston.setChecked(this.mWorkOrderForm.isPiston());
-        this.cbTransmissionCorrection.setChecked(this.mWorkOrderForm.isTransmissionCorrection());
-        this.cbClutchPlates.setChecked(this.mWorkOrderForm.isClutchPlates());
-        this.cbEngineHead.setChecked(this.mWorkOrderForm.isEngineHead());
-        this.cbClutchPress.setChecked(this.mWorkOrderForm.isClutchPress());
-        this.cbStarter.setChecked(this.mWorkOrderForm.isStarter());
-        this.cbSolenoid.setChecked(this.mWorkOrderForm.isSolenoid());
-        this.cbGearBox.setChecked(this.mWorkOrderForm.isGearBox());
-        this.cbGrinding.setChecked(this.mWorkOrderForm.isGrinding());
+        this.binding.dialogEditWoCorrMaintPistonRings.setChecked(this.mWorkOrderForm.isPistonRings());
+        this.binding.dialogEditWoCorrMaintGearbox.setChecked(this.mWorkOrderForm.isGearBox());
+        this.binding.dialogEditWoCorrMaintEngineHead.setChecked(this.mWorkOrderForm.isEngineHead());
+        this.binding.dialogEditWoCorrMaintClutchPlates.setChecked(this.mWorkOrderForm.isClutchPlates());
+        this.binding.dialogEditWoCorrMaintStarter.setChecked(this.mWorkOrderForm.isStarter());
+        this.binding.dialogEditWoCorrMaintPiston.setChecked(this.mWorkOrderForm.isPiston());
+        this.binding.dialogEditWoCorrMaintClutchPress.setChecked(this.mWorkOrderForm.isClutchPress());
+        this.binding.dialogEditWoCorrMaintGrinding.setChecked(this.mWorkOrderForm.isGrinding());
+        this.binding.dialogEditWoCorrMaintSolenoid.setChecked(this.mWorkOrderForm.isSolenoid());
+        this.binding.dialogEditWoCorrMaintTransmission.setChecked(this.mWorkOrderForm.isTransmissionCorrection());
+        this.binding.dialogEditWoCorrMaintValves.setChecked(this.mWorkOrderForm.isValves());
+
+        // disable form on closed work order
+        if (this.mWorkOrderForm.isClosed()) {
+            // set end date
+            String endDateStr = DateUtils.getFormattedDate(this.mWorkOrderForm.getEndDate());
+            String endTimeStr = DateUtils.getFormattedTime(this.mWorkOrderForm.getEndDate());
+
+            this.binding.dialogEditWoEndDateImg.setVisibility(View.VISIBLE);
+            this.binding.dialogEditWoEndDate.setVisibility(View.VISIBLE);
+
+            this.binding.dialogEditWoEndDate.setText(getString(R.string.dialog_edit_work_order_closed_label, endDateStr, endTimeStr));
+
+            // disable header
+            this.binding.dialogEditWoInputLayoutWoStartDate.setClickable(false);
+            this.binding.dialogEditWoStartDate.setClickable(false);
+            this.binding.dialogEditWoStartDate.setKeyListener(null);
+            this.binding.dialogEditWoInputLayoutWoStartTime.setClickable(false);
+            this.binding.dialogEditWoStartTime.setClickable(false);
+            this.binding.dialogEditWoStartTime.setKeyListener(null);
+            this.binding.dialogEditWoIssue.setKeyListener(null);
+            this.binding.dialogEditWoInitialCompression.setKeyListener(null);
+            this.binding.dialogEditWoFinalCompression.setKeyListener(null);
+            this.binding.dialogEditWoOthers.setKeyListener(null);
+
+            // disable accessories resources
+            this.binding.dialogEditWoAccessoriesRims.setClickable(false);
+            this.binding.dialogEditWoAccessoriesIgnition.setClickable(false);
+            this.binding.dialogEditWoAccessoriesBattery.setClickable(false);
+            this.binding.dialogEditWoAccessoriesHorn.setClickable(false);
+            this.binding.dialogEditWoAccessoriesCentralBipod.setClickable(false);
+            this.binding.dialogEditWoAccessoriesCaps.setClickable(false);
+            this.binding.dialogEditWoAccessoriesCdi.setClickable(false);
+            this.binding.dialogEditWoAccessoriesIgnitionSwitch.setClickable(false);
+            this.binding.dialogEditWoAccessoriesClutchCable.setClickable(false);
+            this.binding.dialogEditWoAccessoriesExhaust.setClickable(false);
+            this.binding.dialogEditWoAccessoriesHeadlight.setClickable(false);
+            this.binding.dialogEditWoAccessoriesFilters.setClickable(false);
+            this.binding.dialogEditWoAccessoriesLightbulbs.setClickable(false);
+            this.binding.dialogEditWoAccessoriesBrakes.setClickable(false);
+            this.binding.dialogEditWoAccessoriesMudguard.setClickable(false);
+            this.binding.dialogEditWoAccessoriesWinkers.setClickable(false);
+            this.binding.dialogEditWoAccessoriesTools.setClickable(false);
+            this.binding.dialogEditWoAccessoriesEmblems.setClickable(false);
+            this.binding.dialogEditWoAccessoriesTires.setClickable(false);
+            this.binding.dialogEditWoAccessoriesKey.setClickable(false);
+            this.binding.dialogEditWoAccessoriesCommands.setClickable(false);
+            this.binding.dialogEditWoAccessoriesHoses.setClickable(false);
+            this.binding.dialogEditWoAccessoriesHandlebar.setClickable(false);
+            this.binding.dialogEditWoAccessoriesSeat.setClickable(false);
+            this.binding.dialogEditWoAccessoriesCatEyes.setClickable(false);
+            this.binding.dialogEditWoAccessoriesLevers.setClickable(false);
+            this.binding.dialogEditWoAccessoriesRacks.setClickable(false);
+            this.binding.dialogEditWoAccessoriesPaint.setClickable(false);
+            this.binding.dialogEditWoAccessoriesToolHolder.setClickable(false);
+            this.binding.dialogEditWoAccessoriesHandGrips.setClickable(false);
+            this.binding.dialogEditWoAccessoriesRadiator.setClickable(false);
+            this.binding.dialogEditWoAccessoriesRectifier.setClickable(false);
+            this.binding.dialogEditWoAccessoriesRearviewMirrors.setClickable(false);
+            this.binding.dialogEditWoAccessoriesElectricSystem.setClickable(false);
+            this.binding.dialogEditWoAccessoriesLicensePlateSupport.setClickable(false);
+            this.binding.dialogEditWoAccessoriesChainCover.setClickable(false);
+            this.binding.dialogEditWoAccessoriesFuelCap.setClickable(false);
+            this.binding.dialogEditWoAccessoriesValveCover.setClickable(false);
+            this.binding.dialogEditWoAccessoriesEngineCovers.setClickable(false);
+            this.binding.dialogEditWoAccessoriesSideCovers.setClickable(false);
+            this.binding.dialogEditWoAccessoriesUpholstery.setClickable(false);
+            this.binding.dialogEditWoAccessoriesTelescopicFork.setClickable(false);
+            this.binding.dialogEditWoAccessoriesChainTensioner.setClickable(false);
+            this.binding.dialogEditWoAccessoriesTransmission.setClickable(false);
+            this.binding.dialogEditWoAccessoriesSpeedometer.setClickable(false);
+
+            // disable preventive maintenance
+            this.binding.dialogEditWoPrevMaintOil.setClickable(false);
+            this.binding.dialogEditWoPrevMaintEngineTuning.setClickable(false);
+            this.binding.dialogEditWoPrevMaintBoltAdjustment.setClickable(false);
+            this.binding.dialogEditWoPrevMaintChangeSparkPlugs.setClickable(false);
+            this.binding.dialogEditWoPrevMaintCarburetion.setClickable(false);
+            this.binding.dialogEditWoPrevMaintLubrication.setClickable(false);
+            this.binding.dialogEditWoPrevMaintFusesRevision.setClickable(false);
+            this.binding.dialogEditWoPrevMaintTransmissionCleaning.setClickable(false);
+            this.binding.dialogEditWoPrevMaintTirePressure.setClickable(false);
+            this.binding.dialogEditWoPrevMaintBreakAdjustment.setClickable(false);
+
+            // disable corrective maintenance
+            this.binding.dialogEditWoCorrMaintPistonRings.setClickable(false);
+            this.binding.dialogEditWoCorrMaintGearbox.setClickable(false);
+            this.binding.dialogEditWoCorrMaintEngineHead.setClickable(false);
+            this.binding.dialogEditWoCorrMaintClutchPlates.setClickable(false);
+            this.binding.dialogEditWoCorrMaintStarter.setClickable(false);
+            this.binding.dialogEditWoCorrMaintPiston.setClickable(false);
+            this.binding.dialogEditWoCorrMaintClutchPress.setClickable(false);
+            this.binding.dialogEditWoCorrMaintGrinding.setClickable(false);
+            this.binding.dialogEditWoCorrMaintSolenoid.setClickable(false);
+            this.binding.dialogEditWoCorrMaintTransmission.setClickable(false);
+            this.binding.dialogEditWoCorrMaintValves.setClickable(false);
+        }
     }
 
     private void submitForm(boolean isEditionMode) {
@@ -498,138 +446,138 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
     }
 
     private WorkOrderForm constructWorkOrderForm() {
-        int initialCompression = Integer.parseInt(this.etInitialCompression.getText().toString());
-        int finalCompression = this.etFinalCompression.getText().length() > 0 ?
-                Integer.parseInt(this.etFinalCompression.getText().toString()) : -1;
+        int initialCompression = this.binding.dialogEditWoInitialCompression.getText().length() > 0 ?
+                Integer.parseInt(this.binding.dialogEditWoInitialCompression.getText().toString()) : -1;
+        int finalCompression = this.binding.dialogEditWoFinalCompression.getText().length() > 0 ?
+                Integer.parseInt(this.binding.dialogEditWoFinalCompression.getText().toString()) : -1;
         int totalCost = this.isEditionMode() ? this.mWorkOrderForm.getTotalCost() : 0;
         int imagesCounter = this.isEditionMode() ? this.mWorkOrderForm.getImageCounter() : 0;
+        Date endDate = this.isEditionMode() ? this.mWorkOrderForm.getEndDate() : null;
 
         return new WorkOrderForm(
                 // header resources
-                this.selectedDate.getTimeInMillis(),
-                this.etIssue.getText().toString().trim(),
+                this.selectedStartDate.getTime(),
+                endDate,
+                this.binding.dialogEditWoIssue.getText().toString().trim(),
                 initialCompression,
                 finalCompression,
-                this.etOthers.getText().toString().trim(),
+                this.binding.dialogEditWoOthers.getText().toString().trim(),
                 totalCost,
                 imagesCounter,
 
                 // accessories resources
-                this.cbIgnition.isChecked(),
-                this.cbBattery.isChecked(),
-                this.cbCentralBipod.isChecked(),
-                this.cbHorn.isChecked(),
-                this.cbCdi.isChecked(),
-                this.cbHeadlight.isChecked(),
-                this.cbLightBulbs.isChecked(),
-                this.cbMudguard.isChecked(),
-                this.cbWinkers.isChecked(),
-                this.cbPaint.isChecked(),
-                this.cbHandGrips.isChecked(),
-                this.cbRectifier.isChecked(),
-                this.cbRearviewMirrors.isChecked(),
-                this.cbChainCover.isChecked(),
-                this.cbTelescopicFork.isChecked(),
-
-                this.cbCaps.isChecked(),
-                this.cbIgnitionSwitch.isChecked(),
-                this.cbClutchCable.isChecked(),
-                this.cbExhaust.isChecked(),
-                this.cbTires.isChecked(),
-                this.cbKey.isChecked(),
-                this.cbHandlebar.isChecked(),
-                this.cbSeat.isChecked(),
-                this.cbLevers.isChecked(),
-                this.cbRacks.isChecked(),
-                this.cbRadiator.isChecked(),
-                this.cbLicensePlateSupport.isChecked(),
-                this.cbValveCover.isChecked(),
-                this.cbUpholstery.isChecked(),
-                this.cbChainTensioner.isChecked(),
-
-                this.cbRims.isChecked(),
-                this.cbFilters.isChecked(),
-                this.cbBrakes.isChecked(),
-                this.cbTools.isChecked(),
-                this.cbEmblems.isChecked(),
-                this.cbCommands.isChecked(),
-                this.cbHoses.isChecked(),
-                this.cbCatEyes.isChecked(),
-                this.cbToolHolder.isChecked(),
-                this.cbElectricSystem.isChecked(),
-                this.cbFuelCap.isChecked(),
-                this.cbEngineCovers.isChecked(),
-                this.cbSideCovers.isChecked(),
-                this.cbTransmission.isChecked(),
-                this.cbSpeedometer.isChecked(),
+                this.binding.dialogEditWoAccessoriesRims.isChecked(),
+                this.binding.dialogEditWoAccessoriesIgnition.isChecked(),
+                this.binding.dialogEditWoAccessoriesBattery.isChecked(),
+                this.binding.dialogEditWoAccessoriesHorn.isChecked(),
+                this.binding.dialogEditWoAccessoriesCentralBipod.isChecked(),
+                this.binding.dialogEditWoAccessoriesCaps.isChecked(),
+                this.binding.dialogEditWoAccessoriesCdi.isChecked(),
+                this.binding.dialogEditWoAccessoriesIgnitionSwitch.isChecked(),
+                this.binding.dialogEditWoAccessoriesClutchCable.isChecked(),
+                this.binding.dialogEditWoAccessoriesExhaust.isChecked(),
+                this.binding.dialogEditWoAccessoriesHeadlight.isChecked(),
+                this.binding.dialogEditWoAccessoriesFilters.isChecked(),
+                this.binding.dialogEditWoAccessoriesLightbulbs.isChecked(),
+                this.binding.dialogEditWoAccessoriesBrakes.isChecked(),
+                this.binding.dialogEditWoAccessoriesMudguard.isChecked(),
+                this.binding.dialogEditWoAccessoriesWinkers.isChecked(),
+                this.binding.dialogEditWoAccessoriesTools.isChecked(),
+                this.binding.dialogEditWoAccessoriesEmblems.isChecked(),
+                this.binding.dialogEditWoAccessoriesTires.isChecked(),
+                this.binding.dialogEditWoAccessoriesKey.isChecked(),
+                this.binding.dialogEditWoAccessoriesCommands.isChecked(),
+                this.binding.dialogEditWoAccessoriesHoses.isChecked(),
+                this.binding.dialogEditWoAccessoriesHandlebar.isChecked(),
+                this.binding.dialogEditWoAccessoriesSeat.isChecked(),
+                this.binding.dialogEditWoAccessoriesCatEyes.isChecked(),
+                this.binding.dialogEditWoAccessoriesLevers.isChecked(),
+                this.binding.dialogEditWoAccessoriesRacks.isChecked(),
+                this.binding.dialogEditWoAccessoriesPaint.isChecked(),
+                this.binding.dialogEditWoAccessoriesToolHolder.isChecked(),
+                this.binding.dialogEditWoAccessoriesHandGrips.isChecked(),
+                this.binding.dialogEditWoAccessoriesRadiator.isChecked(),
+                this.binding.dialogEditWoAccessoriesRectifier.isChecked(),
+                this.binding.dialogEditWoAccessoriesRearviewMirrors.isChecked(),
+                this.binding.dialogEditWoAccessoriesElectricSystem.isChecked(),
+                this.binding.dialogEditWoAccessoriesLicensePlateSupport.isChecked(),
+                this.binding.dialogEditWoAccessoriesChainCover.isChecked(),
+                this.binding.dialogEditWoAccessoriesFuelCap.isChecked(),
+                this.binding.dialogEditWoAccessoriesValveCover.isChecked(),
+                this.binding.dialogEditWoAccessoriesEngineCovers.isChecked(),
+                this.binding.dialogEditWoAccessoriesSideCovers.isChecked(),
+                this.binding.dialogEditWoAccessoriesUpholstery.isChecked(),
+                this.binding.dialogEditWoAccessoriesTelescopicFork.isChecked(),
+                this.binding.dialogEditWoAccessoriesChainTensioner.isChecked(),
+                this.binding.dialogEditWoAccessoriesTransmission.isChecked(),
+                this.binding.dialogEditWoAccessoriesSpeedometer.isChecked(),
 
                 // preventive maintenance
-                this.cbOil.isChecked(),
-                this.cbLubrication.isChecked(),
-                this.cbBoltAdjustment.isChecked(),
-                this.cbEngineTuning.isChecked(),
-                this.cbCarburetion.isChecked(),
-                this.cbChangeSparkPlugs.isChecked(),
-                this.cbTransmissionCleaning.isChecked(),
-                this.cbBreakAdjustment.isChecked(),
-                this.cbTirePressure.isChecked(),
-                this.cbFusesRevision.isChecked(),
+                this.binding.dialogEditWoPrevMaintOil.isChecked(),
+                this.binding.dialogEditWoPrevMaintEngineTuning.isChecked(),
+                this.binding.dialogEditWoPrevMaintBoltAdjustment.isChecked(),
+                this.binding.dialogEditWoPrevMaintChangeSparkPlugs.isChecked(),
+                this.binding.dialogEditWoPrevMaintCarburetion.isChecked(),
+                this.binding.dialogEditWoPrevMaintLubrication.isChecked(),
+                this.binding.dialogEditWoPrevMaintFusesRevision.isChecked(),
+                this.binding.dialogEditWoPrevMaintTransmissionCleaning.isChecked(),
+                this.binding.dialogEditWoPrevMaintTirePressure.isChecked(),
+                this.binding.dialogEditWoPrevMaintBreakAdjustment.isChecked(),
 
                 // corrective maintenance
-                this.cbValves.isChecked(),
-                this.cbPistonRings.isChecked(),
-                this.cbPiston.isChecked(),
-                this.cbTransmissionCorrection.isChecked(),
-                this.cbClutchPlates.isChecked(),
-                this.cbEngineHead.isChecked(),
-                this.cbClutchPress.isChecked(),
-                this.cbStarter.isChecked(),
-                this.cbSolenoid.isChecked(),
-                this.cbGearBox.isChecked(),
-                this.cbGrinding.isChecked()
-        );
+                this.binding.dialogEditWoCorrMaintPistonRings.isChecked(),
+                this.binding.dialogEditWoCorrMaintGearbox.isChecked(),
+                this.binding.dialogEditWoCorrMaintEngineHead.isChecked(),
+                this.binding.dialogEditWoCorrMaintClutchPlates.isChecked(),
+                this.binding.dialogEditWoCorrMaintStarter.isChecked(),
+                this.binding.dialogEditWoCorrMaintPiston.isChecked(),
+                this.binding.dialogEditWoCorrMaintClutchPress.isChecked(),
+                this.binding.dialogEditWoCorrMaintGrinding.isChecked(),
+                this.binding.dialogEditWoCorrMaintSolenoid.isChecked(),
+                this.binding.dialogEditWoCorrMaintTransmission.isChecked(),
+                this.binding.dialogEditWoCorrMaintValves.isChecked());
     }
 
     private boolean isFormValid() {
         int errorCounter = 0;
 
-        if (TextUtils.isEmpty(this.etDate.getText().toString())) {
-            this.tiDate.setError(getString(R.string.dialog_edit_work_order_err_date));
+        if (TextUtils.isEmpty(this.binding.dialogEditWoStartDate.getText().toString())) {
+            this.binding.dialogEditWoInputLayoutWoStartDate.setError(getString(R.string.dialog_edit_work_order_err_start_date));
             errorCounter++;
         } else {
-            this.tiDate.setError(null);
+            this.binding.dialogEditWoInputLayoutWoStartDate.setError(null);
         }
 
-        if (TextUtils.isEmpty(this.etTime.getText().toString())) {
-            this.tiTime.setError(getString(R.string.dialog_edit_work_order_err_time));
+        if (TextUtils.isEmpty(this.binding.dialogEditWoStartTime.getText().toString())) {
+            this.binding.dialogEditWoInputLayoutWoStartTime.setError(getString(R.string.dialog_edit_work_order_err_start_time));
             errorCounter++;
         } else {
-            this.tiTime.setError(null);
+            this.binding.dialogEditWoInputLayoutWoStartTime.setError(null);
         }
 
-        if (TextUtils.isEmpty(this.etIssue.getText().toString())) {
-            this.tiIssue.setError(getString(R.string.dialog_edit_work_order_err_issue));
+        if (TextUtils.isEmpty(this.binding.dialogEditWoIssue.getText().toString())) {
+            this.binding.dialogEditWoInputLayoutWoIssue.setError(getString(R.string.dialog_edit_work_order_err_issue));
             errorCounter++;
         } else {
-            this.tiIssue.setError(null);
+            this.binding.dialogEditWoInputLayoutWoIssue.setError(null);
         }
 
         return errorCounter == 0;
     }
 
     private void showDatePickerDialog() {
-        DialogFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+        DialogFragment newFragment = DatePickerFragment.newInstance(this.selectedStartDate, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                if (selectedDate == null) {
-                    selectedDate = Calendar.getInstance();
+                if (selectedStartDate == null) {
+                    selectedStartDate = Calendar.getInstance();
                 }
 
-                selectedDate.set(Calendar.YEAR, year);
-                selectedDate.set(Calendar.MONTH, month);
-                selectedDate.set(Calendar.DAY_OF_MONTH, day);
+                selectedStartDate.set(Calendar.YEAR, year);
+                selectedStartDate.set(Calendar.MONTH, month);
+                selectedStartDate.set(Calendar.DAY_OF_MONTH, day);
 
-                etDate.setText(DateUtils.getFormattedDate(selectedDate));
+                binding.dialogEditWoStartDate.setText(DateUtils.getFormattedDate(selectedStartDate.getTime()));
             }
         });
 
@@ -637,19 +585,19 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
     }
 
     private void showTimePickerDialog() {
-        DialogFragment newFragment = TimePickerFragment.newInstance(new TimePickerDialog.OnTimeSetListener() {
+        DialogFragment newFragment = TimePickerFragment.newInstance(this.selectedStartDate, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                if (selectedDate == null) {
-                    selectedDate = Calendar.getInstance();
+                if (selectedStartDate == null) {
+                    selectedStartDate = Calendar.getInstance();
                 }
 
-                selectedDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                selectedDate.set(Calendar.MINUTE, minute);
-                selectedDate.set(Calendar.SECOND, 0);
-                selectedDate.set(Calendar.MILLISECOND, 0);
+                selectedStartDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                selectedStartDate.set(Calendar.MINUTE, minute);
+                selectedStartDate.set(Calendar.SECOND, 0);
+                selectedStartDate.set(Calendar.MILLISECOND, 0);
 
-                etTime.setText(DateUtils.getFormattedTime(selectedDate));
+                binding.dialogEditWoStartTime.setText(DateUtils.getFormattedTime(selectedStartDate.getTime()));
             }
         });
 

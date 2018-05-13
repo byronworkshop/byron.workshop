@@ -64,6 +64,8 @@
     </dimen>
     <dimen name="dialog_edit_wo_checkbox_vertical_margin">24dp</dimen>
     <dimen name="dialog_edit_wo_subtitle_vertical_margin">24dp</dimen>
+    <dimen name="dialog_edit_wo_emtpy_textview_text_margin_top">8dp</dimen>
+    <dimen name="dialog_edit_wo_emtpy_textview_text_padding_bottom">24dp</dimen>
 
     <!-- dialog edit cost sheet -->
     <dimen name="dialog_edit_cost_sheet_vertical_padding">@dimen/activity_vertical_padding</dimen>

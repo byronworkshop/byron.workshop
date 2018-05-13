@@ -1,10 +1,12 @@
 package com.byronworkshop.ui.detailsactivity.adapter.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class WorkOrderMetadata implements Serializable {
 
-    private long date;
+    private Date startDate;
+    private Date endDate;
     private int totalCost;
     private int totalReplacementsCost;
     private int totalExternalLaborCost;
@@ -14,16 +16,26 @@ public class WorkOrderMetadata implements Serializable {
 
     }
 
-    public WorkOrderMetadata(long date, int totalCost, int totalReplacementsCost, int totalExternalLaborCost, int totalLaborCost) {
-        this.date = date;
+    public WorkOrderMetadata(Date startDate,
+                             Date endDate,
+                             int totalCost,
+                             int totalReplacementsCost,
+                             int totalExternalLaborCost,
+                             int totalLaborCost) {
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.totalCost = totalCost;
         this.totalReplacementsCost = totalReplacementsCost;
         this.totalExternalLaborCost = totalExternalLaborCost;
         this.totalLaborCost = totalLaborCost;
     }
 
-    public long getDate() {
-        return date;
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
     }
 
     public int getTotalCost() {

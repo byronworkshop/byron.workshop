@@ -24,12 +24,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.Calendar;
-
 public class UploadedImagesRVAdapter extends FirestoreRecyclerAdapter<UploadedImage, UploadedImagesRVAdapter.ImageHolder> {
 
     private final ImageClickListener mListener;
     private final LinearLayout mEmptyText;
+    private final boolean mDisableActions;
 
     public interface ImageClickListener {
         void onDeleteImage(String imageId, UploadedImage uploadedImage);
@@ -39,11 +38,13 @@ public class UploadedImagesRVAdapter extends FirestoreRecyclerAdapter<UploadedIm
 
     public UploadedImagesRVAdapter(@NonNull FirestoreRecyclerOptions<UploadedImage> options,
                                    @NonNull ImageClickListener listener,
+                                   boolean disableActions,
                                    @NonNull LinearLayout emptyText) {
         super(options);
 
         this.mListener = listener;
         this.mEmptyText = emptyText;
+        this.mDisableActions = disableActions;
     }
 
     @NonNull
@@ -77,10 +78,9 @@ public class UploadedImagesRVAdapter extends FirestoreRecyclerAdapter<UploadedIm
         }
 
         // uploaded date
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(uploadedImage.getDate());
-
-        holder.date.setText(DateUtils.getFormattedDate(c));
+        if (uploadedImage.getDate() != null) {
+            holder.date.setText(DateUtils.getFormattedDate(uploadedImage.getDate()));
+        }
     }
 
     @Override
@@ -111,6 +111,7 @@ public class UploadedImagesRVAdapter extends FirestoreRecyclerAdapter<UploadedIm
 
                 PopupMenu popupMenu = new PopupMenu(context, v);
                 popupMenu.inflate(R.menu.menu_wo_uploaded_images_more_options);
+                popupMenu.getMenu().findItem(R.id.menu_wo_uploaded_images_delete).setVisible(!mDisableActions);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {

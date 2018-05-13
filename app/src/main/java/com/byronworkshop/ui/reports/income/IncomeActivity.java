@@ -171,7 +171,7 @@ public class IncomeActivity extends AppCompatActivity {
     private void pickStartDate() {
         final boolean mTabletMode = getResources().getBoolean(R.bool.tablet_mode);
 
-        DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+        DatePickerFragment newFragment = DatePickerFragment.newInstance(startDate, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 startDate = Calendar.getInstance();
@@ -182,9 +182,9 @@ public class IncomeActivity extends AppCompatActivity {
                 startDate.set(Calendar.MILLISECOND, 0);
 
                 if (!mTabletMode) {
-                    tvStart.setText(DateUtils.getShortFormattedDate(startDate));
+                    tvStart.setText(DateUtils.getShortFormattedDate(startDate.getTime()));
                 } else {
-                    tvStart.setText(DateUtils.getFormattedDate(startDate));
+                    tvStart.setText(DateUtils.getFormattedDate(startDate.getTime()));
                 }
                 attachTotalLaborIncomeListener();
             }
@@ -196,7 +196,7 @@ public class IncomeActivity extends AppCompatActivity {
     private void pickEndDate() {
         final boolean mTabletMode = getResources().getBoolean(R.bool.tablet_mode);
 
-        DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+        DatePickerFragment newFragment = DatePickerFragment.newInstance(endDate, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 endDate = Calendar.getInstance();
@@ -207,9 +207,9 @@ public class IncomeActivity extends AppCompatActivity {
                 endDate.set(Calendar.MILLISECOND, 0);
 
                 if (!mTabletMode) {
-                    tvEnd.setText(DateUtils.getShortFormattedDate(endDate));
+                    tvEnd.setText(DateUtils.getShortFormattedDate(endDate.getTime()));
                 } else {
-                    tvEnd.setText(DateUtils.getFormattedDate(endDate));
+                    tvEnd.setText(DateUtils.getFormattedDate(endDate.getTime()));
                 }
                 attachTotalLaborIncomeListener();
             }
@@ -241,11 +241,11 @@ public class IncomeActivity extends AppCompatActivity {
         String formattedStart;
         String formattedEnd;
         if (!mTabletMode) {
-            formattedStart = DateUtils.getShortFormattedDate(this.startDate);
-            formattedEnd = DateUtils.getShortFormattedDate(this.endDate);
+            formattedStart = DateUtils.getShortFormattedDate(this.startDate.getTime());
+            formattedEnd = DateUtils.getShortFormattedDate(this.endDate.getTime());
         } else {
-            formattedStart = DateUtils.getFormattedDate(this.startDate);
-            formattedEnd = DateUtils.getFormattedDate(this.endDate);
+            formattedStart = DateUtils.getFormattedDate(this.startDate.getTime());
+            formattedEnd = DateUtils.getFormattedDate(this.endDate.getTime());
         }
 
         this.tvStart.setText(formattedStart);
@@ -263,9 +263,8 @@ public class IncomeActivity extends AppCompatActivity {
         }
 
         this.mTotalLaborListener = FirebaseFirestore.getInstance().collection("users").document(this.mUid).collection("work_orders$metadata")
-                .whereGreaterThanOrEqualTo("date", startDate.getTimeInMillis())
-                .whereLessThanOrEqualTo("date", endDate.getTimeInMillis())
-                .orderBy("date")
+                .whereGreaterThanOrEqualTo("endDate", startDate.getTime())
+                .whereLessThanOrEqualTo("endDate", endDate.getTime())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -280,13 +279,7 @@ public class IncomeActivity extends AppCompatActivity {
                             }
 
                             WorkOrderMetadata workOrderMetadata = doc.toObject(WorkOrderMetadata.class);
-
-                            Calendar woDate = Calendar.getInstance();
-                            woDate.setTimeInMillis(workOrderMetadata.getDate());
-
-                            if (woDate.compareTo(startDate) >= 0 && woDate.compareTo(endDate) <= 0) {
-                                totalLaborCost += workOrderMetadata.getTotalLaborCost();
-                            }
+                            totalLaborCost += workOrderMetadata.getTotalLaborCost();
                         }
 
                         tvTotalLaborIncome.setText(DecimalFormatterUtils.formatCurrency(IncomeActivity.this, totalLaborCost));

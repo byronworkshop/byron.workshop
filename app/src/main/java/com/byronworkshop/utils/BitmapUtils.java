@@ -27,11 +27,15 @@ public class BitmapUtils {
     /**
      * Helper method for saving the image.
      *
-     * @param context The application context.
-     * @param image   The image to be saved.
-     * @return The path of the saved image.
+     * @param context   The application context.
+     * @param imagePath File to be saved
+     * @return The new path of the re-sampled saved image.
      */
-    public static String saveImage(Context context, Bitmap image) {
+    public static String saveImage(Context context, String imagePath) {
+        // Resample pic into a new bitmap
+        Bitmap image = resamplePic(imagePath);
+
+        // Start saving the bitmap
         String savedImagePath = null;
 
         // Create the new file in the external storage
@@ -57,6 +61,10 @@ public class BitmapUtils {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            // recycle bitmap
+            image.recycle();
+            image = null;
 
             // Add the image to the system gallery
             galleryAddPic(context, savedImagePath);
@@ -100,12 +108,12 @@ public class BitmapUtils {
     }
 
     /**
-     * Resamples the captured image to fit the screen for better memory usage.
+     * Resamples the captured image to fit max dimensions for better memory usage.
      *
      * @param imagePath The path of the image to be resampled.
      * @return The resampled bitmap
      */
-    public static Bitmap resamplePic(String imagePath) {
+    private static Bitmap resamplePic(String imagePath) {
         // Get the dimensions of the original bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;

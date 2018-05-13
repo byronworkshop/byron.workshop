@@ -11,24 +11,24 @@ import org.joda.time.Weeks;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class DateUtils {
 
-    public static String getFormattedTime(Calendar c) {
+    public static String getFormattedTime(Date c) {
         SimpleDateFormat df = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        return df.format(c.getTime());
+        return df.format(c);
     }
 
-    public static String getFormattedDate(Calendar c) {
+    public static String getFormattedDate(Date c) {
         DateFormat formatter = DateFormat.getDateInstance(DateFormat.FULL);
-        return formatter.format(c.getTime());
+        return formatter.format(c);
     }
 
-    public static String getShortFormattedDate(Calendar c) {
+    public static String getShortFormattedDate(Date c) {
         DateFormat formatter = DateFormat.getDateInstance(DateFormat.LONG);
-        return formatter.format(c.getTime());
+        return formatter.format(c);
     }
 
     public static String getFriendlyDateString(Context context, long dateInMillisecondsUTC) {

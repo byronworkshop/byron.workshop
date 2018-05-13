@@ -21,6 +21,7 @@ public class CostSheetRVAdapter extends FirestoreRecyclerAdapter<Cost, CostSheet
 
     private final DeleteItemClickListener mListener;
     private final LinearLayout mEmptyText;
+    private final boolean mDisableActions;
 
     public interface DeleteItemClickListener {
         void onDeleteCost(String costId, Cost cost);
@@ -28,11 +29,13 @@ public class CostSheetRVAdapter extends FirestoreRecyclerAdapter<Cost, CostSheet
 
     public CostSheetRVAdapter(@NonNull FirestoreRecyclerOptions<Cost> options,
                               @NonNull DeleteItemClickListener listener,
+                              boolean disableActions,
                               @NonNull LinearLayout emptyText) {
         super(options);
 
         this.mListener = listener;
         this.mEmptyText = emptyText;
+        this.mDisableActions = disableActions;
     }
 
     @NonNull
@@ -64,8 +67,14 @@ public class CostSheetRVAdapter extends FirestoreRecyclerAdapter<Cost, CostSheet
                 break;
         }
 
+        // cost description
         holder.description.setText(cost.getDescription());
+
+        // cost amount
         holder.cost.setText(DecimalFormatterUtils.formatCurrency(holder.cost.getContext(), cost.getAmount()));
+
+        // delete action
+        holder.delete.setVisibility(this.mDisableActions ? View.GONE : View.VISIBLE);
     }
 
     @Override

@@ -38,7 +38,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/content_details_info_guideline"
-                app:srcCompat="@drawable/ic_info" />
+                app:srcCompat="@drawable/ic_details_info" />
 
             <TextView
                 android:id="@+id/content_details_type"
@@ -85,7 +85,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/content_details_extras_guideline"
-                app:srcCompat="@drawable/ic_details_accent" />
+                app:srcCompat="@drawable/ic_details_extras" />
 
             <TextView
                 android:id="@+id/content_details_color"

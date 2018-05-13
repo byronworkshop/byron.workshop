@@ -20,8 +20,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.Calendar;
-
 public class WorkOrderRVAdapter extends FirestoreRecyclerAdapter<WorkOrderForm, WorkOrderRVAdapter.WorkOrderHolder> {
 
     private final ListItemClickListener mOnClickListener;
@@ -36,6 +34,8 @@ public class WorkOrderRVAdapter extends FirestoreRecyclerAdapter<WorkOrderForm, 
         void onShowEditUploadedImagesDialog(String workOrderFormId, WorkOrderForm workOrderForm);
 
         void onDeleteWorkOrder(String workOrderFormId, WorkOrderForm workOrderForm);
+
+        void onCloseWorkOrder(String workOrderFormId, WorkOrderForm workOrderForm);
     }
 
     public WorkOrderRVAdapter(@NonNull FirestoreRecyclerOptions<WorkOrderForm> options,
@@ -63,14 +63,30 @@ public class WorkOrderRVAdapter extends FirestoreRecyclerAdapter<WorkOrderForm, 
 
     @Override
     protected void onBindViewHolder(@NonNull WorkOrderHolder holder, int position, @NonNull WorkOrderForm workOrderForm) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(workOrderForm.getDate());
-
         Context context = holder.issue.getContext();
 
+        // work order image
+        if (!workOrderForm.isClosed()) {
+            holder.workOrderIcon.setImageResource(R.drawable.ic_work_order_opened);
+        } else {
+            holder.workOrderIcon.setImageResource(R.drawable.ic_work_order_closed);
+        }
+
+        // issue
         holder.issue.setText(workOrderForm.getIssue());
-        holder.date.setText(DateUtils.getFormattedDate(c));
+
+        // start/end date
+        if (!workOrderForm.isClosed()) {
+            holder.date.setText(DateUtils.getFormattedDate(workOrderForm.getStartDate()));
+        } else {
+            holder.date.setText(DateUtils.getFormattedDate(workOrderForm.getEndDate()));
+            holder.date.setTextColor(context.getResources().getColor(R.color.colorAccent));
+        }
+
+        // total cost
         holder.totalCost.setText(DecimalFormatterUtils.formatCurrency(context, workOrderForm.getTotalCost()));
+
+        // image count
         if (workOrderForm.getImageCounter() > 0) {
             holder.imageCounter.setText(context.getResources().getQuantityString(
                     R.plurals.content_details_rv_item_image_counter,
@@ -89,6 +105,7 @@ public class WorkOrderRVAdapter extends FirestoreRecyclerAdapter<WorkOrderForm, 
 
     class WorkOrderHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        final ImageView workOrderIcon;
         final TextView issue;
         final TextView date;
         final TextView totalCost;
@@ -98,6 +115,7 @@ public class WorkOrderRVAdapter extends FirestoreRecyclerAdapter<WorkOrderForm, 
         WorkOrderHolder(View itemView) {
             super(itemView);
 
+            this.workOrderIcon = itemView.findViewById(R.id.content_details_wo_rv_item_icon);
             this.issue = itemView.findViewById(R.id.content_details_wo_rv_item_issue);
             this.date = itemView.findViewById(R.id.content_details_wo_rv_item_date);
             this.totalCost = itemView.findViewById(R.id.content_details_wo_rv_item_total_cost);
@@ -119,16 +137,18 @@ public class WorkOrderRVAdapter extends FirestoreRecyclerAdapter<WorkOrderForm, 
                 DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(adapterPosition);
                 mOnClickListener.onShowEditWorkOrderDialog(documentSnapshot.getId(), getItem(adapterPosition));
             } else if (v.getId() == this.moreOptions.getId()) {
+                final int adapterPosition = getAdapterPosition();
+                if (adapterPosition == RecyclerView.NO_POSITION) {
+                    return;
+                }
+
                 PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                 popupMenu.inflate(R.menu.menu_wo_item_more_options);
+                popupMenu.getMenu().findItem(R.id.menu_wo_item_close_wo).setVisible(!getItem(adapterPosition).isClosed());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         int id = item.getItemId();
-                        int adapterPosition = getAdapterPosition();
-                        if (adapterPosition == RecyclerView.NO_POSITION) {
-                            return false;
-                        }
 
                         DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(adapterPosition);
                         switch (id) {
@@ -140,6 +160,9 @@ public class WorkOrderRVAdapter extends FirestoreRecyclerAdapter<WorkOrderForm, 
                                 return true;
                             case R.id.menu_wo_item_upload_images:
                                 mOnClickListener.onShowEditUploadedImagesDialog(documentSnapshot.getId(), getItem(adapterPosition));
+                                return true;
+                            case R.id.menu_wo_item_close_wo:
+                                mOnClickListener.onCloseWorkOrder(documentSnapshot.getId(), getItem(adapterPosition));
                                 return true;
                             default:
                                 return false;

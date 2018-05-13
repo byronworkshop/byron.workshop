@@ -52,7 +52,7 @@ public class MotorcycleReminderRVAdapter extends FirestoreRecyclerAdapter<Motorc
     protected void onBindViewHolder(@NonNull MotorcycleHolder holder, int position, @NonNull Motorcycle motorcycle) {
         Context context = holder.elapsedTime.getContext();
 
-        String elapsedDateStr = DateUtils.getFriendlyDateString(context, motorcycle.getMetadata().getLastWorkOrderDate());
+        String elapsedDateStr = DateUtils.getFriendlyDateString(context, motorcycle.getMetadata().getLastWorkOrderEndDate().getTime());
 
         holder.licensePlateNumber.setText(motorcycle.getLicensePlateNumber());
         holder.brand.setText(motorcycle.getBrand());

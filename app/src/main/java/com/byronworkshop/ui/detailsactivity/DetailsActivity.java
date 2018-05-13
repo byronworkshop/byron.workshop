@@ -51,6 +51,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -58,7 +59,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.Callable;
 
 public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAdapter.ListItemClickListener {
@@ -259,7 +260,7 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
         // set recycler options
         FirestoreRecyclerOptions<WorkOrderForm> options =
                 new FirestoreRecyclerOptions.Builder<WorkOrderForm>()
-                        .setQuery(this.mMotorcycleWorkOrderFormsCollReference.orderBy("date"), WorkOrderForm.class)
+                        .setQuery(this.mMotorcycleWorkOrderFormsCollReference.orderBy("startDate"), WorkOrderForm.class)
                         .build();
 
         // manually stop previous existent adapter
@@ -320,19 +321,28 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                             return;
                         }
 
-                        long lastWorkOrderDate = -1;
+                        // get last work order end date
+                        final Date minimunDate = new Date(0L);
+                        Date lastWorkOrderEndDate = minimunDate;
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             if (doc.exists()) {
                                 WorkOrderForm workOrderForm = doc.toObject(WorkOrderForm.class);
 
-                                if (workOrderForm.getDate() > lastWorkOrderDate) {
-                                    lastWorkOrderDate = workOrderForm.getDate();
+                                if (workOrderForm.isClosed()
+                                        && workOrderForm.getEndDate().compareTo(lastWorkOrderEndDate) > 0) {
+                                    lastWorkOrderEndDate = workOrderForm.getEndDate();
                                 }
                             }
                         }
 
-                        // check if current lastWorkOrderDate is different from db
-                        final long finalLastWorkOrderDate = lastWorkOrderDate;
+                        // check if lastWorkOrderEndDate did not change
+                        if (lastWorkOrderEndDate.equals(minimunDate)) {
+                            mMotorcycleDocReference.update(FieldPath.of("metadata", "lastWorkOrderEndDate"), null);
+                            return;
+                        }
+
+                        // check if current lastWorkOrderEndDate is different from db
+                        final Date finalLastWorkOrderEndDate = lastWorkOrderEndDate;
                         mMotorcycleDocReference.get()
                                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                     @Override
@@ -340,12 +350,13 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                                         if (documentSnapshot != null && documentSnapshot.exists()) {
                                             Motorcycle m = documentSnapshot.toObject(Motorcycle.class);
 
-                                            if (m != null &&
-                                                    m.getMetadata() != null
-                                                    && finalLastWorkOrderDate != m.getMetadata().getLastWorkOrderDate()) {
-                                                WriteBatch writeBatch = FirebaseFirestore.getInstance().batch();
-                                                writeBatch.update(mMotorcycleDocReference, FieldPath.of("metadata", "lastWorkOrderDate"), finalLastWorkOrderDate);
-                                                writeBatch.commit();
+                                            if (m == null || m.getMetadata() == null) {
+                                                return;
+                                            }
+
+                                            if (m.getMetadata().getLastWorkOrderEndDate() == null
+                                                    || !finalLastWorkOrderEndDate.equals(m.getMetadata().getLastWorkOrderEndDate())) {
+                                                mMotorcycleDocReference.update(FieldPath.of("metadata", "lastWorkOrderEndDate"), finalLastWorkOrderEndDate);
                                             }
                                         }
                                     }
@@ -374,7 +385,8 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
         motorcycleInfo.putInt(PARAM_CC, motorcycle.getCc());
         motorcycleInfo.putString(PARAM_LICENSE_PLATE_NUMBER, motorcycle.getLicensePlateNumber());
         motorcycleInfo.putString(PARAM_COLOR, motorcycle.getColor());
-        motorcycleInfo.putLong(PARAM_LAST_WORK_ORDER_DATE, motorcycle.getMetadata().getLastWorkOrderDate());
+        motorcycleInfo.putLong(PARAM_LAST_WORK_ORDER_DATE, motorcycle.getMetadata().getLastWorkOrderEndDate() != null ?
+                motorcycle.getMetadata().getLastWorkOrderEndDate().getTime() : -1);
         motorcycleInfo.putString(PARAM_REMINDER_ENABLED, motorcycle.getMetadata().isReminderEnabled() ? "enabled" : "disabled");
         this.mFirebaseAnalytics.logEvent(EVENT_MOTORCYCLE_UPDATE, motorcycleInfo);
     }
@@ -453,15 +465,13 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                 getSupportFragmentManager(),
                 this.mUid,
                 this.mMotorcycleId,
-                workOrderFormId);
+                workOrderFormId,
+                workOrderForm);
     }
 
     @Override
     public void onDeleteWorkOrder(final String workOrderFormId, WorkOrderForm workOrderForm) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(workOrderForm.getDate());
-
-        String formattedDate = DateUtils.getFormattedDate(c);
+        String formattedDate = DateUtils.getFormattedDate(workOrderForm.getStartDate());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.dialog_edit_work_order_more_options_delete_wo_title, workOrderForm.getIssue(), formattedDate))
@@ -548,7 +558,7 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
 
                                 return batch.commit();
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
+                        }).addOnFailureListener(DetailsActivity.this, new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Toast.makeText(DetailsActivity.this, getString(R.string.activity_details_delete_wo_error), Toast.LENGTH_LONG).show();
@@ -557,6 +567,33 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                     }
                 })
                 .setNegativeButton(getString(R.string.dialog_edit_work_order_more_options_delete_wo_cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.create().show();
+    }
+
+    @Override
+    public void onCloseWorkOrder(final String workOrderFormId, WorkOrderForm workOrderForm) {
+        String formattedDate = DateUtils.getFormattedDate(workOrderForm.getStartDate());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dialog_edit_work_order_more_options_close_wo_title, workOrderForm.getIssue(), formattedDate))
+                .setMessage(getString(R.string.dialog_edit_work_order_more_options_close_wo_msg))
+                .setPositiveButton(getString(R.string.dialog_edit_work_order_more_options_close_wo_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+
+                        batch.update(mMotorcycleWorkOrderMetadataCollReference.document(workOrderFormId), "endDate", FieldValue.serverTimestamp());
+                        batch.update(mMotorcycleWorkOrderFormsCollReference.document(workOrderFormId), "endDate", FieldValue.serverTimestamp());
+
+                        batch.commit();
+                    }
+                })
+                .setNegativeButton(getString(R.string.dialog_edit_work_order_more_options_close_wo_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

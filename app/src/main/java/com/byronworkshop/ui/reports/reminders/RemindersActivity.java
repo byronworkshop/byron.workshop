@@ -196,7 +196,7 @@ public class RemindersActivity extends AppCompatActivity implements MotorcycleRe
     private void attachMotorcycleRVAdapter() {
         // setting fields
         FieldPath reminderEnabledPath = FieldPath.of("metadata", "reminderEnabled");
-        FieldPath lastWorkOrderDatePath = FieldPath.of("metadata", "lastWorkOrderDate");
+        FieldPath lastWorkOrderEndDatePath = FieldPath.of("metadata", "lastWorkOrderEndDate");
 
         Calendar nowMinusDays = Calendar.getInstance();
         nowMinusDays.add(Calendar.DATE, maxDays * -1);
@@ -206,9 +206,8 @@ public class RemindersActivity extends AppCompatActivity implements MotorcycleRe
                 .setQuery(
                         this.mMotorcyclesCollReference
                                 .whereEqualTo(reminderEnabledPath, true)
-                                .whereGreaterThan(lastWorkOrderDatePath, -1)
-                                .whereLessThanOrEqualTo(lastWorkOrderDatePath, nowMinusDays.getTimeInMillis())
-                                .orderBy(lastWorkOrderDatePath, Query.Direction.DESCENDING)
+                                .whereLessThanOrEqualTo(lastWorkOrderEndDatePath, nowMinusDays.getTime())
+                                .orderBy(lastWorkOrderEndDatePath, Query.Direction.DESCENDING)
                         , Motorcycle.class)
                 .build();
 
