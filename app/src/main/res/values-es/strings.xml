@@ -192,7 +192,7 @@
     <string name="dialog_edit_cost_sheet_lbl_labor_costs">Mano de obra</string>
     <string name="dialog_edit_cost_sheet_cost">%1$s Bs</string>
     <string name="dialog_edit_cost_sheet_btn_add_cost">Añadir costo</string>
-    <string name="dialog_edit_cost_sheet_rv_empty_records">No se encontraron registros de costo</string>
+    <string name="dialog_edit_cost_sheet_rv_empty_records">No se encontraron costos</string>
     <string name="dialog_edit_cost_sheet_icon_cost_type">Tipo de costo</string>
     <string name="dialog_edit_cost_sheet_icon_delete">Eliminar costo</string>
     <string name="dialog_edit_cost_sheet_icon_delete_title">¿Eliminar \"%1$s %2$d Bs\"?</string>

@@ -130,6 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_edit_cost_sheet_rv_emtpy_text_margin_top"
+            android:gravity="center"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/dialog_edit_cost_sheet_guideline"
             app:layout_constraintLeft_toLeftOf="@+id/dialog_edit_cost_sheet_guideline"
@@ -149,7 +150,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dialog_edit_cost_sheet_rv_empty_text_margin_left"
                 android:layout_marginStart="@dimen/dialog_edit_cost_sheet_rv_empty_text_margin_left"
-                android:gravity="center"
                 android:text="@string/dialog_edit_cost_sheet_rv_empty_records"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textStyle="bold" />
