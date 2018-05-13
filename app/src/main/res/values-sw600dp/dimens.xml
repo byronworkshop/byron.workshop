@@ -79,6 +79,7 @@
     <dimen name="dialog_edit_cost_sheet_rv_textview_left_margin">40dp</dimen>
 
     <dimen name="dialog_edit_cost_sheet_add_cost_margin_right">16dp</dimen>
+    <dimen name="dialog_edit_cost_sheet_add_cost_padding_vertical">12dp</dimen>
 
     <!-- content income -->
     <dimen name="content_income_btn_margin_top">8dp</dimen>

@@ -66,6 +66,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:contentDescription="@string/dialog_edit_cost_sheet_add_cost_type_replacement"
+                    android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                    android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                     app:srcCompat="@drawable/ic_cost_replacement" />
 
                 <ImageView
@@ -73,6 +75,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:contentDescription="@string/dialog_edit_cost_sheet_add_cost_type_external"
+                    android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                    android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                     app:srcCompat="@drawable/ic_cost_external" />
 
                 <ImageView
@@ -80,6 +84,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:contentDescription="@string/dialog_edit_cost_sheet_add_cost_type_labor_cost"
+                    android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                    android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                     app:srcCompat="@drawable/ic_cost_labor" />
             </LinearLayout>
 
@@ -95,6 +101,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:checked="true"
+                    android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                    android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                     android:text="@string/dialog_edit_cost_sheet_add_cost_type_replacement" />
 
                 <RadioButton
@@ -102,6 +110,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                    android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                     android:text="@string/dialog_edit_cost_sheet_add_cost_type_external" />
 
                 <RadioButton
@@ -109,6 +119,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                    android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                     android:text="@string/dialog_edit_cost_sheet_add_cost_type_labor_cost" />
             </RadioGroup>
         </LinearLayout>
