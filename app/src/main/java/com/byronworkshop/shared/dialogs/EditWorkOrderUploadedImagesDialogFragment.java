@@ -398,12 +398,6 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
         // delete tmp file if comes from camera
         BitmapUtils.deleteImageFile(mCaller, takenImageFile.getAbsolutePath());
 
-        // check again internet connection
-        if (!ConnectionUtils.checkInternetConnection(mCaller)) {
-            Toast.makeText(mCaller, mCaller.getString(R.string.dialog_edit_uploaded_images_no_internet), Toast.LENGTH_LONG).show();
-            return;
-        }
-
         // image uri
         final Uri imageUri = Uri.fromFile(new File(savedImagePath));
 
@@ -413,6 +407,12 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
 
         // disable all actions
         this.disableDiagButtons();
+
+        // check again internet connection
+        if (!ConnectionUtils.checkInternetConnection(mCaller)) {
+            Toast.makeText(mCaller, mCaller.getString(R.string.dialog_edit_uploaded_images_no_internet), Toast.LENGTH_LONG).show();
+            return;
+        }
 
         // start process
         this.uploadImageAllowed = true;
@@ -649,12 +649,6 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
     @Override
     public void onDeleteImage(final String imageId, final UploadedImage uploadedImage) {
         Context context = requireContext();
-
-        // check internet connection
-        if (!ConnectionUtils.checkInternetConnection(context)) {
-            Toast.makeText(context, getString(R.string.dialog_edit_uploaded_images_no_internet), Toast.LENGTH_LONG).show();
-            return;
-        }
 
         // check if fully processed
         if (uploadedImage.getImage() == null) {

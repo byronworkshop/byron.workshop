@@ -53,7 +53,7 @@
             android:id="@+id/dialog_edit_uploaded_images_rv_empty_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dialog_edit_uploaded_images_rv_emtpy_text_margin_top"
+            android:layout_marginTop="@dimen/dialog_edit_uploaded_images_rv_empty_text_margin_top"
             android:gravity="center"
             android:visibility="gone"
             tools:ignore="UseCompoundDrawables">

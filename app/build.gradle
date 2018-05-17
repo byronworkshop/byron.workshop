@@ -60,7 +60,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
     implementation 'com.firebaseui:firebase-ui-firestore:3.3.1'
 
-    // exifinterface
+    // exif interface
     implementation 'com.android.support:exifinterface:27.1.1'
 
     // time

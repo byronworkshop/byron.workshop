@@ -34,7 +34,7 @@ import com.byronworkshop.ui.detailsactivity.DetailsActivity;
 import com.byronworkshop.ui.mainactivity.adapter.MotorcycleRVAdapter;
 import com.byronworkshop.ui.mainactivity.adapter.pojo.Motorcycle;
 import com.byronworkshop.ui.mainactivity.pojo.ByronUser;
-import com.byronworkshop.ui.reports.SettingsActivity;
+import com.byronworkshop.ui.settings.SettingsActivity;
 import com.byronworkshop.ui.reports.income.IncomeActivity;
 import com.byronworkshop.ui.reports.reminders.RemindersActivity;
 import com.byronworkshop.ui.reports.reminders.scheduler.ReminderNotificationsUtilities;
@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(settingsIntent);
                 return true;
             case R.id.menu_main_action_sign_out:
-                this.showSignOutConfimDialog();
+                this.showSignOutConfirmDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(remindersIntent);
                 break;
             case R.id.nav_exit:
-                this.showSignOutConfimDialog();
+                this.showSignOutConfirmDialog();
                 break;
         }
 
@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity
 
         logSignInEvent();
         loadMotorcycleCollReference();
-        loadeUserNavHeader(this.bUser);
+        loadUserNavHeader(this.bUser);
         attachMotorcycleRVAdapter();
     }
 
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity
         this.mMotorcyclesCollReference = FirebaseFirestore.getInstance().collection("users").document(this.bUser.getUid()).collection("motorcycles");
     }
 
-    private void loadeUserNavHeader(ByronUser bUser) {
+    private void loadUserNavHeader(ByronUser bUser) {
         NavigationView navView = findViewById(R.id.nav_view);
 
         ((TextView) navView.getHeaderView(0).findViewById(R.id.account_name)).setText(bUser.getName());
@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void showSignOutConfimDialog() {
+    private void showSignOutConfirmDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.sign_out_title))
                 .setMessage(getString(R.string.sign_out_message))

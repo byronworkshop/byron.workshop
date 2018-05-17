@@ -108,7 +108,7 @@ public class BitmapUtils {
     }
 
     /**
-     * Resamples the captured image to fit max dimensions for better memory usage.
+     * Re-samples the captured image to fit max dimensions for better memory usage.
      *
      * @param imagePath The path of the image to be resampled.
      * @return The resampled bitmap

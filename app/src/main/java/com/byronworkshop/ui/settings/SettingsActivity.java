@@ -1,4 +1,4 @@
-package com.byronworkshop.ui.reports;
+package com.byronworkshop.ui.settings;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;

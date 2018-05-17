@@ -230,6 +230,9 @@ public class EditWorkOrderCostSheetAddCostDialogFragment extends DialogFragment 
         if (TextUtils.isEmpty(this.etAmount.getText().toString())) {
             this.tiAmount.setError(getString(R.string.dialog_edit_cost_sheet_add_cost_err_amount));
             errorCounter++;
+        } else if (Integer.parseInt(etAmount.getText().toString()) <= 0) {
+            this.tiAmount.setError(getString(R.string.dialog_edit_cost_sheet_add_cost_err_amount_positive));
+            errorCounter++;
         } else {
             this.tiAmount.setError(null);
         }

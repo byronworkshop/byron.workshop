@@ -51,7 +51,10 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -115,6 +118,8 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     // firebase
     private CollectionReference mMotorcyclesCollReference;
     private StorageReference mMotorcycleImagesStorageReference;
+
+    private ListenerRegistration mMotorcycleMetadataListener;
 
     // to avoid leaking fragment with upload listeners we should stop them in onStop
     private StorageTask<UploadTask.TaskSnapshot> mTmpUploadTask;
@@ -448,7 +453,7 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
             @Override
             public void onSuccess(final String motorcycleId) {
                 // if user leaves activity then we cannot continue uploading the image
-                // rollback is needed
+                // then we ask user to upload later on edition
                 if (!uploadImageAllowed) {
                     return;
                 }
@@ -500,87 +505,87 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
 
         // saving
         if (!isEditionMode) {
-            // save directly
-            this.mMotorcyclesCollReference.add(motorcycle)
-                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                            // failed
-                            if (!task.isSuccessful()) {
-                                // check if attached to a context
-                                Context context = getContext();
-                                if (context == null) {
-                                    return;
-                                }
-
-                                // dialog back to normal on failure
-                                enableDiagButtons();
-
-                                // show toast
-                                Toast.makeText(context, getString(R.string.dialog_edit_motorcycle_error_cannot_save_db), Toast.LENGTH_LONG).show();
-                            }
-
-                            // success
-                            if (task.isSuccessful()) {
-                                DocumentReference documentReference = task.getResult();
-                                if (uploadFileTaskCompletionSource != null) {
+            // creation mode
+            if (uploadFileTaskCompletionSource != null) {
+                // internet connection needed due to image upload, callbacks will complete
+                // once backend responds
+                this.mMotorcyclesCollReference.add(motorcycle)
+                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                if (!task.isSuccessful()) {
+                                    // failed
+                                    saveMotorcycleFailed();
+                                } else {
+                                    DocumentReference motorcycleDocReference = task.getResult();
                                     // backend updated, there's internet connection so we can upload
-                                    uploadFileTaskCompletionSource.setResult(documentReference.getId());
+                                    uploadFileTaskCompletionSource.setResult(motorcycleDocReference.getId());
                                 }
                             }
-                        }
-                    });
-
-            if (uploadFileTaskCompletionSource == null) {
+                        });
+            } else {
+                // there's no image upload, offline mode applies
+                this.mMotorcyclesCollReference.add(motorcycle);
                 getDialog().dismiss();
             }
         } else {
-            // get current motorcycle metadata
-            this.mMotorcyclesCollReference.document(this.mMotorcycleId)
-                    .get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            // edition mode
+
+            // first get fresh motorcycle document offline/online applies here
+            // motorcycle metadata is needed in order to not override this data
+            this.mMotorcycleMetadataListener = this.mMotorcyclesCollReference.document(this.mMotorcycleId)
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                         @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            Motorcycle currMotorcycle = documentSnapshot.toObject(Motorcycle.class);
-                            motorcycle.setMetadata(currMotorcycle.getMetadata());
+                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                            mMotorcycleMetadataListener.remove();
+                            mMotorcycleMetadataListener = null;
 
-                            // update motorcycle
-                            mMotorcyclesCollReference.document(mMotorcycleId).set(motorcycle)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            // failed
-                                            if (!task.isSuccessful()) {
-                                                // check if attached to a context
-                                                Context context = getContext();
-                                                if (context == null) {
-                                                    return;
-                                                }
+                            if (e != null || documentSnapshot == null || !documentSnapshot.exists()) {
+                                saveMotorcycleFailed();
+                                return;
+                            }
 
-                                                // dialog back to normal on failure
-                                                enableDiagButtons();
+                            Motorcycle freshMotorcycleDocument = documentSnapshot.toObject(Motorcycle.class);
+                            motorcycle.setMetadata(freshMotorcycleDocument.getMetadata());
 
-                                                // show toast
-                                                Toast.makeText(context, getString(R.string.dialog_edit_motorcycle_error_cannot_save_db), Toast.LENGTH_LONG).show();
-                                            }
-
-                                            // success
-                                            if (task.isSuccessful()) {
-                                                if (uploadFileTaskCompletionSource != null) {
+                            if (uploadFileTaskCompletionSource != null) {
+                                // internet connection needed due to image upload, callbacks will complete
+                                // once backend responds
+                                mMotorcyclesCollReference.document(mMotorcycleId).set(motorcycle)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (!task.isSuccessful()) {
+                                                    // failed
+                                                    saveMotorcycleFailed();
+                                                } else {
                                                     // backend updated, there's internet connection so we can upload
                                                     uploadFileTaskCompletionSource.setResult(mMotorcycleId);
                                                 }
                                             }
-                                        }
-                                    });
-
-                            // close dialog if no image will be uploaded
-                            if (uploadFileTaskCompletionSource == null) {
+                                        });
+                            } else {
+                                // there's no image upload, offline mode applies
+                                mMotorcyclesCollReference.document(mMotorcycleId).set(motorcycle);
                                 getDialog().dismiss();
                             }
                         }
                     });
         }
+    }
+
+    private void saveMotorcycleFailed() {
+        // check if attached to a context
+        Context context = getContext();
+        if (context == null) {
+            return;
+        }
+
+        // dialog back to normal on failure
+        enableDiagButtons();
+
+        // show toast
+        Toast.makeText(context, getString(R.string.dialog_edit_motorcycle_error_cannot_save_db), Toast.LENGTH_LONG).show();
     }
 
     private void restartPendingImageUploadsListeners() {

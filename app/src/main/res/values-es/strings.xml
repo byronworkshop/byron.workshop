@@ -67,9 +67,9 @@
     <!-- details activity -->
     <string name="title_activity_details">Detalles</string>
     <string name="action_edit">Editar</string>
+    <string name="action_delete">Eliminar</string>
     <string name="activity_details_creation_error">Debe proveer un uid y motorcycleId para inicializar ésta actividad</string>
     <string name="activity_details_tv_cc">%1$d cc</string>
-    <string name="activity_details_delete_wo_error">No se puede eliminar la orden de trabajo. Intente luego nuevamente</string>
 
     <string name="content_details_rv_item_iv_description">Orden de trabajo</string>
     <string name="content_details_rv_item_iv_options_desc">Más opciones</string>
@@ -82,7 +82,12 @@
     <string name="content_details_icon_extras_desc">Información extra de la motocicleta</string>
     <string name="content_details_switch">Recordatorio</string>
     <string name="content_details_work_orders_title">Órdenes de trabajo</string>
-    <string name="content_details_work_orders_emtpy_text">No se encontraron órdenes de trabajo</string>
+    <string name="content_details_work_orders_empty_text">No se encontraron órdenes de trabajo</string>
+    <string name="content_details_action_delete_title">¿Eliminar \"%1$s - %2$s\"?</string>
+    <string name="content_details_action_delete_msg">La motocicleta será eliminada permanentemente</string>
+    <string name="content_details_action_delete_ok">ELIMINAR</string>
+    <string name="content_details_action_delete_cancel">Cancelar</string>
+    <string name="content_details_action_delete_confirmation">Motocicleta \"%1$s - %2$s\" eliminada</string>
 
     <!-- dialog edit work order -->
     <string name="dialog_edit_work_order_title_new">Nueva orden de trabajo</string>
@@ -178,6 +183,8 @@
     <string name="dialog_edit_work_order_more_options_close_wo_msg">La orden de trabajo se cerrará permanentemente</string>
     <string name="dialog_edit_work_order_more_options_close_wo_ok">CERRAR</string>
     <string name="dialog_edit_work_order_more_options_close_wo_cancel">Cancelar</string>
+    <string name="dialog_edit_work_order_more_options_close_wo_denied">Registre al menos un costo antes de cerrar</string>
+    <string name="dialog_edit_work_order_more_options_close_wo_no_internet">Se requiere una conexión a internet para cerrar la orden de trabajo</string>
 
     <string name="menu_wo_item_edit_cs">Hoja de costos</string>
     <string name="menu_wo_item_upload_images">Imágenes</string>
@@ -207,6 +214,7 @@
     <string name="dialog_edit_cost_sheet_add_cost_amount">Monto</string>
     <string name="dialog_edit_cost_sheet_add_cost_err_desc">La descripción es requerida</string>
     <string name="dialog_edit_cost_sheet_add_cost_err_amount">El monto es requerido</string>
+    <string name="dialog_edit_cost_sheet_add_cost_err_amount_positive">El monto debe ser mayor a cero</string>
     <string name="dialog_edit_cost_sheet_add_cost_type_replacement">Repuesto</string>
     <string name="dialog_edit_cost_sheet_add_cost_type_external">Trabajo externo</string>
     <string name="dialog_edit_cost_sheet_add_cost_type_labor_cost">Mano de obra</string>
@@ -221,7 +229,6 @@
     <!-- reminders -->
     <string name="activity_reminders_title">Recordatorios</string>
     <string name="activity_reminders_creation_error">Debe proveer un uid para inicializar ésta actividad</string>
-    <string name="activity_reminders_updated_max_last_wo_date">Último servicio actualizado a más de %1$d días</string>
     <string name="activity_reminders_rv_item_last_work">Último servicio %1$s</string>
 
     <string name="content_reminders_rv_empty_view_image_desc">Imagen de la motocicleta</string>

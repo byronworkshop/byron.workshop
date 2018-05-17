@@ -3,7 +3,6 @@ package com.byronworkshop.ui.detailsactivity;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -35,16 +34,12 @@ import com.byronworkshop.shared.dialogs.EditWorkOrderFormDialogFragment;
 import com.byronworkshop.shared.dialogs.EditWorkOrderUploadedImagesDialogFragment;
 import com.byronworkshop.ui.detailsactivity.adapter.WorkOrderRVAdapter;
 import com.byronworkshop.ui.detailsactivity.adapter.pojo.WorkOrderForm;
+import com.byronworkshop.ui.detailsactivity.adapter.pojo.WorkOrderMetadata;
 import com.byronworkshop.ui.mainactivity.adapter.pojo.Motorcycle;
 import com.byronworkshop.utils.ConnectionUtils;
 import com.byronworkshop.utils.DateUtils;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -60,7 +55,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.Date;
-import java.util.concurrent.Callable;
 
 public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAdapter.ListItemClickListener {
 
@@ -97,11 +91,12 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
     private DocumentReference mMotorcycleDocReference;
     private CollectionReference mMotorcycleWorkOrderFormsCollReference;
     private CollectionReference mMotorcycleWorkOrderMetadataCollReference;
-    private CollectionReference mMotorcycleWorkOrderCostSheetsCollReference;
-    private CollectionReference mMotorcycleWorkOrderImagesCollReference;
 
     private ListenerRegistration mMotorcycleChangesListener;
     private ListenerRegistration mLastWorkOrderDateListener;
+
+    private ListenerRegistration mMotorcycleMetadataListenerLastWoDate;
+    private ListenerRegistration mMotorcycleMetadataListenerCloseWo;
 
     // resources
     private CollapsingToolbarLayout mCollapsingToolbar;
@@ -152,8 +147,6 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
 
         this.mMotorcycleDocReference = db.collection("users").document(this.mUid).collection("motorcycles").document(this.mMotorcycleId);
         this.mMotorcycleWorkOrderFormsCollReference = db.collection("users").document(this.mUid).collection("work_orders").document(this.mMotorcycleId).collection("forms");
-        this.mMotorcycleWorkOrderCostSheetsCollReference = db.collection("users").document(this.mUid).collection("work_orders").document(this.mMotorcycleId).collection("cost_sheets");
-        this.mMotorcycleWorkOrderImagesCollReference = db.collection("users").document(this.mUid).collection("work_orders").document(this.mMotorcycleId).collection("file_repos");
         this.mMotorcycleWorkOrderMetadataCollReference = db.collection("users").document(this.mUid).collection("work_orders$metadata");
 
         // firebase log
@@ -233,6 +226,36 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                         this.mMotorcycleId,
                         this.mMotorcycle);
 
+                return true;
+            case R.id.menu_details_action_delete:
+                if (this.mMotorcycle == null) {
+                    return false;
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.content_details_action_delete_title, mMotorcycle.getBrand(), mMotorcycle.getLicensePlateNumber()))
+                        .setMessage(getString(R.string.content_details_action_delete_msg))
+                        .setPositiveButton(getString(R.string.content_details_action_delete_ok),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        mMotorcycleDocReference.delete();
+                                        Toast.makeText(
+                                                getApplicationContext(),
+                                                getString(R.string.content_details_action_delete_confirmation, mMotorcycle.getBrand(), mMotorcycle.getLicensePlateNumber()),
+                                                Toast.LENGTH_LONG).show();
+                                        finish();
+                                    }
+                                })
+                        .setNegativeButton(getString(R.string.content_details_action_delete_cancel),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                builder.create().show();
                 return true;
             case android.R.id.home:
                 onBackPressed();
@@ -322,8 +345,8 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                         }
 
                         // get last work order end date
-                        final Date minimunDate = new Date(0L);
-                        Date lastWorkOrderEndDate = minimunDate;
+                        final Date minimumDate = new Date(0L);
+                        Date lastWorkOrderEndDate = minimumDate;
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             if (doc.exists()) {
                                 WorkOrderForm workOrderForm = doc.toObject(WorkOrderForm.class);
@@ -335,32 +358,31 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                             }
                         }
 
-                        // check if lastWorkOrderEndDate did not change
-                        if (lastWorkOrderEndDate.equals(minimunDate)) {
+                        // check if lastWorkOrderEndDate didn't change
+                        if (lastWorkOrderEndDate.equals(minimumDate)) {
                             mMotorcycleDocReference.update(FieldPath.of("metadata", "lastWorkOrderEndDate"), null);
                             return;
                         }
 
                         // check if current lastWorkOrderEndDate is different from db
                         final Date finalLastWorkOrderEndDate = lastWorkOrderEndDate;
-                        mMotorcycleDocReference.get()
-                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                        if (documentSnapshot != null && documentSnapshot.exists()) {
-                                            Motorcycle m = documentSnapshot.toObject(Motorcycle.class);
+                        mMotorcycleMetadataListenerLastWoDate = mMotorcycleDocReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                mMotorcycleMetadataListenerLastWoDate.remove();
+                                mMotorcycleMetadataListenerLastWoDate = null;
 
-                                            if (m == null || m.getMetadata() == null) {
-                                                return;
-                                            }
+                                if (e != null || documentSnapshot == null) {
+                                    return;
+                                }
 
-                                            if (m.getMetadata().getLastWorkOrderEndDate() == null
-                                                    || !finalLastWorkOrderEndDate.equals(m.getMetadata().getLastWorkOrderEndDate())) {
-                                                mMotorcycleDocReference.update(FieldPath.of("metadata", "lastWorkOrderEndDate"), finalLastWorkOrderEndDate);
-                                            }
-                                        }
-                                    }
-                                });
+                                Motorcycle m = documentSnapshot.toObject(Motorcycle.class);
+                                if (m.getMetadata().getLastWorkOrderEndDate() == null
+                                        || !finalLastWorkOrderEndDate.equals(m.getMetadata().getLastWorkOrderEndDate())) {
+                                    mMotorcycleDocReference.update(FieldPath.of("metadata", "lastWorkOrderEndDate"), finalLastWorkOrderEndDate);
+                                }
+                            }
+                        });
                     }
                 });
     }
@@ -479,91 +501,7 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                 .setPositiveButton(getString(R.string.dialog_edit_work_order_more_options_delete_wo_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        final WriteBatch batch = FirebaseFirestore.getInstance().batch();
-                        Tasks.call(new Callable<Void>() {
-                            @Override
-                            public Void call() {
-                                // add work order form to WriteBatch
-                                batch.delete(mMotorcycleWorkOrderFormsCollReference.document(workOrderFormId));
-
-                                return null;
-                            }
-                        }).continueWith(new Continuation<Void, Void>() {
-                            @Override
-                            public Void then(@NonNull Task<Void> task) {
-                                // open task result
-                                task.getResult();
-
-                                // add work order metadata to WriteBatch
-                                batch.delete(mMotorcycleWorkOrderMetadataCollReference.document(workOrderFormId));
-
-                                return null;
-                            }
-                        }).continueWithTask(new Continuation<Void, Task<QuerySnapshot>>() {
-                            @Override
-                            public Task<QuerySnapshot> then(@NonNull Task<Void> task) {
-                                // open task result
-                                task.getResult();
-
-                                // get all costs documents
-                                return mMotorcycleWorkOrderCostSheetsCollReference
-                                        .document(workOrderFormId)
-                                        .collection("costs")
-                                        .get();
-                            }
-                        }).continueWith(new Continuation<QuerySnapshot, Void>() {
-                            @Override
-                            public Void then(@NonNull Task<QuerySnapshot> task) {
-                                // open task result
-                                QuerySnapshot queryDocumentSnapshots = task.getResult();
-
-                                // add work order costs to WriteBatch
-                                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                    if (document.exists()) {
-                                        batch.delete(document.getReference());
-                                    }
-                                }
-
-                                // add work order cost sheet to WriteBatch
-                                batch.delete(mMotorcycleWorkOrderCostSheetsCollReference.document(workOrderFormId));
-
-                                return null;
-                            }
-                        }).continueWithTask(new Continuation<Void, Task<QuerySnapshot>>() {
-                            @Override
-                            public Task<QuerySnapshot> then(@NonNull Task<Void> task) {
-                                // open task result
-                                task.getResult();
-
-                                // get all work order images
-                                return mMotorcycleWorkOrderImagesCollReference
-                                        .document(workOrderFormId)
-                                        .collection("images")
-                                        .get();
-                            }
-                        }).continueWithTask(new Continuation<QuerySnapshot, Task<Void>>() {
-                            @Override
-                            public Task<Void> then(@NonNull Task<QuerySnapshot> task) {
-                                // open task result
-                                QuerySnapshot queryDocumentSnapshots = task.getResult();
-
-                                // add work order images to WriteBatch
-                                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                    if (document.exists()) {
-                                        batch.delete(document.getReference());
-                                    }
-                                }
-
-                                batch.delete(mMotorcycleWorkOrderImagesCollReference.document(workOrderFormId));
-
-                                return batch.commit();
-                            }
-                        }).addOnFailureListener(DetailsActivity.this, new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(DetailsActivity.this, getString(R.string.activity_details_delete_wo_error), Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        mMotorcycleWorkOrderFormsCollReference.document(workOrderFormId).delete();
                     }
                 })
                 .setNegativeButton(getString(R.string.dialog_edit_work_order_more_options_delete_wo_cancel), new DialogInterface.OnClickListener() {
@@ -577,20 +515,49 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
 
     @Override
     public void onCloseWorkOrder(final String workOrderFormId, WorkOrderForm workOrderForm) {
-        String formattedDate = DateUtils.getFormattedDate(workOrderForm.getStartDate());
+        if (!ConnectionUtils.checkInternetConnection(this)) {
+            Toast.makeText(this, getString(R.string.dialog_edit_work_order_more_options_close_wo_no_internet), Toast.LENGTH_LONG).show();
+            return;
+        }
 
+        String formattedDate = DateUtils.getFormattedDate(workOrderForm.getStartDate());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.dialog_edit_work_order_more_options_close_wo_title, workOrderForm.getIssue(), formattedDate))
                 .setMessage(getString(R.string.dialog_edit_work_order_more_options_close_wo_msg))
                 .setPositiveButton(getString(R.string.dialog_edit_work_order_more_options_close_wo_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        WriteBatch batch = FirebaseFirestore.getInstance().batch();
+                        mMotorcycleMetadataListenerCloseWo = mMotorcycleWorkOrderMetadataCollReference.document(workOrderFormId)
+                                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                        mMotorcycleMetadataListenerCloseWo.remove();
+                                        mMotorcycleMetadataListenerCloseWo = null;
 
-                        batch.update(mMotorcycleWorkOrderMetadataCollReference.document(workOrderFormId), "endDate", FieldValue.serverTimestamp());
-                        batch.update(mMotorcycleWorkOrderFormsCollReference.document(workOrderFormId), "endDate", FieldValue.serverTimestamp());
+                                        if (e != null || documentSnapshot == null) {
+                                            return;
+                                        }
 
-                        batch.commit();
+                                        // work order metadata not existent yet
+                                        if (!documentSnapshot.exists()) {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.dialog_edit_work_order_more_options_close_wo_denied), Toast.LENGTH_LONG).show();
+                                            return;
+                                        }
+
+                                        // check total cost on existent work order metadata
+                                        WorkOrderMetadata workOrderMetadata = documentSnapshot.toObject(WorkOrderMetadata.class);
+                                        if (workOrderMetadata.getTotalCost() > 0) {
+                                            WriteBatch batch = FirebaseFirestore.getInstance().batch();
+
+                                            batch.update(mMotorcycleWorkOrderMetadataCollReference.document(workOrderFormId), "endDate", FieldValue.serverTimestamp());
+                                            batch.update(mMotorcycleWorkOrderFormsCollReference.document(workOrderFormId), "endDate", FieldValue.serverTimestamp());
+
+                                            batch.commit();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), getString(R.string.dialog_edit_work_order_more_options_close_wo_denied), Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
                     }
                 })
                 .setNegativeButton(getString(R.string.dialog_edit_work_order_more_options_close_wo_cancel), new DialogInterface.OnClickListener() {

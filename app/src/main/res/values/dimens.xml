@@ -19,7 +19,7 @@
     <dimen name="content_main_rv_padding_bottom">72dp</dimen>
     <dimen name="content_main_empty_view_image_width">128dp</dimen>
     <dimen name="content_main_empty_view_image_height">128dp</dimen>
-    <dimen name="content_main_emtpy_textview_text_margin_left">8dp</dimen>
+    <dimen name="content_main_empty_textview_text_margin_left">8dp</dimen>
 
     <!-- details -->
     <dimen name="app_bar_height">180dp</dimen>
@@ -45,7 +45,7 @@
     <dimen name="content_details_rv_title_margin_bottom">4dp</dimen>
     <dimen name="content_details_rv_title_margin_left">16dp</dimen>
     <dimen name="content_details_rv_title_margin_right">16dp</dimen>
-    <dimen name="content_details_rv_emtpy_textview_text_margin_left">8dp</dimen>
+    <dimen name="content_details_rv_empty_textview_text_margin_left">8dp</dimen>
 
     <dimen name="content_details_wo_rv_item_more_options_padding">16dp</dimen>
     <dimen name="content_details_wo_rv_item_image_counter_horizontal_margin">8dp</dimen>
@@ -64,15 +64,15 @@
     </dimen>
     <dimen name="dialog_edit_wo_checkbox_vertical_margin">16dp</dimen>
     <dimen name="dialog_edit_wo_subtitle_vertical_margin">16dp</dimen>
-    <dimen name="dialog_edit_wo_emtpy_textview_text_margin_top">8dp</dimen>
-    <dimen name="dialog_edit_wo_emtpy_textview_text_padding_bottom">16dp</dimen>
+    <dimen name="dialog_edit_wo_empty_textview_text_margin_top">8dp</dimen>
+    <dimen name="dialog_edit_wo_empty_textview_text_padding_bottom">16dp</dimen>
 
     <!-- dialog edit cost sheet -->
     <dimen name="dialog_edit_cost_sheet_vertical_padding">@dimen/activity_vertical_padding</dimen>
     <dimen name="dialog_edit_cost_sheet_horizontal_padding">@dimen/activity_horizontal_padding
     </dimen>
     <dimen name="dialog_edit_cost_sheet_btn_add_margin_vertical">8dp</dimen>
-    <dimen name="dialog_edit_cost_sheet_rv_emtpy_text_margin_top">24dp</dimen>
+    <dimen name="dialog_edit_cost_sheet_rv_empty_text_margin_top">24dp</dimen>
     <dimen name="dialog_edit_cost_sheet_rv_empty_text_margin_left">8dp</dimen>
     <dimen name="dialog_edit_cost_sheet_rv_padding_top">8dp</dimen>
     <dimen name="dialog_edit_cost_sheet_rv_item_more_options_padding">16dp</dimen>
@@ -95,9 +95,7 @@
     </dimen>
     <dimen name="content_reminders_rv_top_padding">@dimen/content_main_rv_top_padding</dimen>
     <dimen name="content_reminders_rv_padding_bottom">@dimen/content_main_rv_padding_bottom</dimen>
-    <dimen name="content_reminders_emtpy_textview_text_margin_left">
-        @dimen/content_main_emtpy_textview_text_margin_left
-    </dimen>
+    <dimen name="content_reminders_empty_textview_text_margin_left">@dimen/content_main_empty_textview_text_margin_left</dimen>
 
     <!-- dialog edit uploaded images -->
     <dimen name="dialog_edit_uploaded_images_btn_upload_margin_vertical">4dp</dimen>
@@ -106,7 +104,7 @@
     <dimen name="dialog_edit_uploaded_images_horizontal_margin">@dimen/activity_horizontal_padding
     </dimen>
     <dimen name="dialog_edit_uploaded_images_rv_padding_top">8dp</dimen>
-    <dimen name="dialog_edit_uploaded_images_rv_emtpy_text_margin_top">24dp</dimen>
+    <dimen name="dialog_edit_uploaded_images_rv_empty_text_margin_top">24dp</dimen>
     <dimen name="dialog_edit_uploaded_images_rv_empty_text_margin_left">8dp</dimen>
 
     <dimen name="dialog_edit_uploaded_images_rv_card_margin_horizontal">16dp</dimen>

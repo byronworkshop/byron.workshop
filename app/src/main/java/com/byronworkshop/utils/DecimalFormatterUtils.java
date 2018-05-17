@@ -10,8 +10,8 @@ public class DecimalFormatterUtils {
 
     public static String formatCurrency(Context context, int amount) {
         DecimalFormat formatter = new DecimalFormat("#,###");
-        String valorFormateado = formatter.format(amount);
+        String formattedValue = formatter.format(amount);
 
-        return context.getString(R.string.dialog_edit_cost_sheet_cost, valorFormateado);
+        return context.getString(R.string.dialog_edit_cost_sheet_cost, formattedValue);
     }
 }

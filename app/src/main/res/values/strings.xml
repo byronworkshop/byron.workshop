@@ -9,7 +9,7 @@
     <string name="sign_out_message">Do you want to close your session?</string>
     <string name="sign_out_ok">OK</string>
     <string name="sign_out_cancel">Cancel</string>
-    <string name="sign_out_cancel3">Cancel</string>
+
     <string name="nav_header_desc">Account header</string>
     <string name="nav_menu_group_motorcycle">Motorcycle</string>
     <string name="nav_menu_add">Add</string>
@@ -67,9 +67,9 @@
     <!-- details activity -->
     <string name="title_activity_details">Details</string>
     <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
     <string name="activity_details_creation_error">You must provide uid and motorcycleId to initiate this activity</string>
     <string name="activity_details_tv_cc">%1$d cc</string>
-    <string name="activity_details_delete_wo_error">Cannot delete work order. Try again later</string>
 
     <string name="content_details_rv_item_iv_description">Work order</string>
     <string name="content_details_rv_item_iv_options_desc">More options</string>
@@ -82,7 +82,12 @@
     <string name="content_details_icon_extras_desc">Motorcycle extra information</string>
     <string name="content_details_switch">Reminder</string>
     <string name="content_details_work_orders_title">Work orders</string>
-    <string name="content_details_work_orders_emtpy_text">No work orders yet</string>
+    <string name="content_details_work_orders_empty_text">No work orders yet</string>
+    <string name="content_details_action_delete_title">Delete \"%1$s - %2$s\"?</string>
+    <string name="content_details_action_delete_msg">Motorcycle be permanently deleted</string>
+    <string name="content_details_action_delete_ok">DELETE</string>
+    <string name="content_details_action_delete_cancel">Cancel</string>
+    <string name="content_details_action_delete_confirmation">Motorcycle \"%1$s - %2$s\" deleted</string>
 
     <!-- dialog edit work order -->
     <string name="dialog_edit_work_order_title_new">New work order</string>
@@ -178,6 +183,8 @@
     <string name="dialog_edit_work_order_more_options_close_wo_msg">Work order will be permanently closed</string>
     <string name="dialog_edit_work_order_more_options_close_wo_ok">CLOSE</string>
     <string name="dialog_edit_work_order_more_options_close_wo_cancel">Cancel</string>
+    <string name="dialog_edit_work_order_more_options_close_wo_denied">Register at least one cost before closing</string>
+    <string name="dialog_edit_work_order_more_options_close_wo_no_internet">An internet connection is required to close the work order</string>
 
     <string name="menu_wo_item_edit_cs">Cost sheet</string>
     <string name="menu_wo_item_upload_images">Images</string>
@@ -207,6 +214,7 @@
     <string name="dialog_edit_cost_sheet_add_cost_amount">Amount</string>
     <string name="dialog_edit_cost_sheet_add_cost_err_desc">Description is required</string>
     <string name="dialog_edit_cost_sheet_add_cost_err_amount">Amount is required</string>
+    <string name="dialog_edit_cost_sheet_add_cost_err_amount_positive">Amount must be greater than zero</string>
     <string name="dialog_edit_cost_sheet_add_cost_type_replacement">Replacement</string>
     <string name="dialog_edit_cost_sheet_add_cost_type_external">External labor</string>
     <string name="dialog_edit_cost_sheet_add_cost_type_labor_cost">Labor cost</string>
@@ -221,7 +229,6 @@
     <!-- reminders -->
     <string name="activity_reminders_title">Reminders</string>
     <string name="activity_reminders_creation_error">You must provide uid to initiate this activity</string>
-    <string name="activity_reminders_updated_max_last_wo_date">Last service updated to more than %1$d days</string>
     <string name="activity_reminders_rv_item_last_work">Last service %1$s</string>
 
     <string name="content_reminders_rv_empty_view_image_desc">Motorcycle image</string>

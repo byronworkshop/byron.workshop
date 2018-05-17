@@ -1,4 +1,4 @@
-package com.byronworkshop.ui.reports;
+package com.byronworkshop.ui.settings;
 
 
 import android.content.Context;
@@ -13,7 +13,7 @@ import com.byronworkshop.R;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    final private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             Context context = preference.getContext();

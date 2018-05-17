@@ -61,6 +61,7 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
     // ---------------------------------------------------------------------------------------------
     private void notifyOutdatedWos(Context context, JobParameters job) {
         if (!canContinue) {
+            jobFinished(job, false);
             return;
         }
 
@@ -72,6 +73,7 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
 
     private void fetchMaxDaysFromPreferences(Context context, FirebaseUser user, JobParameters job) {
         if (!canContinue) {
+            jobFinished(job, false);
             return;
         }
 
@@ -86,6 +88,7 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
     private void getOutdatedWorkOrders(
             final Context context, final FirebaseUser user, final int maxDays, final JobParameters job) {
         if (!canContinue) {
+            jobFinished(job, false);
             return;
         }
 
@@ -141,12 +144,13 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
                         }
 
                         if (!canContinue) {
+                            jobFinished(job, false);
                             return;
                         }
 
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             if (doc.exists()) {
-                                final Motorcycle motorcycle = doc.toObject(Motorcycle.class);
+                                Motorcycle motorcycle = doc.toObject(Motorcycle.class);
                                 // show notification
                                 showNotification(context, user, motorcycle.getBrand(), motorcycle.getLicensePlateNumber(), maxDays);
                             }

@@ -144,7 +144,7 @@
             <ImageView
                 android:layout_width="@dimen/content_details_rv_wo_empty_avatar_width"
                 android:layout_height="@dimen/content_details_rv_wo_empty_avatar_height"
-                android:contentDescription="@string/content_details_work_orders_emtpy_text"
+                android:contentDescription="@string/content_details_work_orders_empty_text"
                 app:srcCompat="@drawable/ic_brand_full" />
 
             <LinearLayout
@@ -156,15 +156,15 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/content_details_work_orders_emtpy_text"
+                    android:contentDescription="@string/content_details_work_orders_empty_text"
                     app:srcCompat="@drawable/ic_warning_accent" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/content_details_rv_emtpy_textview_text_margin_left"
-                    android:layout_marginStart="@dimen/content_details_rv_emtpy_textview_text_margin_left"
-                    android:text="@string/content_details_work_orders_emtpy_text"
+                    android:layout_marginLeft="@dimen/content_details_rv_empty_textview_text_margin_left"
+                    android:layout_marginStart="@dimen/content_details_rv_empty_textview_text_margin_left"
+                    android:text="@string/content_details_work_orders_empty_text"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textStyle="bold" />
             </LinearLayout>
