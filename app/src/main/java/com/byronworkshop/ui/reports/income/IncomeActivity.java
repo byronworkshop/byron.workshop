@@ -1,9 +1,11 @@
 package com.byronworkshop.ui.reports.income;
 
 import android.app.DatePickerDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -12,8 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.byronworkshop.R;
 import com.byronworkshop.ui.detailsactivity.adapter.pojo.WorkOrderMetadata;
 import com.byronworkshop.utils.DatePickerFragment;
@@ -48,6 +54,7 @@ public class IncomeActivity extends AppCompatActivity {
     private TextView tvStart;
     private TextView tvEnd;
     private TextView tvTotalLaborIncome;
+    private ImageView ivImageHeader;
 
     // firebase
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -101,6 +108,18 @@ public class IncomeActivity extends AppCompatActivity {
         this.tvStart = findViewById(R.id.content_income_tv_start);
         this.tvEnd = findViewById(R.id.content_income_tv_end);
         this.tvTotalLaborIncome = findViewById(R.id.content_income_total_labor_inc);
+
+        this.ivImageHeader = findViewById(R.id.activity_income_avatar);
+
+        // set image parallax header
+        ColorDrawable imagePlaceholder = new ColorDrawable(ContextCompat.getColor(this, R.color.colorPlaceholder));
+        RequestOptions options = RequestOptions.placeholderOf(imagePlaceholder);
+
+        Glide.with(this)
+                .load(R.drawable.header_reminders_bg)
+                .apply(options)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(ivImageHeader);
 
         // settings current month on new activity
         if (savedInstanceState == null) {

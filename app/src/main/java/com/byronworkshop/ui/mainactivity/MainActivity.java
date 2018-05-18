@@ -3,10 +3,12 @@ package com.byronworkshop.ui.mainactivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -34,10 +36,10 @@ import com.byronworkshop.ui.detailsactivity.DetailsActivity;
 import com.byronworkshop.ui.mainactivity.adapter.MotorcycleRVAdapter;
 import com.byronworkshop.ui.mainactivity.adapter.pojo.Motorcycle;
 import com.byronworkshop.ui.mainactivity.pojo.ByronUser;
-import com.byronworkshop.ui.settings.SettingsActivity;
 import com.byronworkshop.ui.reports.income.IncomeActivity;
 import com.byronworkshop.ui.reports.reminders.RemindersActivity;
 import com.byronworkshop.ui.reports.reminders.scheduler.ReminderNotificationsUtilities;
+import com.byronworkshop.ui.settings.SettingsActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle mDrawerToggle;
     private RecyclerView mMotorcycleRecyclerView;
     private View emptyView;
+    private ImageView ivHeaderBg;
+    private NavigationView navView;
 
     // firebase ui
     private FirebaseAuth mFirebaseAuth;
@@ -104,8 +108,8 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(this.mDrawerToggle);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        this.navView = findViewById(R.id.nav_view);
+        this.navView.setNavigationItemSelectedListener(this);
 
         // firebase initialization
         this.mFirebaseAuth = FirebaseAuth.getInstance();
@@ -116,6 +120,17 @@ public class MainActivity extends AppCompatActivity
         this.mMotorcycleRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         this.mMotorcycleRecyclerView.setItemAnimator(new DefaultItemAnimator());
         this.emptyView = findViewById(R.id.content_main_rv_empty_view);
+        this.ivHeaderBg = navView.getHeaderView(0).findViewById(R.id.account_bg);
+
+        // set image header bg
+        ColorDrawable imagePlaceholder = new ColorDrawable(ContextCompat.getColor(this, R.color.colorPlaceholder));
+        RequestOptions options = RequestOptions.placeholderOf(imagePlaceholder);
+
+        Glide.with(this)
+                .load(R.drawable.header_bg)
+                .apply(options)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(ivHeaderBg);
 
         // authentication
         this.mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -345,8 +360,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadUserNavHeader(ByronUser bUser) {
-        NavigationView navView = findViewById(R.id.nav_view);
-
         ((TextView) navView.getHeaderView(0).findViewById(R.id.account_name)).setText(bUser.getName());
         ((TextView) navView.getHeaderView(0).findViewById(R.id.account_email)).setText(bUser.getEmail());
 
@@ -364,8 +377,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void unloadUserNavHeader() {
-        NavigationView navView = findViewById(R.id.nav_view);
-
         ((TextView) navView.getHeaderView(0).findViewById(R.id.account_name)).setText("");
         ((TextView) navView.getHeaderView(0).findViewById(R.id.account_email)).setText("");
         Glide.with(this)

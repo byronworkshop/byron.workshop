@@ -9,11 +9,11 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:id="@+id/account_bg"
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_height"
         android:contentDescription="@string/nav_header_desc"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/header_bg" />
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:layout_width="match_parent"
