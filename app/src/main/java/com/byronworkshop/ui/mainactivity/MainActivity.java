@@ -6,8 +6,11 @@ import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -53,7 +56,9 @@ import com.google.firebase.firestore.Query;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MotorcycleRVAdapter.ListItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        MotorcycleRVAdapter.ListItemClickListener,
+        EditMotorcycleDialogFragment.MotorcycleDialogCallback {
 
     // statics
     private static final int RC_SIGN_IN = 101;
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity
     private String searchQuery;
 
     // ui
+    private CoordinatorLayout mMainContainer;
     private ActionBarDrawerToggle mDrawerToggle;
     private RecyclerView mMotorcycleRecyclerView;
     private View emptyView;
@@ -116,6 +122,7 @@ public class MainActivity extends AppCompatActivity
         this.mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         // ui
+        this.mMainContainer = findViewById(R.id.activity_main_container);
         this.mMotorcycleRecyclerView = findViewById(R.id.content_main_rv_motorcycles);
         this.mMotorcycleRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         this.mMotorcycleRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -450,5 +457,37 @@ public class MainActivity extends AppCompatActivity
 
         startActivity(detailsIntent);
 
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    // Edit Motorcycle callbacks
+    // ---------------------------------------------------------------------------------------------
+    @Override
+    public void onMotorcycleSaveError() {
+        Snackbar.make(this.mMainContainer, getString(R.string.dialog_edit_motorcycle_error_cannot_save), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onMotorcycleSaved(@NonNull String msg, @Nullable final String motorcycleId) {
+        boolean actionEnabled = motorcycleId != null;
+
+        Snackbar snackbar = Snackbar.make(this.mMainContainer, msg, actionEnabled ? Snackbar.LENGTH_INDEFINITE : Snackbar.LENGTH_LONG);
+        if (actionEnabled) {
+            snackbar.setAction(getString(R.string.dialog_edit_motorcycle_edition_action_view_lbl), new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+
+                    Bundle b = new Bundle();
+                    b.putString(DetailsActivity.KEY_UID, bUser.getUid());
+                    b.putString(DetailsActivity.KEY_MOTORCYCLE_ID, motorcycleId);
+
+                    intent.putExtras(b);
+
+                    startActivity(intent);
+                }
+            });
+        }
+        snackbar.show();
     }
 }

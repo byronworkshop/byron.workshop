@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +28,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -38,6 +41,7 @@ import com.byronworkshop.shared.dialogs.adapters.uploadedfiles.pojo.UploadedImag
 import com.byronworkshop.ui.detailsactivity.adapter.pojo.WorkOrderForm;
 import com.byronworkshop.utils.BitmapUtils;
 import com.byronworkshop.utils.ConnectionUtils;
+import com.crashlytics.android.Crashlytics;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -53,6 +57,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -62,6 +67,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -76,7 +82,6 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
     private static final String TAG_EDIT_WO_UPLOADED_IMAGES_DIALOG = "wo_uploaded_images_dialog";
     private static final String KEY_UPLOADING_IMAGE_REF = "uploading_image_ref";
     private static final String KEY_UPLOADING_IMAGE_DOC_ID = "image_doc_id";
-    private static final String KEY_UPLOADING_IMAGE_ERROR = "error_uploading_image";
 
     // request permission codes
     private static final int REQUEST_WRITE_STORAGE_PERMISSION_PICKER = 301;
@@ -94,8 +99,6 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
     private StorageReference mMotorcycleWorkOrderImagesRef;
 
     // for restarting partial uploads
-    private boolean uploadImageAllowed;
-    private boolean uploadImageError;
     private String mTmpImageDocId;
     private StorageReference mTmpUploadingImageRef;
 
@@ -108,6 +111,7 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
     private ListenerRegistration mImageCounterListener;
 
     // resources
+    private CoordinatorLayout mMainContainer;
     private RecyclerView mUploadedImagesRecyclerView;
     private LinearLayout mUploadedImagesRVEmptyText;
     private AppCompatButton mBtnUpload;
@@ -171,11 +175,6 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
             outState.putString(KEY_UPLOADING_IMAGE_REF, this.mTmpUploadingImageRef.toString());
             outState.putString(KEY_UPLOADING_IMAGE_DOC_ID, this.mTmpImageDocId);
         }
-
-        // data saved but image not uploaded, process this error onStart
-        if (uploadImageAllowed && this.mTmpUploadingImageRef == null && this.mTmpImageDocId == null) {
-            outState.putBoolean(KEY_UPLOADING_IMAGE_ERROR, true);
-        }
     }
 
     @Override
@@ -202,11 +201,6 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
                     this.mTmpImageDocId = imageDocId;
                 }
             }
-
-            // check if previous upload could not be completed
-            if (savedInstanceState.containsKey(KEY_UPLOADING_IMAGE_ERROR)) {
-                this.uploadImageError = true;
-            }
         }
 
         // database
@@ -226,6 +220,7 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
         View mDialogView = inflater.inflate(R.layout.dialog_edit_uploaded_images, null);
 
         // resources
+        this.mMainContainer = mDialogView.findViewById(R.id.dialog_edit_uploaded_images_main);
         this.mUploadedImagesRecyclerView = mDialogView.findViewById(R.id.dialog_edit_uploaded_images_rv);
         this.mUploadedImagesRVEmptyText = mDialogView.findViewById(R.id.dialog_edit_uploaded_images_rv_empty_view);
         this.mBtnUpload = mDialogView.findViewById(R.id.dialog_edit_uploaded_images_upload);
@@ -332,9 +327,6 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
     public void onStart() {
         super.onStart();
 
-        // if a previous image upload failed then show a toast
-        this.showUploadError();
-
         // restart file uploads
         this.restartPendingImageUploadsListeners();
 
@@ -347,31 +339,15 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
     public void onStop() {
         super.onStop();
 
-        // can't continue with upload, stop has been reached
-        this.uploadImageDenied();
-
         // detach firebase
+        this.detachImageUploadListeners();
         this.detachUploadedImagesRVAdapter();
         this.detachImageCounterListener();
-        this.detachImageUploadListeners();
     }
 
     // ---------------------------------------------------------------------------------------------
     // custom methods
     // ---------------------------------------------------------------------------------------------
-    private void showUploadError() {
-        if (this.uploadImageError) {
-            this.uploadImageError = false;
-            Toast.makeText(requireContext(), getString(R.string.dialog_edit_uploaded_images_save_error), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void uploadImageDenied() {
-        if (this.uploadImageAllowed) {
-            this.uploadImageAllowed = false;
-        }
-    }
-
     private void deleteFromCache() {
         File cachedImageFile = EasyImage.lastlyTakenButCanceledPhoto(requireContext());
         if (cachedImageFile != null && cachedImageFile.getAbsolutePath().contains("cache/EasyImage")) {
@@ -382,7 +358,7 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
     private void launchPicker() {
         Context context = requireContext();
         if (!ConnectionUtils.checkInternetConnection(context)) {
-            Toast.makeText(context, context.getString(R.string.dialog_edit_uploaded_images_no_internet), Toast.LENGTH_LONG).show();
+            Snackbar.make(this.mMainContainer, context.getString(R.string.dialog_edit_uploaded_images_no_internet), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -399,65 +375,33 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
         BitmapUtils.deleteImageFile(mCaller, takenImageFile.getAbsolutePath());
 
         // image uri
-        final Uri imageUri = Uri.fromFile(new File(savedImagePath));
-
-        // save in database
-        HashMap<String, Object> image = new HashMap<>();
-        image.put("date", FieldValue.serverTimestamp());
-
-        // disable all actions
-        this.disableDiagButtons();
+        Uri imageUri = Uri.fromFile(new File(savedImagePath));
 
         // check again internet connection
         if (!ConnectionUtils.checkInternetConnection(mCaller)) {
-            Toast.makeText(mCaller, mCaller.getString(R.string.dialog_edit_uploaded_images_no_internet), Toast.LENGTH_LONG).show();
+            Snackbar.make(this.mMainContainer, mCaller.getString(R.string.dialog_edit_uploaded_images_no_internet), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        // start process
-        this.uploadImageAllowed = true;
-        this.mMotorcycleWorkOrderImagesCollReference.add(image)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(final DocumentReference imageDocRef) {
-                        // if user leaves activity then we cannot continue uploading the image
-                        // rollback is needed
-                        if (!uploadImageAllowed) {
-                            mMotorcycleWorkOrderImagesCollReference.document(imageDocRef.getId()).delete();
-                            return;
-                        }
+        // ---
+        // start uploading
+        // ---
 
-                        // store tmp doc id
-                        mTmpImageDocId = imageDocRef.getId();
-
-                        // building tmp image storage reference
-                        mTmpUploadingImageRef = mMotorcycleWorkOrderImagesRef
-                                .child(mTmpImageDocId)
-                                .child(imageUri.getLastPathSegment());
-
-                        // as backend is updated, there's an internet connection so we can upload the file
-                        UploadTask task = mTmpUploadingImageRef.putFile(imageUri);
-                        attachImageUploadListeners(task, imageDocRef);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Context context = getContext();
-                        if (context != null) {
-                            Toast.makeText(context, getString(R.string.dialog_edit_uploaded_images_save_error), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+        // saving upload data
+        mTmpImageDocId = this.mMotorcycleWorkOrderImagesCollReference.document().getId();
+        mTmpUploadingImageRef = mMotorcycleWorkOrderImagesRef
+                .child(mTmpImageDocId)
+                .child(imageUri.getLastPathSegment());
+        UploadTask task = mTmpUploadingImageRef.putFile(imageUri);
+        attachImageUploadListeners(task, mTmpImageDocId);
     }
 
     private void restartPendingImageUploadsListeners() {
-        if (this.mTmpUploadingImageRef == null || this.mTmpImageDocId == null) {
+        if (this.mTmpUploadingImageRef == null || this.mTmpImageDocId == null
+                // cannot restart if already uploading due to onImagesPicked
+                || this.mTmpUploadTask != null) {
             return;
         }
-
-        // image doc reference
-        final DocumentReference imageDocRef = this.mMotorcycleWorkOrderImagesCollReference.document(this.mTmpImageDocId);
 
         // find all UploadTasks under this StorageReference (in this example, there should be one)
         List<UploadTask> tasks = this.mTmpUploadingImageRef.getActiveUploadTasks();
@@ -466,7 +410,7 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
             UploadTask task = tasks.get(0);
 
             // attach listeners
-            attachImageUploadListeners(task, imageDocRef);
+            attachImageUploadListeners(task, this.mTmpImageDocId);
         } else {
             this.mTmpUploadingImageRef = null;
             this.mTmpImageDocId = null;
@@ -488,11 +432,9 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
         }
     }
 
-    private void attachImageUploadListeners(UploadTask task, final DocumentReference imageDocRef) {
-        // check if activity is attached
-        if (getActivity() == null) {
-            return;
-        }
+    private void attachImageUploadListeners(UploadTask task, final String imageId) {
+        // disable all dialog actions
+        this.disableDiagButtons();
 
         // create listeners
         this.mTmpUploadProgressListener = new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -510,14 +452,12 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
                 hideProgress();
                 enableDiagButtons();
 
-                // on failure delete from database
-                imageDocRef.delete();
-
                 // remove tmp vars
                 mTmpImageDocId = null;
                 mTmpUploadingImageRef = null;
 
-                Toast.makeText(requireContext(), getString(R.string.dialog_edit_uploaded_images_progress_error), Toast.LENGTH_LONG).show();
+                // show failure SnackBar
+                Snackbar.make(mMainContainer, getString(R.string.dialog_edit_uploaded_images_upload_error), Snackbar.LENGTH_SHORT).show();
             }
         };
 
@@ -532,7 +472,60 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
                 mTmpImageDocId = null;
                 mTmpUploadingImageRef = null;
 
-                Toast.makeText(requireContext(), getString(R.string.dialog_edit_uploaded_images_image_in_process), Toast.LENGTH_LONG).show();
+                // save image in firestore
+                Map<String, Object> image = new HashMap<>();
+                image.put("date", FieldValue.serverTimestamp());
+                SetOptions options = SetOptions.merge();
+
+                mMotorcycleWorkOrderImagesCollReference.document(imageId).set(image, options)
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // log error to Crashlytics
+                                Crashlytics.logException(e);
+
+                                // check if still with context
+                                if (getContext() == null) {
+                                    return;
+                                }
+
+                                // cannot save in firestore show SnackBar error
+                                // (images will rollback automatically thanks to google cloud functions when
+                                // no reference is found to this document due to nonexistence, then they won't
+                                // be able to update the image reference of the document and will be deleted
+                                // automatically)
+                                // we must wait to recyclerview to finish its animations before showing the SnackBar
+
+                                mUploadedImagesRecyclerView.smoothScrollToPosition(0);
+                                mUploadedImagesRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                                    @Override
+                                    public void onGlobalLayout() {
+                                        // check if still with context
+                                        if (getContext() == null) {
+                                            return;
+                                        }
+
+                                        // show failure SnackBar
+                                        Snackbar.make(mUploadedImagesRecyclerView, getString(R.string.dialog_edit_uploaded_images_save_error), Snackbar.LENGTH_LONG).show();
+
+                                        // remove listener
+                                        mUploadedImagesRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                    }
+                                });
+                            }
+                        })
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // check if still with context
+                                if (getContext() == null) {
+                                    return;
+                                }
+
+                                // go to top
+                                mUploadedImagesRecyclerView.smoothScrollToPosition(0);
+                            }
+                        });
             }
         };
 
@@ -652,7 +645,7 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
 
         // check if fully processed
         if (uploadedImage.getImage() == null) {
-            Toast.makeText(context, context.getString(R.string.dialog_edit_uploaded_images_rv_item_cant_delete), Toast.LENGTH_LONG).show();
+            Snackbar.make(this.mMainContainer, context.getString(R.string.dialog_edit_uploaded_images_rv_item_cant_delete), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -662,6 +655,7 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
                 .setPositiveButton(getString(R.string.dialog_edit_uploaded_images_delete_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // deleting from firestore
                         mMotorcycleWorkOrderImagesCollReference.document(imageId).delete();
                     }
                 })
@@ -690,13 +684,13 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
 
         // check internet connection
         if (!ConnectionUtils.checkInternetConnection(context)) {
-            Toast.makeText(context, context.getString(R.string.dialog_edit_uploaded_images_no_internet), Toast.LENGTH_LONG).show();
+            Snackbar.make(this.mMainContainer, context.getString(R.string.dialog_edit_uploaded_images_no_internet), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
         // check if fully processed
         if (uploadedImage.getImage() == null) {
-            Toast.makeText(context, context.getString(R.string.dialog_edit_uploaded_images_rv_item_cant_delete), Toast.LENGTH_LONG).show();
+            Snackbar.make(this.mMainContainer, context.getString(R.string.dialog_edit_uploaded_images_rv_item_cant_delete), Snackbar.LENGTH_SHORT).show();
             return;
         }
 

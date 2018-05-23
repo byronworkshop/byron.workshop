@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -45,6 +47,7 @@ public class EditWorkOrderCostSheetAddCostDialogFragment extends DialogFragment 
     private CollectionReference mMotorcycleWorkOrderCostSheetCostsCollReference;
 
     // resources
+    private CoordinatorLayout mMainContainer;
     private TextInputLayout tiDescription;
     private EditText etDescription;
     private TextInputLayout tiAmount;
@@ -129,6 +132,7 @@ public class EditWorkOrderCostSheetAddCostDialogFragment extends DialogFragment 
         View mDialogView = inflater.inflate(R.layout.dialog_edit_cost_sheet_add_cost, null);
 
         // resources
+        this.mMainContainer = mDialogView.findViewById(R.id.dialog_edit_cost_sheet_add_main);
         this.tiDescription = mDialogView.findViewById(R.id.dialog_edit_cost_sheet_add_input_layout_add_cost_desc);
         this.etDescription = mDialogView.findViewById(R.id.dialog_edit_cost_sheet_add_cost_desc);
         this.tiAmount = mDialogView.findViewById(R.id.dialog_edit_cost_sheet_add_input_layout_add_cost_amount);
@@ -214,6 +218,8 @@ public class EditWorkOrderCostSheetAddCostDialogFragment extends DialogFragment 
     private void submitForm() {
         if (this.isFormValid()) {
             this.submitNewForm();
+        } else {
+            Snackbar.make(this.mMainContainer, getString(R.string.dialog_edit_cost_sheet_add_cost_err_form), Snackbar.LENGTH_SHORT).show();
         }
     }
 

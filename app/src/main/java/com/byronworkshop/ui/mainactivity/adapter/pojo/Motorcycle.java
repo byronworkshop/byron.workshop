@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import com.byronworkshop.shared.pojo.Image;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Motorcycle implements Serializable {
 
@@ -28,7 +30,7 @@ public class Motorcycle implements Serializable {
                       int cc,
                       @NonNull String color,
                       @NonNull String licensePlateNumber,
-                      @NonNull MotorcycleMetadata metadata) {
+                      @Nullable MotorcycleMetadata metadata) {
         this.image = image;
         this.brand = brand;
         this.model = model;
@@ -73,5 +75,17 @@ public class Motorcycle implements Serializable {
 
     public void setMetadata(MotorcycleMetadata metadata) {
         this.metadata = metadata;
+    }
+
+    public Map<String, Object> getMotorcycleMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("brand", this.brand);
+        map.put("model", this.model);
+        map.put("type", this.type);
+        map.put("cc", this.cc);
+        map.put("color", this.color);
+        map.put("licensePlateNumber", this.licensePlateNumber);
+
+        return map;
     }
 }

@@ -3,9 +3,12 @@ package com.byronworkshop.ui.detailsactivity;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,20 +60,13 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.Date;
 
-public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAdapter.ListItemClickListener {
+public class DetailsActivity extends AppCompatActivity
+        implements WorkOrderRVAdapter.ListItemClickListener,
+        EditMotorcycleDialogFragment.MotorcycleDialogCallback,
+        EditWorkOrderFormDialogFragment.WorkOrderFormDialogCallback {
 
     // firebase analytics events
     private static final String EVENT_DETAILS_ACTIVITY_CREATION = "show_motorcycle_details";
-    private static final String EVENT_MOTORCYCLE_UPDATE = "motorcycle_updated";
-
-    private static final String PARAM_BRAND = "brand";
-    private static final String PARAM_MODEL = "model";
-    private static final String PARAM_TYPE = "type";
-    private static final String PARAM_CC = "cc";
-    private static final String PARAM_LICENSE_PLATE_NUMBER = "license_plate_number";
-    private static final String PARAM_COLOR = "color";
-    private static final String PARAM_LAST_WORK_ORDER_DATE = "last_service_date";
-    private static final String PARAM_REMINDER_ENABLED = "reminder";
 
     // keys
     public static final String KEY_UID = "uid";
@@ -83,6 +80,7 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
     private Motorcycle mMotorcycle;
 
     // ui
+    private CoordinatorLayout mMainContainer;
     private RecyclerView mWorkOrderRecyclerView;
     private FirestoreRecyclerAdapter mWorkOrderAdapter;
 
@@ -153,6 +151,7 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
         this.logDetailsActivityCreation();
 
         // ui
+        this.mMainContainer = findViewById(R.id.activity_details_main);
         this.mWorkOrderRecyclerView = findViewById(R.id.content_details_rv_wos);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setReverseLayout(true);
@@ -239,11 +238,16 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        // delete from firestore
                                         mMotorcycleDocReference.delete();
-                                        Toast.makeText(
-                                                getApplicationContext(),
+
+                                        // show success deletion
+                                        Toast.makeText(DetailsActivity.this,
                                                 getString(R.string.content_details_action_delete_confirmation, mMotorcycle.getBrand(), mMotorcycle.getLicensePlateNumber()),
-                                                Toast.LENGTH_LONG).show();
+                                                Toast.LENGTH_LONG
+                                        ).show();
+
+                                        // finish activity
                                         finish();
                                     }
                                 })
@@ -318,7 +322,6 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                         if (e == null && documentSnapshot != null && documentSnapshot.exists()) {
                             // motorcycle exists fill ui
                             mMotorcycle = documentSnapshot.toObject(Motorcycle.class);
-                            logMotorcycleUpdate(documentSnapshot.getId(), mMotorcycle);
                             fillUI(mMotorcycle);
                         } else {
                             // motorcycle deleted, go back safely
@@ -377,7 +380,8 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                                 }
 
                                 Motorcycle m = documentSnapshot.toObject(Motorcycle.class);
-                                if (m.getMetadata().getLastWorkOrderEndDate() == null
+                                if (m.getMetadata() == null
+                                        || m.getMetadata().getLastWorkOrderEndDate() == null
                                         || !finalLastWorkOrderEndDate.equals(m.getMetadata().getLastWorkOrderEndDate())) {
                                     mMotorcycleDocReference.update(FieldPath.of("metadata", "lastWorkOrderEndDate"), finalLastWorkOrderEndDate);
                                 }
@@ -396,21 +400,6 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
 
     private void terminateUI() {
         finish();
-    }
-
-    private void logMotorcycleUpdate(String motorcycleId, Motorcycle motorcycle) {
-        Bundle motorcycleInfo = new Bundle();
-        motorcycleInfo.putString(FirebaseAnalytics.Param.ITEM_ID, motorcycleId);
-        motorcycleInfo.putString(PARAM_BRAND, motorcycle.getBrand());
-        motorcycleInfo.putString(PARAM_MODEL, motorcycle.getModel());
-        motorcycleInfo.putString(PARAM_TYPE, motorcycle.getType());
-        motorcycleInfo.putInt(PARAM_CC, motorcycle.getCc());
-        motorcycleInfo.putString(PARAM_LICENSE_PLATE_NUMBER, motorcycle.getLicensePlateNumber());
-        motorcycleInfo.putString(PARAM_COLOR, motorcycle.getColor());
-        motorcycleInfo.putLong(PARAM_LAST_WORK_ORDER_DATE, motorcycle.getMetadata().getLastWorkOrderEndDate() != null ?
-                motorcycle.getMetadata().getLastWorkOrderEndDate().getTime() : -1);
-        motorcycleInfo.putString(PARAM_REMINDER_ENABLED, motorcycle.getMetadata().isReminderEnabled() ? "enabled" : "disabled");
-        this.mFirebaseAnalytics.logEvent(EVENT_MOTORCYCLE_UPDATE, motorcycleInfo);
     }
 
     private void fillUI(Motorcycle motorcycle) {
@@ -447,7 +436,7 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
         }
 
         // reminder
-        this.sReminder.setChecked(motorcycle.getMetadata().isReminderEnabled());
+        this.sReminder.setChecked(motorcycle.getMetadata() != null && motorcycle.getMetadata().isReminderEnabled());
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -478,7 +467,7 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
     @Override
     public void onShowEditUploadedImagesDialog(String workOrderFormId, WorkOrderForm workOrderForm) {
         if (!ConnectionUtils.checkInternetConnection(this)) {
-            Toast.makeText(this, getString(R.string.dialog_edit_uploaded_images_no_internet), Toast.LENGTH_LONG).show();
+            Snackbar.make(this.mMainContainer, getString(R.string.dialog_edit_uploaded_images_no_internet), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -501,7 +490,17 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                 .setPositiveButton(getString(R.string.dialog_edit_work_order_more_options_delete_wo_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // delete work order from firestore
                         mMotorcycleWorkOrderFormsCollReference.document(workOrderFormId).delete();
+
+                        // show SnackBar
+                        mWorkOrderRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                            @Override
+                            public void onGlobalLayout() {
+                                Snackbar.make(mMainContainer, getString(R.string.menu_wo_item_delete_wo_success), Snackbar.LENGTH_LONG).show();
+                                mWorkOrderRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            }
+                        });
                     }
                 })
                 .setNegativeButton(getString(R.string.dialog_edit_work_order_more_options_delete_wo_cancel), new DialogInterface.OnClickListener() {
@@ -516,7 +515,7 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
     @Override
     public void onCloseWorkOrder(final String workOrderFormId, WorkOrderForm workOrderForm) {
         if (!ConnectionUtils.checkInternetConnection(this)) {
-            Toast.makeText(this, getString(R.string.dialog_edit_work_order_more_options_close_wo_no_internet), Toast.LENGTH_LONG).show();
+            Snackbar.make(this.mMainContainer, getString(R.string.dialog_edit_work_order_more_options_close_wo_no_internet), Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -540,21 +539,31 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
 
                                         // work order metadata not existent yet
                                         if (!documentSnapshot.exists()) {
-                                            Toast.makeText(getApplicationContext(), getString(R.string.dialog_edit_work_order_more_options_close_wo_denied), Toast.LENGTH_LONG).show();
+                                            Snackbar.make(mMainContainer, getString(R.string.dialog_edit_work_order_more_options_close_wo_denied), Snackbar.LENGTH_SHORT).show();
                                             return;
                                         }
 
                                         // check total cost on existent work order metadata
                                         WorkOrderMetadata workOrderMetadata = documentSnapshot.toObject(WorkOrderMetadata.class);
                                         if (workOrderMetadata.getTotalCost() > 0) {
+                                            // update closure data
                                             WriteBatch batch = FirebaseFirestore.getInstance().batch();
 
                                             batch.update(mMotorcycleWorkOrderMetadataCollReference.document(workOrderFormId), "endDate", FieldValue.serverTimestamp());
                                             batch.update(mMotorcycleWorkOrderFormsCollReference.document(workOrderFormId), "endDate", FieldValue.serverTimestamp());
 
                                             batch.commit();
+
+                                            // show SnackBar
+                                            mWorkOrderRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                                                @Override
+                                                public void onGlobalLayout() {
+                                                    Snackbar.make(mMainContainer, getString(R.string.menu_wo_item_close_wo_success), Snackbar.LENGTH_LONG).show();
+                                                    mWorkOrderRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                                                }
+                                            });
                                         } else {
-                                            Toast.makeText(getApplicationContext(), getString(R.string.dialog_edit_work_order_more_options_close_wo_denied), Toast.LENGTH_LONG).show();
+                                            Snackbar.make(mMainContainer, getString(R.string.dialog_edit_work_order_more_options_close_wo_denied), Snackbar.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
@@ -567,5 +576,34 @@ public class DetailsActivity extends AppCompatActivity implements WorkOrderRVAda
                     }
                 });
         builder.create().show();
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    // Dialog callbacks
+    // ---------------------------------------------------------------------------------------------
+    @Override
+    public void onMotorcycleSaveError() {
+        Snackbar.make(this.mMainContainer, getString(R.string.dialog_edit_motorcycle_error_cannot_save), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onMotorcycleSaved(@NonNull String msg, @Nullable final String motorcycleId) {
+        Snackbar.make(this.mMainContainer, msg, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onWorkOrderCreated(@NonNull final String msg) {
+        mWorkOrderRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Snackbar.make(mMainContainer, msg, Snackbar.LENGTH_LONG).show();
+                mWorkOrderRecyclerView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+    }
+
+    @Override
+    public void onWorkOrderEdited(@NonNull final String msg) {
+        Snackbar.make(mMainContainer, msg, Snackbar.LENGTH_LONG).show();
     }
 }

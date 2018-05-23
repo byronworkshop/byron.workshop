@@ -78,6 +78,7 @@ public class WorkOrderRVAdapter extends FirestoreRecyclerAdapter<WorkOrderForm, 
         // start/end date
         if (!workOrderForm.isClosed()) {
             holder.date.setText(DateUtils.getFormattedDate(workOrderForm.getStartDate()));
+            holder.date.setTextColor(context.getResources().getColor(R.color.colorSecondaryText));
         } else {
             holder.date.setText(DateUtils.getFormattedDate(workOrderForm.getEndDate()));
             holder.date.setTextColor(context.getResources().getColor(R.color.colorAccent));

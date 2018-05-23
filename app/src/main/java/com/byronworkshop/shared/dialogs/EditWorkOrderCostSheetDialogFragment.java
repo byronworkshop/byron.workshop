@@ -41,7 +41,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
-public class EditWorkOrderCostSheetDialogFragment extends DialogFragment implements CostSheetRVAdapter.DeleteItemClickListener {
+public class EditWorkOrderCostSheetDialogFragment extends DialogFragment
+        implements CostSheetRVAdapter.DeleteItemClickListener {
 
     // firebase analytics events
     private static final String EVENT_WORK_ORDER_COST_SHEET_EDITION = "edit_cost_sheet";
@@ -337,6 +338,7 @@ public class EditWorkOrderCostSheetDialogFragment extends DialogFragment impleme
                 .setPositiveButton(getString(R.string.dialog_edit_cost_sheet_icon_delete_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // delete cost in firestore
                         mMotorcycleWorkOrderCostSheetCostsCollReference.document(costId).delete();
                     }
                 })

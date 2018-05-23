@@ -116,7 +116,7 @@ public class IncomeActivity extends AppCompatActivity {
         RequestOptions options = RequestOptions.placeholderOf(imagePlaceholder);
 
         Glide.with(this)
-                .load(R.drawable.header_reminders_bg)
+                .load(R.drawable.header_income_bg)
                 .apply(options)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ivImageHeader);

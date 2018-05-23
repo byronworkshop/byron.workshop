@@ -2,6 +2,8 @@ package com.byronworkshop.ui.detailsactivity.adapter.pojo;
 
 import android.support.annotation.NonNull;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -265,6 +267,7 @@ public class WorkOrderForm implements Serializable {
         return endDate;
     }
 
+    @Exclude
     public boolean isClosed() {
         return endDate != null;
     }

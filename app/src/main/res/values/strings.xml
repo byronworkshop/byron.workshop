@@ -51,11 +51,17 @@
     <string name="dialog_edit_motorcycle_error_cylinder">Cylinder is required</string>
     <string name="dialog_edit_motorcycle_error_color">Color is required</string>
     <string name="dialog_edit_motorcycle_error_license_plate_number">License plate number is required</string>
+    <string name="dialog_edit_motorcycle_error_form">Form contains errors</string>
 
-    <string name="dialog_edit_motorcycle_error_cannot_save_db">Cannot save motorcycle. Try again later</string>
-    <string name="dialog_edit_motorcycle_error_cannot_upload_image">Image could not be uploaded. You can upload an image later on edition</string>
+    <string name="dialog_edit_motorcycle_error_cannot_upload_image">Error while uploading image</string>
+    <string name="dialog_edit_motorcycle_error_cannot_save">Error while saving motorcycle</string>
 
-    <string name="dialog_edit_motorcycle_uploaded_image_in_process">Image in process. Please be patient</string>
+    <string name="dialog_edit_motorcycle_creation_success">Motorcycle created</string>
+    <string name="dialog_edit_motorcycle_edition_success">Changes saved</string>
+    <string name="dialog_edit_motorcycle_edition_action_view_lbl">Show Motorcycle</string>
+
+    <string name="dialog_edit_motorcycle_uploaded_creation_image_in_process">Motorcycle created\n(processing image)</string>
+    <string name="dialog_edit_motorcycle_uploaded_edition_image_in_process">Changes saved\n(processing image)</string>
 
     <string name="dialog_edit_motorcycle_save_offline_title">Save without image?</string>
     <string name="dialog_edit_motorcycle_save_offline_msg">Images cannot be saved without an internet connection. You can upload an image later on edition</string>
@@ -87,7 +93,7 @@
     <string name="content_details_action_delete_msg">Motorcycle be permanently deleted</string>
     <string name="content_details_action_delete_ok">DELETE</string>
     <string name="content_details_action_delete_cancel">Cancel</string>
-    <string name="content_details_action_delete_confirmation">Motorcycle \"%1$s - %2$s\" deleted</string>
+    <string name="content_details_action_delete_confirmation">\"%1$s - %2$s\" deleted</string>
 
     <!-- dialog edit work order -->
     <string name="dialog_edit_work_order_title_new">New work order</string>
@@ -175,6 +181,7 @@
     <string name="dialog_edit_work_order_err_start_date">Date is required</string>
     <string name="dialog_edit_work_order_err_start_time">Time is required</string>
     <string name="dialog_edit_work_order_err_issue">Issue is required</string>
+    <string name="dialog_edit_work_order_err_form">Form contains errors</string>
     <string name="dialog_edit_work_order_more_options_delete_wo_title">Delete \"%1$s initiated on date %2$s\"?</string>
     <string name="dialog_edit_work_order_more_options_delete_wo_msg">Work order will be permanently removed from the motorcycle records</string>
     <string name="dialog_edit_work_order_more_options_delete_wo_ok">DELETE</string>
@@ -183,13 +190,19 @@
     <string name="dialog_edit_work_order_more_options_close_wo_msg">Work order will be permanently closed</string>
     <string name="dialog_edit_work_order_more_options_close_wo_ok">CLOSE</string>
     <string name="dialog_edit_work_order_more_options_close_wo_cancel">Cancel</string>
-    <string name="dialog_edit_work_order_more_options_close_wo_denied">Register at least one cost before closing</string>
-    <string name="dialog_edit_work_order_more_options_close_wo_no_internet">An internet connection is required to close the work order</string>
+    <string name="dialog_edit_work_order_more_options_close_wo_denied">Register at least one cost</string>
+    <string name="dialog_edit_work_order_more_options_close_wo_no_internet">No internet connection</string>
+    <string name="dialog_edit_work_order_creation_success">Work order created</string>
+    <string name="dialog_edit_work_order_edition_success">Changes saved</string>
+    <string name="dialog_edit_work_order_action_lbl">View</string>
 
     <string name="menu_wo_item_edit_cs">Cost sheet</string>
     <string name="menu_wo_item_upload_images">Images</string>
     <string name="menu_wo_item_delete_wo">Delete</string>
     <string name="menu_wo_item_close_wo">Close</string>
+
+    <string name="menu_wo_item_delete_wo_success">Work order deleted</string>
+    <string name="menu_wo_item_close_wo_success">Work order closed</string>
 
     <!-- dialog edit cost sheet -->
     <string name="dialog_edit_cost_sheet_dialog_title">Cost sheet</string>
@@ -215,6 +228,7 @@
     <string name="dialog_edit_cost_sheet_add_cost_err_desc">Description is required</string>
     <string name="dialog_edit_cost_sheet_add_cost_err_amount">Amount is required</string>
     <string name="dialog_edit_cost_sheet_add_cost_err_amount_positive">Amount must be greater than zero</string>
+    <string name="dialog_edit_cost_sheet_add_cost_err_form">Form contains errors</string>
     <string name="dialog_edit_cost_sheet_add_cost_type_replacement">Replacement</string>
     <string name="dialog_edit_cost_sheet_add_cost_type_external">External labor</string>
     <string name="dialog_edit_cost_sheet_add_cost_type_labor_cost">Labor cost</string>
@@ -263,20 +277,20 @@
     <string name="dialog_edit_uploaded_images_image_chooser_error">Cannot pick an image. Try again later</string>
     <string name="dialog_edit_uploaded_images_writing_storage_denied">Permission denied</string>
     <string name="dialog_edit_uploaded_images_writing_storage_accepter_download">Permission granted. You can download the image</string>
-    <string name="dialog_edit_uploaded_images_progress_error">Cannot upload image. Try again later</string>
-    <string name="dialog_edit_uploaded_images_image_in_process">Image in process. Please be patient</string>
-    <string name="dialog_edit_uploaded_images_save_error">Cannot save image. Try again later</string>
+    <string name="dialog_edit_uploaded_images_upload_error">Error uploading image</string>
+    <string name="dialog_edit_uploaded_images_save_error">Error while saving image</string>
+    <string name="dialog_edit_uploaded_images_image_in_process">Image uploaded\n(processing image)</string>
     <string name="dialog_edit_uploaded_images_delete_title">Delete image?</string>
     <string name="dialog_edit_uploaded_images_delete_msg">Image will be permanently deleted</string>
     <string name="dialog_edit_uploaded_images_delete_ok">DELETE</string>
     <string name="dialog_edit_uploaded_images_delete_cancel">Cancel</string>
-    <string name="dialog_edit_uploaded_images_no_internet">An internet connection is required</string>
+    <string name="dialog_edit_uploaded_images_no_internet">No internet connection</string>
 
     <string name="dialog_edit_uploaded_images_rv_item_image_desc">Image</string>
     <string name="dialog_edit_uploaded_images_rv_item_more_options_desc">More options</string>
     <string name="dialog_edit_uploaded_images_rv_item_more_options_menu_delete">Delete</string>
     <string name="dialog_edit_uploaded_images_rv_item_more_options_menu_download">Download</string>
-    <string name="dialog_edit_uploaded_images_rv_item_cant_delete">Cannot delete, image not fully processed. Try again in a few seconds</string>
+    <string name="dialog_edit_uploaded_images_rv_item_cant_delete">Image still processing</string>
     <string name="dialog_edit_uploaded_images_rv_item_download_title">Byron image download</string>
     <string name="dialog_edit_uploaded_images_rv_item_download_msg">Downloading image %1$s</string>
 

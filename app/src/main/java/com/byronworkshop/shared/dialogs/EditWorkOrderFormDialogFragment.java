@@ -11,6 +11,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -45,6 +46,16 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
     // dialogs finals
     private static final String TAG_EDIT_WORK_ORDER_FORM_DIALOG = "wo_form_dialog";
     private static final String KEY_SELECTED_START_DATE = "selected_start_date";
+
+    // activity callback
+    public interface WorkOrderFormDialogCallback {
+        void onWorkOrderCreated(@NonNull String msg);
+
+        void onWorkOrderEdited(@NonNull String msg);
+    }
+
+    private WorkOrderFormDialogCallback mWorkOrderFormDialogCallback;
+
 
     // args mandatory
     private String mUid;
@@ -199,6 +210,18 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
         });
 
         return alertDialog;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            this.mWorkOrderFormDialogCallback = (WorkOrderFormDialogCallback) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement WorkOrderFormDialogCallback");
+        }
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -425,24 +448,35 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
 
     private void submitForm(boolean isEditionMode) {
         if (this.isFormValid()) {
+            // save form
             if (!isEditionMode) {
                 this.submitNewForm();
             } else {
                 this.submitEditionForm();
             }
+
+            // show SnackBar
+            if (!isEditionMode) {
+                this.mWorkOrderFormDialogCallback.onWorkOrderCreated(getString(R.string.dialog_edit_work_order_creation_success));
+            } else {
+                this.mWorkOrderFormDialogCallback.onWorkOrderEdited(getString(R.string.dialog_edit_work_order_edition_success));
+            }
+
+            // go back to activity caller
+            dismiss();
+        } else {
+            Snackbar.make(this.binding.dialogEditWoMain, getString(R.string.dialog_edit_work_order_err_form), Snackbar.LENGTH_SHORT).show();
         }
     }
 
     private void submitNewForm() {
         WorkOrderForm newWorkOrderForm = constructWorkOrderForm();
         this.mMotorcycleWorkOrderFormsCollReference.add(newWorkOrderForm);
-        dismiss();
     }
 
     private void submitEditionForm() {
         WorkOrderForm workOrderForm = constructWorkOrderForm();
         this.mMotorcycleWorkOrderFormsCollReference.document(this.mWorkOrderFormId).set(workOrderForm);
-        dismiss();
     }
 
     private WorkOrderForm constructWorkOrderForm() {

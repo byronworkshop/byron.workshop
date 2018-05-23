@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -37,24 +39,17 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.byronworkshop.R;
-import com.byronworkshop.shared.pojo.Image;
 import com.byronworkshop.ui.mainactivity.adapter.pojo.Motorcycle;
-import com.byronworkshop.ui.mainactivity.adapter.pojo.MotorcycleMetadata;
 import com.byronworkshop.utils.BitmapUtils;
 import com.byronworkshop.utils.ConnectionUtils;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -63,6 +58,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
@@ -75,7 +71,16 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     // dialog finals
     private static final String TAG_EDIT_MOTORCYCLE_DIALOG = "edit_motorcycle_dialog";
     private static final String KEY_UPLOADING_IMAGE_REF = "uploading_image_ref";
-    private static final String KEY_UPLOADING_IMAGE_ERROR = "error_uploading_image";
+    private static final String KEY_UPLOADING_MOTORCYCLE_ID = "uploading_motorcycle_id";
+
+    // activity callback
+    public interface MotorcycleDialogCallback {
+        void onMotorcycleSaveError();
+
+        void onMotorcycleSaved(@NonNull String msg, @Nullable String motorcycleId);
+    }
+
+    private MotorcycleDialogCallback mMotorcycleDialogCallback;
 
     // arg mandatory
     private String mUid;
@@ -95,6 +100,7 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     private static final String AVATAR_PATH = "AVATAR_PATH";
 
     // resources
+    private CoordinatorLayout mMainContainer;
     private AppCompatButton btnPickImage;
     private LinearLayout llUploadProgressContainer;
     private TextView tvUploadProgressLabel;
@@ -119,8 +125,6 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     private CollectionReference mMotorcyclesCollReference;
     private StorageReference mMotorcycleImagesStorageReference;
 
-    private ListenerRegistration mMotorcycleMetadataListener;
-
     // to avoid leaking fragment with upload listeners we should stop them in onStop
     private StorageTask<UploadTask.TaskSnapshot> mTmpUploadTask;
     private OnProgressListener<UploadTask.TaskSnapshot> mTmpUploadProgressListener;
@@ -128,8 +132,7 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     private OnSuccessListener<UploadTask.TaskSnapshot> mTmpUploadSuccessListener;
 
     // for restarting partial uploads
-    private boolean uploadImageAllowed;
-    private boolean errorUploadingImage;
+    private String mTmpUploadingMotorcycleId;
     private StorageReference mTmpUploadingImageRef;
 
     public static void showEditMotorcycleDialog(
@@ -184,13 +187,9 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
         outState.putString(AVATAR_PATH, this.mAvatarPath);
 
         // if there's an upload in progress, save the reference so you can query it later
-        if (this.mTmpUploadingImageRef != null) {
+        if (this.mTmpUploadingMotorcycleId != null && this.mTmpUploadingImageRef != null) {
+            outState.putString(KEY_UPLOADING_MOTORCYCLE_ID, this.mTmpUploadingMotorcycleId);
             outState.putString(KEY_UPLOADING_IMAGE_REF, this.mTmpUploadingImageRef.toString());
-        }
-
-        // data saved but image not uploaded, process this error onStart
-        if (uploadImageAllowed && this.mTmpUploadingImageRef == null) {
-            outState.putBoolean(KEY_UPLOADING_IMAGE_ERROR, true);
         }
     }
 
@@ -212,17 +211,15 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
             this.mAvatarPath = savedInstanceState.getString(AVATAR_PATH);
 
             // check partial upload
-            if (savedInstanceState.containsKey(KEY_UPLOADING_IMAGE_REF)) {
+            if (savedInstanceState.containsKey(KEY_UPLOADING_MOTORCYCLE_ID)
+                    && savedInstanceState.containsKey(KEY_UPLOADING_IMAGE_REF)) {
+                String motorcycleId = savedInstanceState.getString(KEY_UPLOADING_MOTORCYCLE_ID);
                 String uploadingImageRef = savedInstanceState.getString(KEY_UPLOADING_IMAGE_REF);
 
-                if (uploadingImageRef != null) {
+                if (uploadingImageRef != null && motorcycleId != null) {
                     this.mTmpUploadingImageRef = FirebaseStorage.getInstance().getReferenceFromUrl(uploadingImageRef);
+                    this.mTmpUploadingMotorcycleId = motorcycleId;
                 }
-            }
-
-            // check if previous upload could not be completed
-            if (savedInstanceState.containsKey(KEY_UPLOADING_IMAGE_ERROR)) {
-                this.errorUploadingImage = true;
             }
         }
 
@@ -241,6 +238,7 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
         this.mDialogView = inflater.inflate(R.layout.dialog_edit_motorcycle, null);
 
         // set resources
+        this.mMainContainer = this.mDialogView.findViewById(R.id.dialog_edit_motorcycle_main);
         this.btnPickImage = this.mDialogView.findViewById(R.id.dialog_edit_motorcycle_button_pick_image);
         this.llUploadProgressContainer = this.mDialogView.findViewById(R.id.dialog_edit_motorcycle_upload_progress_container);
         this.tvUploadProgressLabel = this.mDialogView.findViewById(R.id.dialog_edit_motorcycle_upload_progress_label);
@@ -322,6 +320,18 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            this.mMotorcycleDialogCallback = (MotorcycleDialogCallback) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement MotorcycleDialogCallback");
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_WRITE_STORAGE_PERMISSION: {
@@ -369,9 +379,6 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
 
-        // if a previous upload failed but data is saved in firestore then dismiss
-        this.processUploadError();
-
         // restart file uploads
         this.restartPendingImageUploadsListeners();
     }
@@ -380,9 +387,6 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     public void onStop() {
         super.onStop();
 
-        // can't continue with upload, stop has been reached
-        this.uploadImageDenied();
-
         // detach firebase
         this.detachImageUploadListeners();
     }
@@ -390,19 +394,6 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
     // ---------------------------------------------------------------------------------------------
     // custom methods
     // ---------------------------------------------------------------------------------------------
-    private void processUploadError() {
-        if (this.errorUploadingImage) {
-            Toast.makeText(requireContext(), getString(R.string.dialog_edit_motorcycle_error_cannot_upload_image), Toast.LENGTH_LONG).show();
-            getDialog().dismiss();
-        }
-    }
-
-    private void uploadImageDenied() {
-        if (this.uploadImageAllowed) {
-            this.uploadImageAllowed = false;
-        }
-    }
-
     private void deleteFromCache() {
         File cachedImageFile = EasyImage.lastlyTakenButCanceledPhoto(requireContext());
         if (cachedImageFile != null && cachedImageFile.getAbsolutePath().contains("cache/EasyImage")) {
@@ -446,150 +437,93 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
         });
     }
 
-    private void saveMotorcycle(boolean isEditionMode, boolean uploadImage) {
-        TaskCompletionSource<String> uploadFileTaskCompletionSource = new TaskCompletionSource<>();
-        Task<String> task = uploadFileTaskCompletionSource.getTask();
-        task.addOnSuccessListener(new OnSuccessListener<String>() {
-            @Override
-            public void onSuccess(final String motorcycleId) {
-                // if user leaves activity then we cannot continue uploading the image
-                // then we ask user to upload later on edition
-                if (!uploadImageAllowed) {
-                    return;
-                }
+    private void saveMotorcycle(boolean uploadImage) {
+        String motorcycleId = this.isEditionMode() ? this.mMotorcycleId :
+                this.mMotorcyclesCollReference.document().getId();
 
-                // avatar file uri
-                File mAvatarFile = new File(mAvatarPath);
-                Uri mAvatarUri = Uri.fromFile(mAvatarFile);
-                String fileName = mAvatarUri.getLastPathSegment();
+        if (uploadImage) {
+            // avatar file uri
+            File mAvatarFile = new File(mAvatarPath);
+            Uri mAvatarUri = Uri.fromFile(mAvatarFile);
+            String fileName = mAvatarUri.getLastPathSegment();
 
-                // storage reference
-                mTmpUploadingImageRef = mMotorcycleImagesStorageReference
-                        .child(motorcycleId)
-                        .child(fileName);
-                UploadTask task = mTmpUploadingImageRef.putFile(mAvatarUri);
-                attachImageUploadListener(task);
-            }
-        });
-
-        // disable all dialog actions
-        this.disableDiagButtons();
-
-        // start process
-        this.uploadImageAllowed = true;
-        if (!isEditionMode) {
-            this.saveMotorcycleInDb(false, null, uploadImage ? uploadFileTaskCompletionSource : null);
+            // saving upload data
+            mTmpUploadingMotorcycleId = motorcycleId;
+            mTmpUploadingImageRef = mMotorcycleImagesStorageReference
+                    .child(motorcycleId)
+                    .child(fileName);
+            UploadTask task = mTmpUploadingImageRef.putFile(mAvatarUri);
+            attachImageUploadListener(task, motorcycleId);
         } else {
-            this.saveMotorcycleInDb(true, uploadImage ? null : this.mMotorcycle.getImage(), uploadImage ? uploadFileTaskCompletionSource : null);
+            // save motorcycle in firestore
+            saveMotorcycleForm(motorcycleId, false, null);
+
+            // go back to activity
+            getDialog().dismiss();
         }
     }
 
-    private void saveMotorcycleInDb(boolean isEditionMode,
-                                    Image image,
-                                    final TaskCompletionSource<String> uploadFileTaskCompletionSource) {
-        // empty metadata
-        MotorcycleMetadata metadata = new MotorcycleMetadata(
-                null,
-                false);
-
-        // built motorcycle from form
+    private void saveMotorcycleForm(final String motorcycleId, boolean imageUploaded, final String fileName) {
+        // create motorcycle from form
         final Motorcycle motorcycle = new Motorcycle(
-                image,
+                null,
                 this.etBrand.getText().toString().trim().toUpperCase(),
                 this.etModel.getText().toString().trim().toUpperCase(),
                 this.etType.getText().toString().trim().toUpperCase(),
                 Integer.parseInt(this.etCc.getText().toString()),
                 this.etColor.getText().toString().trim().toUpperCase(),
                 this.etLicensePlateNumber.getText().toString().trim().toUpperCase(),
-                metadata);
+                null);
 
-        // saving
-        if (!isEditionMode) {
-            // creation mode
-            if (uploadFileTaskCompletionSource != null) {
-                // internet connection needed due to image upload, callbacks will complete
-                // once backend responds
-                this.mMotorcyclesCollReference.add(motorcycle)
-                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentReference> task) {
-                                if (!task.isSuccessful()) {
-                                    // failed
-                                    saveMotorcycleFailed();
-                                } else {
-                                    DocumentReference motorcycleDocReference = task.getResult();
-                                    // backend updated, there's internet connection so we can upload
-                                    uploadFileTaskCompletionSource.setResult(motorcycleDocReference.getId());
-                                }
-                            }
-                        });
-            } else {
-                // there's no image upload, offline mode applies
-                this.mMotorcyclesCollReference.add(motorcycle);
-                getDialog().dismiss();
-            }
+        Map<String, Object> motorcycleMap = motorcycle.getMotorcycleMap();
+        if (imageUploaded) {
+            // hack to not show last image while waiting image processing
+            motorcycleMap.put("image", null);
+        }
+
+        // save motorcycle
+        SetOptions options = SetOptions.merge();
+        Task<Void> task = this.mMotorcyclesCollReference.document(motorcycleId).set(motorcycleMap, options);
+        if (imageUploaded) {
+            task.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // log error to Crashlytics
+                    Crashlytics.logException(e);
+
+                    // cannot save in firestore show SnackBar error on parent caller
+                    // (images will rollback automatically thanks to google cloud functions when
+                    // no reference is found to this document due to nonexistence, then they won't
+                    // be able to update the image reference of the document and will be deleted
+                    // automatically)
+                    mMotorcycleDialogCallback.onMotorcycleSaveError();
+                }
+            });
+        }
+
+        // show success msg
+        String msg;
+        if (imageUploaded) {
+            msg = isEditionMode() ?
+                    getString(R.string.dialog_edit_motorcycle_uploaded_edition_image_in_process) :
+                    getString(R.string.dialog_edit_motorcycle_uploaded_creation_image_in_process);
         } else {
-            // edition mode
-
-            // first get fresh motorcycle document offline/online applies here
-            // motorcycle metadata is needed in order to not override this data
-            this.mMotorcycleMetadataListener = this.mMotorcyclesCollReference.document(this.mMotorcycleId)
-                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                            mMotorcycleMetadataListener.remove();
-                            mMotorcycleMetadataListener = null;
-
-                            if (e != null || documentSnapshot == null || !documentSnapshot.exists()) {
-                                saveMotorcycleFailed();
-                                return;
-                            }
-
-                            Motorcycle freshMotorcycleDocument = documentSnapshot.toObject(Motorcycle.class);
-                            motorcycle.setMetadata(freshMotorcycleDocument.getMetadata());
-
-                            if (uploadFileTaskCompletionSource != null) {
-                                // internet connection needed due to image upload, callbacks will complete
-                                // once backend responds
-                                mMotorcyclesCollReference.document(mMotorcycleId).set(motorcycle)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (!task.isSuccessful()) {
-                                                    // failed
-                                                    saveMotorcycleFailed();
-                                                } else {
-                                                    // backend updated, there's internet connection so we can upload
-                                                    uploadFileTaskCompletionSource.setResult(mMotorcycleId);
-                                                }
-                                            }
-                                        });
-                            } else {
-                                // there's no image upload, offline mode applies
-                                mMotorcyclesCollReference.document(mMotorcycleId).set(motorcycle);
-                                getDialog().dismiss();
-                            }
-                        }
-                    });
-        }
-    }
-
-    private void saveMotorcycleFailed() {
-        // check if attached to a context
-        Context context = getContext();
-        if (context == null) {
-            return;
+            msg = isEditionMode() ?
+                    getString(R.string.dialog_edit_motorcycle_edition_success) :
+                    getString(R.string.dialog_edit_motorcycle_creation_success);
         }
 
-        // dialog back to normal on failure
-        enableDiagButtons();
+        String savedMotorcycleId = isEditionMode() ?
+                null :
+                motorcycleId;
 
-        // show toast
-        Toast.makeText(context, getString(R.string.dialog_edit_motorcycle_error_cannot_save_db), Toast.LENGTH_LONG).show();
+        this.mMotorcycleDialogCallback.onMotorcycleSaved(
+                msg,
+                savedMotorcycleId);
     }
 
     private void restartPendingImageUploadsListeners() {
-        if (this.mTmpUploadingImageRef == null) {
+        if (this.mTmpUploadingImageRef == null || this.mTmpUploadingMotorcycleId == null) {
             return;
         }
 
@@ -600,9 +534,10 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
             UploadTask task = tasks.get(0);
 
             // attach listeners
-            attachImageUploadListener(task);
+            attachImageUploadListener(task, this.mTmpUploadingMotorcycleId);
         } else {
             this.mTmpUploadingImageRef = null;
+            this.mTmpUploadingMotorcycleId = null;
         }
     }
 
@@ -615,17 +550,16 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                     .removeOnSuccessListener(this.mTmpUploadSuccessListener);
 
             this.mTmpUploadTask = null;
+            this.mTmpUploadingMotorcycleId = null;
             this.mTmpUploadProgressListener = null;
             this.mTmpUploadFailureListener = null;
             this.mTmpUploadSuccessListener = null;
         }
     }
 
-    private void attachImageUploadListener(UploadTask task) {
-        // check if activity is attached
-        if (getActivity() == null) {
-            return;
-        }
+    private void attachImageUploadListener(UploadTask task, final String savedMotorcycleId) {
+        // disable all dialog actions
+        this.disableDiagButtons();
 
         // create listeners
         this.mTmpUploadProgressListener = new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -644,10 +578,11 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                 enableDiagButtons();
 
                 // remove tmp vars
+                mTmpUploadingMotorcycleId = null;
                 mTmpUploadingImageRef = null;
 
-                Toast.makeText(requireContext(), getString(R.string.dialog_edit_motorcycle_error_cannot_upload_image), Toast.LENGTH_LONG).show();
-                getDialog().dismiss();
+                // show failure SnackBar
+                Snackbar.make(mMainContainer, getString(R.string.dialog_edit_motorcycle_error_cannot_upload_image), Snackbar.LENGTH_SHORT).show();
             }
         };
 
@@ -658,10 +593,17 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                 hideProgress();
                 enableDiagButtons();
 
+                // get file name
+                String fileName = mTmpUploadingImageRef.getName();
+
                 // remove tmp vars
+                mTmpUploadingMotorcycleId = null;
                 mTmpUploadingImageRef = null;
 
-                Toast.makeText(requireContext(), getString(R.string.dialog_edit_motorcycle_uploaded_image_in_process), Toast.LENGTH_LONG).show();
+                // save motorcycle form
+                saveMotorcycleForm(savedMotorcycleId, true, fileName);
+
+                // go back to activity
                 getDialog().dismiss();
             }
         };
@@ -728,12 +670,14 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
             } else {
                 this.submitEditionForm();
             }
+        } else {
+            Snackbar.make(this.mMainContainer, getString(R.string.dialog_edit_motorcycle_error_form), Snackbar.LENGTH_SHORT).show();
         }
     }
 
     private void submitNewForm() {
         if (ConnectionUtils.checkInternetConnection(requireContext())) {
-            saveMotorcycle(false, true);
+            saveMotorcycle(true);
         } else {
             AlertDialog.Builder saveConfirmationDiag = new AlertDialog.Builder(requireContext());
             saveConfirmationDiag.setTitle(getString(R.string.dialog_edit_motorcycle_save_offline_title))
@@ -741,7 +685,7 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                     .setPositiveButton(getString(R.string.dialog_edit_motorcycle_save_offline_continue), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            saveMotorcycle(false, false);
+                            saveMotorcycle(false);
                         }
                     })
                     .setNegativeButton(getString(R.string.dialog_edit_motorcycle_save_offline_cancel), new DialogInterface.OnClickListener() {
@@ -759,10 +703,10 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
         if (ConnectionUtils.checkInternetConnection(requireContext())) {
             if (!TextUtils.isEmpty(this.mAvatarPath)) {
                 // image not pristine
-                this.saveMotorcycle(true, true);
+                this.saveMotorcycle(true);
             } else {
                 // image pristine
-                this.saveMotorcycle(true, false);
+                this.saveMotorcycle(false);
             }
         } else {
             if (!TextUtils.isEmpty(this.mAvatarPath)) {
@@ -773,7 +717,7 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                         .setPositiveButton(getString(R.string.dialog_edit_motorcycle_save_offline_continue), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                saveMotorcycle(true, false);
+                                saveMotorcycle(false);
                             }
                         })
                         .setNegativeButton(getString(R.string.dialog_edit_motorcycle_save_offline_cancel), new DialogInterface.OnClickListener() {
@@ -786,7 +730,7 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                 saveConfirmationDiag.create().show();
             } else {
                 // image pristine
-                saveMotorcycle(true, false);
+                saveMotorcycle(false);
             }
         }
     }
