@@ -27,8 +27,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -46,7 +48,10 @@ import com.byronworkshop.ui.settings.SettingsActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -340,12 +345,84 @@ public class MainActivity extends AppCompatActivity
     // custom methods
     // ---------------------------------------------------------------------------------------------
     private void onSignedInInitialize(FirebaseUser user) {
+        // check providers list
+        if (user.getProviders() == null) {
+            AuthUI.getInstance().signOut(MainActivity.this);
+            return;
+        }
+
+        // check if provider is 'password'
+        String providerId = user.getProviders().get(0);
+        if (providerId.equals(EmailAuthProvider.PROVIDER_ID)) {
+            if (!user.isEmailVerified()) {
+                showConfirmEmailDialog(user);
+                return;
+            }
+        }
+
+        // if not 'password' or already verified then sign in normally
         this.bUser = new ByronUser(user.getUid(), user.getDisplayName(), user.getEmail(), user.getPhotoUrl());
 
         logSignInEvent();
         loadMotorcycleCollReference();
         loadUserNavHeader(this.bUser);
         attachMotorcycleRVAdapter();
+    }
+
+    private void showConfirmEmailDialog(final FirebaseUser user) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.firebase_auth_alert_email_verification_title)
+                .setCancelable(false)
+                .setMessage(R.string.firebase_auth_alert_email_verification_msg)
+                .setPositiveButton(R.string.firebase_auth_alert_email_verification_positive, null)
+                .setNegativeButton(R.string.firebase_auth_alert_email_verification_negative, null);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                Button buttonPositive = ((android.support.v7.app.AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                final Button buttonNegative = ((android.support.v7.app.AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+
+                buttonPositive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        buttonNegative.setEnabled(false);
+                        // send email verification
+                        user.sendEmailVerification()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        buttonNegative.setEnabled(true);
+
+                                        if (task.isSuccessful()) {
+                                            // show success msg
+                                            Toast.makeText(MainActivity.this, getString(R.string.firebase_auth_alert_email_verification_success, user.getEmail()), Toast.LENGTH_LONG).show();
+
+                                            // sign out
+                                            AuthUI.getInstance().signOut(MainActivity.this);
+                                            dialog.dismiss();
+                                        } else {
+                                            // show failure msg
+                                            Toast.makeText(MainActivity.this, R.string.firebase_auth_alert_email_verification_failure, Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                    }
+                });
+
+                buttonNegative.setFocusable(false);
+                buttonNegative.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AuthUI.getInstance().signOut(MainActivity.this);
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+
+        alertDialog.show();
     }
 
     private void onSignOutCleanup() {
@@ -390,6 +467,7 @@ public class MainActivity extends AppCompatActivity
                 .load(R.drawable.ic_avatar_placeholder)
                 .apply(RequestOptions.circleCropTransform())
                 .into(((ImageView) navView.getHeaderView(0).findViewById(R.id.account_avatar)));
+        this.bUser = null;
     }
 
     private void attachMotorcycleRVAdapter() {

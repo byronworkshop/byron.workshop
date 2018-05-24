@@ -21,6 +21,13 @@
     <string name="content_main_rv_empty_view_image_desc">Add motorcycle</string>
     <string name="content_main_rv_empty_text">No motorcycles found</string>
 
+    <string name="firebase_auth_alert_email_verification_title">Verification required</string>
+    <string name="firebase_auth_alert_email_verification_msg">Your email is not verified</string>
+    <string name="firebase_auth_alert_email_verification_positive">Verify email</string>
+    <string name="firebase_auth_alert_email_verification_negative">Close session</string>
+    <string name="firebase_auth_alert_email_verification_success">Check you inbox %1$s</string>
+    <string name="firebase_auth_alert_email_verification_failure">Please retry. Cannot send verification email</string>
+
     <string name="menu_action_sign_out">Sign out</string>
     <string name="menu_action_settings">Settings</string>
     <string name="menu_action_search">Search</string>

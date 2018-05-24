@@ -21,6 +21,13 @@
     <string name="content_main_rv_empty_view_image_desc">Añadir motocicleta</string>
     <string name="content_main_rv_empty_text">No se encontraron motocicletas</string>
 
+    <string name="firebase_auth_alert_email_verification_title">Verificación requerida</string>
+    <string name="firebase_auth_alert_email_verification_msg">Su email no se encuentra verificado</string>
+    <string name="firebase_auth_alert_email_verification_positive">Verificar email</string>
+    <string name="firebase_auth_alert_email_verification_negative">Cerrar sesión</string>
+    <string name="firebase_auth_alert_email_verification_success">Revise su bandeja de entrada %1$s</string>
+    <string name="firebase_auth_alert_email_verification_failure">Reintente. No se pudo enviar el correo de verificación</string>
+
     <string name="menu_action_sign_out">Cerrar sesión</string>
     <string name="menu_action_settings">Configuración</string>
     <string name="menu_action_search">Buscar</string>
