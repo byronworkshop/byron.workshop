@@ -40,7 +40,6 @@ import com.byronworkshop.shared.dialogs.EditMotorcycleDialogFragment;
 import com.byronworkshop.ui.detailsactivity.DetailsActivity;
 import com.byronworkshop.ui.mainactivity.adapter.MotorcycleRVAdapter;
 import com.byronworkshop.ui.mainactivity.adapter.pojo.Motorcycle;
-import com.byronworkshop.ui.mainactivity.pojo.ByronUser;
 import com.byronworkshop.ui.reports.income.IncomeActivity;
 import com.byronworkshop.ui.reports.reminders.RemindersActivity;
 import com.byronworkshop.ui.reports.reminders.scheduler.ReminderNotificationsUtilities;
@@ -74,7 +73,6 @@ public class MainActivity extends AppCompatActivity
     private static final String EVENT_SIGN_OUT = "sign_out";
 
     // vars
-    private ByronUser bUser;
     private String searchQuery;
 
     // ui
@@ -173,10 +171,17 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // get current user or leave
+                FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                if (user == null) {
+                    return;
+                }
+
+                // show edit motorcycle dialog
                 EditMotorcycleDialogFragment.showEditMotorcycleDialog(
                         MainActivity.this,
                         getSupportFragmentManager(),
-                        bUser.getUid(),
+                        user.getUid(),
                         null,
                         null);
             }
@@ -311,19 +316,26 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        // get current user or leave
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        if (user == null) {
+            return false;
+        }
+
+        // process click
         switch (id) {
             case R.id.nav_add_bike:
                 EditMotorcycleDialogFragment.showEditMotorcycleDialog(
                         this,
                         getSupportFragmentManager(),
-                        bUser.getUid(),
+                        user.getUid(),
                         null,
                         null);
                 break;
             case R.id.nav_income:
                 Intent incomeIntent = new Intent(this, IncomeActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString(IncomeActivity.KEY_UID, this.bUser.getUid());
+                bundle.putString(IncomeActivity.KEY_UID, user.getUid());
                 incomeIntent.putExtras(bundle);
 
                 startActivity(incomeIntent);
@@ -331,7 +343,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_reminders:
                 Intent remindersIntent = new Intent(this, RemindersActivity.class);
                 Bundle reminderBundle = new Bundle();
-                reminderBundle.putString(RemindersActivity.KEY_UID, this.bUser.getUid());
+                reminderBundle.putString(RemindersActivity.KEY_UID, user.getUid());
                 remindersIntent.putExtras(reminderBundle);
 
                 startActivity(remindersIntent);
@@ -352,7 +364,7 @@ public class MainActivity extends AppCompatActivity
     // ---------------------------------------------------------------------------------------------
     private void onSignedInInitialize(FirebaseUser user) {
         // check providers list
-        if (user.getProviders() == null) {
+        if (user == null || user.getProviders() == null) {
             AuthUI.getInstance().signOut(MainActivity.this);
             return;
         }
@@ -367,11 +379,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         // if not 'password' or already verified then sign in normally
-        this.bUser = new ByronUser(user.getUid(), user.getDisplayName(), user.getEmail(), user.getPhotoUrl());
-
         logSignInEvent();
         loadMotorcycleCollReference();
-        loadUserNavHeader(this.bUser);
+        loadUserNavHeader();
         attachMotorcycleRVAdapter();
     }
 
@@ -446,17 +456,31 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadMotorcycleCollReference() {
-        this.mMotorcyclesCollReference = FirebaseFirestore.getInstance().collection("users").document(this.bUser.getUid()).collection("motorcycles");
+        // get current user or leave
+        FirebaseUser user = this.mFirebaseAuth.getCurrentUser();
+        if (user == null) {
+            return;
+        }
+
+        // set motorcycles collection reference
+        this.mMotorcyclesCollReference = FirebaseFirestore.getInstance().collection("users").document(user.getUid()).collection("motorcycles");
     }
 
-    private void loadUserNavHeader(ByronUser bUser) {
-        ((TextView) navView.getHeaderView(0).findViewById(R.id.account_name)).setText(bUser.getName());
-        ((TextView) navView.getHeaderView(0).findViewById(R.id.account_email)).setText(bUser.getEmail());
+    private void loadUserNavHeader() {
+        // get current user or leave
+        FirebaseUser user = this.mFirebaseAuth.getCurrentUser();
+        if (user == null) {
+            return;
+        }
 
-        if (bUser.getPhotoUrl() != null) {
+        // load navigation header
+        ((TextView) navView.getHeaderView(0).findViewById(R.id.account_name)).setText(user.getDisplayName());
+        ((TextView) navView.getHeaderView(0).findViewById(R.id.account_email)).setText(user.getEmail());
+
+        if (user.getPhotoUrl() != null) {
             ImageView avatar = navView.getHeaderView(0).findViewById(R.id.account_avatar);
             Glide.with(this)
-                    .load(bUser.getPhotoUrl())
+                    .load(user.getPhotoUrl())
                     .apply(RequestOptions.circleCropTransform())
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(avatar);
@@ -473,7 +497,6 @@ public class MainActivity extends AppCompatActivity
                 .load(R.drawable.ic_avatar_placeholder)
                 .apply(RequestOptions.circleCropTransform())
                 .into(((ImageView) navView.getHeaderView(0).findViewById(R.id.account_avatar)));
-        this.bUser = null;
     }
 
     private void attachMotorcycleRVAdapter() {
@@ -532,9 +555,16 @@ public class MainActivity extends AppCompatActivity
     // ---------------------------------------------------------------------------------------------
     @Override
     public void onListItemClick(String motorcycleId, Motorcycle motorcycle) {
+        // get current user or leave
+        FirebaseUser user = this.mFirebaseAuth.getCurrentUser();
+        if (user == null) {
+            return;
+        }
+
+        // go to details
         Bundle bundle = new Bundle();
         bundle.putString(DetailsActivity.KEY_MOTORCYCLE_ID, motorcycleId);
-        bundle.putString(DetailsActivity.KEY_UID, this.bUser.getUid());
+        bundle.putString(DetailsActivity.KEY_UID, user.getUid());
 
         Intent detailsIntent = new Intent(this, DetailsActivity.class);
         detailsIntent.putExtras(bundle);
@@ -560,10 +590,17 @@ public class MainActivity extends AppCompatActivity
             snackbar.setAction(getString(R.string.dialog_edit_motorcycle_edition_action_view_lbl), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // get current user or leave
+                    FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                    if (user == null) {
+                        return;
+                    }
+
+                    // go to details
                     Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
 
                     Bundle b = new Bundle();
-                    b.putString(DetailsActivity.KEY_UID, bUser.getUid());
+                    b.putString(DetailsActivity.KEY_UID, user.getUid());
                     b.putString(DetailsActivity.KEY_MOTORCYCLE_ID, motorcycleId);
 
                     intent.putExtras(b);
