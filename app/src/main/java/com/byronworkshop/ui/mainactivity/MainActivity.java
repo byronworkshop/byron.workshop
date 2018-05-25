@@ -201,19 +201,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
 
+        // this should be called here, otherwise onActivityResult won't be called properly
         this.mFirebaseAuth.addAuthStateListener(this.mAuthStateListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (this.mAuthStateListener != null) {
+            this.mFirebaseAuth.removeAuthStateListener(this.mAuthStateListener);
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        if (this.mAuthStateListener != null) {
-            this.mFirebaseAuth.removeAuthStateListener(this.mAuthStateListener);
-        }
 
         this.detachMotorcycleRVAdapter();
     }
