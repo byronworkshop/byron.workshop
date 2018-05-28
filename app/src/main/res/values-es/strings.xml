@@ -255,6 +255,7 @@
     <string name="content_reminders_rv_empty_view_image_desc">Imagen de la motocicleta</string>
     <string name="content_reminders_rv_empty_text">No se encontraron recordatorios</string>
 
+    <string name="content_reminders_readable_date_yesterday">ayer</string>
     <string name="content_reminders_readable_date_today">hoy</string>
     <plurals name="content_reminders_readable_date_days">
         <item quantity="one">hace %1$d día</item>

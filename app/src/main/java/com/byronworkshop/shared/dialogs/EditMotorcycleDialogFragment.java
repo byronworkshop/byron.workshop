@@ -456,14 +456,14 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
             attachImageUploadListener(task, motorcycleId);
         } else {
             // save motorcycle in firestore
-            saveMotorcycleForm(motorcycleId, false, null);
+            saveMotorcycleForm(motorcycleId, false);
 
             // go back to activity
             getDialog().dismiss();
         }
     }
 
-    private void saveMotorcycleForm(final String motorcycleId, boolean imageUploaded, final String fileName) {
+    private void saveMotorcycleForm(final String motorcycleId, boolean imageUploaded) {
         // create motorcycle from form
         final Motorcycle motorcycle = new Motorcycle(
                 null,
@@ -593,15 +593,12 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
                 hideProgress();
                 enableDiagButtons();
 
-                // get file name
-                String fileName = mTmpUploadingImageRef.getName();
-
                 // remove tmp vars
                 mTmpUploadingMotorcycleId = null;
                 mTmpUploadingImageRef = null;
 
                 // save motorcycle form
-                saveMotorcycleForm(savedMotorcycleId, true, fileName);
+                saveMotorcycleForm(savedMotorcycleId, true);
 
                 // go back to activity
                 getDialog().dismiss();

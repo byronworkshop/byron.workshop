@@ -255,6 +255,7 @@
     <string name="content_reminders_rv_empty_view_image_desc">Motorcycle image</string>
     <string name="content_reminders_rv_empty_text">No reminders yet</string>
 
+    <string name="content_reminders_readable_date_yesterday">yesterday</string>
     <string name="content_reminders_readable_date_today">today</string>
     <plurals name="content_reminders_readable_date_days">
         <item quantity="one">%1$d day ago</item>
