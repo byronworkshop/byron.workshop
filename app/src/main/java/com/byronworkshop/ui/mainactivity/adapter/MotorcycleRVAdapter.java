@@ -7,21 +7,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.byronworkshop.R;
 import com.byronworkshop.ui.mainactivity.adapter.pojo.Motorcycle;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
+import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.firebase.ui.firestore.paging.LoadingState;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-public class MotorcycleRVAdapter extends FirestoreRecyclerAdapter<Motorcycle, MotorcycleRVAdapter.MotorcycleHolder> {
+public class MotorcycleRVAdapter extends FirestorePagingAdapter<Motorcycle, MotorcycleRVAdapter.MotorcycleHolder> {
 
     private final ListItemClickListener mOnClickListener;
-    private final View emptyView;
+    private final ProgressBar mProgressBar;
+    private final View mEmptyView;
     private final boolean mUseTabletLayout;
 
     public interface ListItemClickListener {
@@ -29,13 +33,15 @@ public class MotorcycleRVAdapter extends FirestoreRecyclerAdapter<Motorcycle, Mo
     }
 
     public MotorcycleRVAdapter(@NonNull Context context,
-                               @NonNull FirestoreRecyclerOptions<Motorcycle> options,
+                               @NonNull FirestorePagingOptions<Motorcycle> options,
                                @NonNull ListItemClickListener itemClickListener,
+                               @NonNull ProgressBar progressBar,
                                @NonNull View emptyView) {
         super(options);
 
         this.mOnClickListener = itemClickListener;
-        this.emptyView = emptyView;
+        this.mProgressBar = progressBar;
+        this.mEmptyView = emptyView;
         this.mUseTabletLayout = context.getResources().getBoolean(R.bool.tablet_mode);
     }
 
@@ -84,8 +90,26 @@ public class MotorcycleRVAdapter extends FirestoreRecyclerAdapter<Motorcycle, Mo
     }
 
     @Override
-    public void onDataChanged() {
-        this.emptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
+    protected void onLoadingStateChanged(@NonNull LoadingState state) {
+        this.mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
+
+        switch (state) {
+            case LOADING_INITIAL:
+            case LOADING_MORE:
+                mProgressBar.setVisibility(View.VISIBLE);
+                break;
+            case LOADED:
+                mProgressBar.setVisibility(View.GONE);
+                break;
+            case FINISHED:
+                mProgressBar.setVisibility(View.GONE);
+                break;
+            case ERROR:
+                Context context = this.mEmptyView.getContext();
+                Toast.makeText(context, context.getString(R.string.content_reminders_rv_error_loading), Toast.LENGTH_LONG).show();
+                retry();
+                break;
+        }
     }
 
     class MotorcycleHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -124,8 +148,11 @@ public class MotorcycleRVAdapter extends FirestoreRecyclerAdapter<Motorcycle, Mo
                 return;
             }
 
-            DocumentSnapshot documentSnapshot = getSnapshots().getSnapshot(adapterPosition);
-            mOnClickListener.onListItemClick(documentSnapshot.getId(), getSnapshots().get(adapterPosition));
+            DocumentSnapshot documentSnapshot = getItem(adapterPosition);
+            if (documentSnapshot != null) {
+                Motorcycle m = documentSnapshot.toObject(Motorcycle.class);
+                mOnClickListener.onListItemClick(documentSnapshot.getId(), m);
+            }
         }
     }
 }

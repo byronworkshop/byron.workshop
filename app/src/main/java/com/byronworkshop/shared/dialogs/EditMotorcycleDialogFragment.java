@@ -482,44 +482,50 @@ public class EditMotorcycleDialogFragment extends DialogFragment {
         }
 
         // save motorcycle
+        final String msg;
+        final String savedMotorcycleId = isEditionMode() ?
+                null :
+                motorcycleId;
+
         SetOptions options = SetOptions.merge();
         Task<Void> task = this.mMotorcyclesCollReference.document(motorcycleId).set(motorcycleMap, options);
-        if (imageUploaded) {
-            task.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    // log error to Crashlytics
-                    Crashlytics.logException(e);
-
-                    // cannot save in firestore show SnackBar error on parent caller
-                    // (images will rollback automatically thanks to google cloud functions when
-                    // no reference is found to this document due to nonexistence, then they won't
-                    // be able to update the image reference of the document and will be deleted
-                    // automatically)
-                    mMotorcycleDialogCallback.onMotorcycleSaveError();
-                }
-            });
-        }
-
-        // show success msg
-        String msg;
         if (imageUploaded) {
             msg = isEditionMode() ?
                     getString(R.string.dialog_edit_motorcycle_uploaded_edition_image_in_process) :
                     getString(R.string.dialog_edit_motorcycle_uploaded_creation_image_in_process);
+
+            task
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            mMotorcycleDialogCallback.onMotorcycleSaved(
+                                    msg,
+                                    savedMotorcycleId);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // log error to Crashlytics
+                            Crashlytics.logException(e);
+
+                            // cannot save in firestore show SnackBar error on parent caller
+                            // (images will rollback automatically thanks to google cloud functions when
+                            // no reference is found to this document due to nonexistence, then they won't
+                            // be able to update the image reference of the document and will be deleted
+                            // automatically)
+                            mMotorcycleDialogCallback.onMotorcycleSaveError();
+                        }
+                    });
         } else {
             msg = isEditionMode() ?
                     getString(R.string.dialog_edit_motorcycle_edition_success) :
                     getString(R.string.dialog_edit_motorcycle_creation_success);
+
+            this.mMotorcycleDialogCallback.onMotorcycleSaved(
+                    msg,
+                    savedMotorcycleId);
         }
-
-        String savedMotorcycleId = isEditionMode() ?
-                null :
-                motorcycleId;
-
-        this.mMotorcycleDialogCallback.onMotorcycleSaved(
-                msg,
-                savedMotorcycleId);
     }
 
     private void restartPendingImageUploadsListeners() {

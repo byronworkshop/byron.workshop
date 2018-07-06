@@ -20,6 +20,7 @@
 
     <string name="content_main_rv_empty_view_image_desc">Add motorcycle</string>
     <string name="content_main_rv_empty_text">No motorcycles found</string>
+    <string name="content_reminders_rv_error_loading">Error loading data</string>
 
     <string name="firebase_auth_alert_email_verification_title">Verification required</string>
     <string name="firebase_auth_alert_email_verification_msg">Your email is not verified</string>

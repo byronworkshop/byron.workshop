@@ -13,13 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/content_main_rv_motorcycles"
+        <ProgressBar
+            android:id="@+id/content_main_paging_loading"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/content_main_rv_padding_bottom"
-            android:paddingTop="@dimen/content_main_rv_top_padding" />
+            android:layout_marginTop="-6dp"
+            android:background="@android:color/transparent"
+            android:indeterminate="true"
+            tools:ignore="NegativeMargin" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/content_main_rv_motorcycles_swiper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/content_main_rv_motorcycles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/content_main_rv_padding_bottom"
+                android:paddingTop="@dimen/content_main_rv_top_padding" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <!-- Empty view for the list -->
         <RelativeLayout

@@ -40,23 +40,25 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:preference-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     // firebase
-    implementation 'com.google.firebase:firebase-core:16.0.0'
-    implementation 'com.google.firebase:firebase-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-storage:16.0.1'
-    implementation 'com.google.firebase:firebase-firestore:17.0.1'
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.3'
+    implementation 'com.google.firebase:firebase-firestore:17.0.2'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.4'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+
+    implementation 'android.arch.paging:runtime:1.0.1'
 
     // glide
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
     // firebase ui
-    implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
-    implementation 'com.firebaseui:firebase-ui-firestore:4.0.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    implementation 'com.firebaseui:firebase-ui-firestore:4.1.0'
 
     // exif interface
     implementation 'com.android.support:exifinterface:27.1.1'
