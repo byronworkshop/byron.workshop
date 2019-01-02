@@ -254,7 +254,6 @@
 
     <string name="content_reminders_rv_empty_view_image_desc">Imagen de la motocicleta</string>
     <string name="content_reminders_rv_empty_text">No se encontraron recordatorios</string>
-    <string name="content_reminders_rv_error_loading">Error al cargar la lista</string>
 
     <string name="content_reminders_readable_date_yesterday">ayer</string>
     <string name="content_reminders_readable_date_today">hoy</string>

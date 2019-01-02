@@ -1,6 +1,5 @@
 package com.byronworkshop.ui.mainactivity;
 
-import android.arch.paging.PagedList;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,7 +14,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +29,6 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +45,8 @@ import com.byronworkshop.ui.reports.reminders.RemindersActivity;
 import com.byronworkshop.ui.reports.reminders.scheduler.ReminderNotificationsUtilities;
 import com.byronworkshop.ui.settings.SettingsActivity;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
-import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -81,10 +78,8 @@ public class MainActivity extends AppCompatActivity
     // ui
     private CoordinatorLayout mMainContainer;
     private ActionBarDrawerToggle mDrawerToggle;
-    private SwipeRefreshLayout mMotorcycleRecyclerViewSwiper;
     private RecyclerView mMotorcycleRecyclerView;
-    private ProgressBar mProgressBar;
-    private View mEmptyView;
+    private View emptyView;
     private ImageView ivHeaderBg;
     private NavigationView navView;
 
@@ -95,7 +90,7 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     // mMotorcycleAdapter
-    private FirestorePagingAdapter mMotorcycleAdapter;
+    private FirestoreRecyclerAdapter mMotorcycleAdapter;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -131,20 +126,11 @@ public class MainActivity extends AppCompatActivity
 
         // ui
         this.mMainContainer = findViewById(R.id.activity_main_container);
-        this.mMotorcycleRecyclerViewSwiper = findViewById(R.id.content_main_rv_motorcycles_swiper);
         this.mMotorcycleRecyclerView = findViewById(R.id.content_main_rv_motorcycles);
         this.mMotorcycleRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         this.mMotorcycleRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        this.mProgressBar = findViewById(R.id.content_main_paging_loading);
-        this.mEmptyView = findViewById(R.id.content_main_rv_empty_view);
+        this.emptyView = findViewById(R.id.content_main_rv_empty_view);
         this.ivHeaderBg = navView.getHeaderView(0).findViewById(R.id.account_bg);
-
-        this.mMotorcycleRecyclerViewSwiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                attachMotorcycleRVAdapter();
-            }
-        });
 
         // set image header bg
         ColorDrawable imagePlaceholder = new ColorDrawable(ContextCompat.getColor(this, R.color.colorPlaceholder));
@@ -519,14 +505,8 @@ public class MainActivity extends AppCompatActivity
         Query query = this.mMotorcyclesCollReference.orderBy("brand").startAt(filter).endAt(filter + "\\uf8ff");
 
         // prepare recycler options
-        PagedList.Config config = new PagedList.Config.Builder()
-                .setEnablePlaceholders(false)
-                .setPrefetchDistance(10)
-                .setPageSize(20)
-                .build();
-
-        FirestorePagingOptions<Motorcycle> options = new FirestorePagingOptions.Builder<Motorcycle>()
-                .setQuery(query, config, Motorcycle.class)
+        FirestoreRecyclerOptions<Motorcycle> options = new FirestoreRecyclerOptions.Builder<Motorcycle>()
+                .setQuery(query, Motorcycle.class)
                 .build();
 
         // manually stop previous existent adapter
@@ -536,19 +516,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         // create new adapter and start listening
-        this.mMotorcycleAdapter = new MotorcycleRVAdapter(
-                this,
-                options,
-                this,
-                this.mProgressBar,
-                this.mEmptyView);
+        this.mMotorcycleAdapter = new MotorcycleRVAdapter(this, options, this, this.emptyView);
         this.mMotorcycleAdapter.startListening();
         this.mMotorcycleRecyclerView.setAdapter(this.mMotorcycleAdapter);
-
-        // close swiper if enabled
-        if (this.mMotorcycleRecyclerViewSwiper.isRefreshing()) {
-            this.mMotorcycleRecyclerViewSwiper.setRefreshing(false);
-        }
     }
 
     private void detachMotorcycleRVAdapter() {
