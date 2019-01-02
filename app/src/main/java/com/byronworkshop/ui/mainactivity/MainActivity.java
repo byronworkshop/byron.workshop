@@ -584,7 +584,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMotorcycleSaved(@NonNull String msg, @Nullable final String motorcycleId) {
         boolean actionEnabled = motorcycleId != null;
-
+        
         Snackbar snackbar = Snackbar.make(this.mMainContainer, msg, actionEnabled ? Snackbar.LENGTH_INDEFINITE : Snackbar.LENGTH_LONG);
         if (actionEnabled) {
             snackbar.setAction(getString(R.string.dialog_edit_motorcycle_edition_action_view_lbl), new View.OnClickListener() {

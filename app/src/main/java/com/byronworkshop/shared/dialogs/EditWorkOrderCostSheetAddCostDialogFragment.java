@@ -100,7 +100,7 @@ public class EditWorkOrderCostSheetAddCostDialogFragment extends DialogFragment 
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putString(KEY_SELECTED_TYPE, this.selectedCostType);

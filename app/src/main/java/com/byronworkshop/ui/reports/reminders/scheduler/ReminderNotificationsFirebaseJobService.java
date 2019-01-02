@@ -78,8 +78,7 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        int maxDays = Integer.parseInt(preferences.getString(getString(R.string.pref_max_elapsed_time_last_service_key),
-                getString(R.string.pref_max_elapsed_time_last_service_default_value)));
+        int maxDays = Integer.parseInt(preferences.getString(getString(R.string.pref_max_elapsed_time_last_service_key), getString(R.string.pref_max_elapsed_time_last_service_default_value)));
 
         // trigger next step, query outdated work orders
         getOutdatedWorkOrders(context, user, maxDays, job);

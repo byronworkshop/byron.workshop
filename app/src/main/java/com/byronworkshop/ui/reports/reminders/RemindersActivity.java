@@ -157,8 +157,7 @@ public class RemindersActivity extends AppCompatActivity implements MotorcycleRe
 
     private void fetchMaxDaysFromPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        this.maxDays = Integer.parseInt(preferences.getString(getString(R.string.pref_max_elapsed_time_last_service_key),
-                getString(R.string.pref_max_elapsed_time_last_service_default_value)));
+        this.maxDays = Integer.parseInt(preferences.getString(getString(R.string.pref_max_elapsed_time_last_service_key), getString(R.string.pref_max_elapsed_time_last_service_default_value)));
     }
 
     private void attachMotorcycleRVAdapter() {

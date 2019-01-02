@@ -167,7 +167,7 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         // if there's an upload in progress, save the reference so you can query it later

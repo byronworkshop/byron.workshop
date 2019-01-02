@@ -119,7 +119,7 @@ public class EditWorkOrderFormDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putSerializable(KEY_SELECTED_START_DATE, this.selectedStartDate);
