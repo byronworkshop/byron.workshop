@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +11,6 @@
         android:id="@+id/content_main_motorcycle_rv_item_avatar"
         android:layout_width="@dimen/list_item_avatar"
         android:layout_height="@dimen/list_item_avatar"
-        android:layout_marginLeft="@dimen/list_item_margin_horizontal"
         android:layout_marginStart="@dimen/list_item_margin_horizontal"
         android:contentDescription="@string/nav_header_desc"
         app:layout_constraintBottom_toTopOf="@+id/content_main_motorcycle_rv_item_guideline"
@@ -24,8 +23,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/list_item_textview_brand_right_margin"
-        android:layout_marginLeft="@dimen/list_item_textview_left_margin"
-        android:layout_marginRight="@dimen/list_item_textview_brand_right_margin"
         android:layout_marginStart="@dimen/list_item_textview_left_margin"
         android:ellipsize="end"
         android:maxLines="1"
@@ -67,7 +64,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/list_item_textview_right_margin"
-        android:layout_marginRight="@dimen/list_item_textview_right_margin"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/content_main_motorcycle_rv_item_brand"
@@ -101,8 +97,6 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginEnd="@dimen/list_item_margin_horizontal"
-        android:layout_marginLeft="@dimen/list_item_textview_left_margin"
-        android:layout_marginRight="@dimen/list_item_margin_horizontal"
         android:layout_marginStart="@dimen/list_item_textview_left_margin"
         android:background="@color/colorDivider"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -111,11 +105,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/content_main_motorcycle_rv_item_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

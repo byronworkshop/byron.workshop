@@ -201,7 +201,6 @@
     <string name="dialog_edit_work_order_more_options_close_wo_no_internet">Sin conexión a internet</string>
     <string name="dialog_edit_work_order_creation_success">Orden de trabajo creada</string>
     <string name="dialog_edit_work_order_edition_success">Cambios guardados</string>
-    <string name="dialog_edit_work_order_action_lbl">Ver</string>
 
     <string name="menu_wo_item_edit_cs">Hoja de costos</string>
     <string name="menu_wo_item_upload_images">Imágenes</string>

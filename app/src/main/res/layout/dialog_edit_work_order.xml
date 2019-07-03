@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/dialog_edit_wo_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,12 +17,12 @@
                 android:descendantFocusability="beforeDescendants"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/dialog_edit_wo_vertical_padding"
-                android:paddingEnd="@dimen/dialog_edit_wo_horizontal_padding"
-                android:paddingLeft="@dimen/dialog_edit_wo_horizontal_padding"
-                android:paddingRight="@dimen/dialog_edit_wo_horizontal_padding"
                 android:paddingStart="@dimen/dialog_edit_wo_horizontal_padding"
-                android:paddingTop="@dimen/dialog_edit_wo_vertical_padding">
+                android:paddingLeft="@dimen/dialog_edit_wo_horizontal_padding"
+                android:paddingTop="@dimen/dialog_edit_wo_vertical_padding"
+                android:paddingEnd="@dimen/dialog_edit_wo_horizontal_padding"
+                android:paddingRight="@dimen/dialog_edit_wo_horizontal_padding"
+                android:paddingBottom="@dimen/dialog_edit_wo_vertical_padding">
 
                 <ImageView
                     android:id="@+id/dialog_edit_wo_end_date_img"
@@ -47,7 +47,7 @@
                     android:visibility="gone"
                     tools:text="Closed on\nMay 7, 2018 Monday\n11:00" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_wo_input_layout_wo_start_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -62,10 +62,11 @@
                         android:focusable="false"
                         android:hint="@string/dialog_edit_work_order_date"
                         android:inputType="date"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill,KeyboardInaccessibleWidget,LabelFor" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_wo_input_layout_wo_start_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,10 +81,11 @@
                         android:focusable="false"
                         android:hint="@string/dialog_edit_work_order_time"
                         android:inputType="date"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill,KeyboardInaccessibleWidget,LabelFor" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_wo_input_layout_wo_issue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -96,10 +98,11 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/dialog_edit_work_order_issue"
                         android:inputType="textCapSentences"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_wo_input_layout_wo_initial_compression"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -112,10 +115,11 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/dialog_edit_work_order_initial_compression"
                         android:inputType="number"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_wo_input_layout_wo_final_compression"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -128,10 +132,11 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/dialog_edit_work_order_final_compression"
                         android:inputType="number"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_wo_input_layout_wo_others"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -144,8 +149,9 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/dialog_edit_work_order_others"
                         android:inputType="textCapSentences"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- ACCESSORIES -->
                 <TextView
@@ -160,8 +166,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_rims"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_rims"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -169,8 +175,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_ignition"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_ignition"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -178,8 +184,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_battery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_battery"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -187,8 +193,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_horn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_horn"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -196,8 +202,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_central_bipod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_central_bipod"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -205,8 +211,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_caps"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_caps"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -214,8 +220,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_cdi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_cdi"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -223,8 +229,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_ignition_switch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_ignition_switch"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -232,8 +238,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_clutch_cable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_clutch_cable"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -241,8 +247,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_exhaust"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_exhaust"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -250,8 +256,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_headlight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_headlight"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -259,8 +265,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_filters"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_filters"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -268,8 +274,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_lightbulbs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_light_bulbs"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -277,8 +283,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_brakes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_brakes"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -286,8 +292,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_mudguard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_mudguard"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -295,8 +301,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_winkers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_winkers"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -304,8 +310,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_tools"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_tools"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -313,8 +319,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_emblems"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_emblems"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -322,8 +328,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_tires"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_tires"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -331,8 +337,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_key"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_key"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -340,8 +346,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_commands"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_commands"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -349,8 +355,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_hoses"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_hoses"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -358,8 +364,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_handlebar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_handlebar"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -369,8 +375,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_seat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_seat"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -378,8 +384,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_cat_eyes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_cat_eyes"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -387,8 +393,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_levers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_levers"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -396,8 +402,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_racks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_racks"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -405,8 +411,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_paint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_paint"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -414,8 +420,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_tool_holder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_tool_holder"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -423,8 +429,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_hand_grips"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_hand_grips"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -432,8 +438,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_radiator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_radiator"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -441,8 +447,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_rectifier"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_rectifier"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -450,8 +456,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_rearview_mirrors"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_rearview_mirrors"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -459,8 +465,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_electric_system"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_electric_system"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -468,8 +474,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_license_plate_support"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_license_plate_support"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -477,8 +483,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_chain_cover"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_chain_cover"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -486,8 +492,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_fuel_cap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_fuel_cap"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -495,8 +501,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_valve_cover"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_valve_cover"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -504,8 +510,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_engine_covers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_engine_covers"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -513,8 +519,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_side_covers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_side_covers"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -522,8 +528,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_upholstery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_upholstery"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -531,8 +537,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_telescopic_fork"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_telescopic_fork"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -540,8 +546,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_chain_tensioner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_chain_tensioner"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -549,8 +555,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_transmission"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_transmission"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -558,8 +564,8 @@
                     android:id="@+id/dialog_edit_wo_accessories_speedometer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_accessories_speedometer"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -576,8 +582,8 @@
                     android:id="@+id/dialog_edit_wo_prev_maint_oil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_prev_maint_oil"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -585,8 +591,8 @@
                     android:id="@+id/dialog_edit_wo_prev_maint_lubrication"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_prev_maint_lubrication"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -594,8 +600,8 @@
                     android:id="@+id/dialog_edit_wo_prev_maint_fuses_revision"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_prev_maint_fuses_revision"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -603,8 +609,8 @@
                     android:id="@+id/dialog_edit_wo_prev_maint_bolt_adjustment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_prev_maint_bolt_adjustment"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -612,8 +618,8 @@
                     android:id="@+id/dialog_edit_wo_prev_maint_engine_tuning"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_prev_maint_engine_tuning"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -621,8 +627,8 @@
                     android:id="@+id/dialog_edit_wo_prev_maint_carburetion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_prev_maint_carburetion"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -630,8 +636,8 @@
                     android:id="@+id/dialog_edit_wo_prev_maint_change_spark_plugs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_prev_maint_change_spark_plugs"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -639,8 +645,8 @@
                     android:id="@+id/dialog_edit_wo_prev_maint_transmission_cleaning"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_prev_maint_transmission_cleaning"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -648,8 +654,8 @@
                     android:id="@+id/dialog_edit_wo_prev_maint_break_adjustment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_prev_maint_break_adjustment"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -657,8 +663,8 @@
                     android:id="@+id/dialog_edit_wo_prev_maint_tire_pressure"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_prev_maint_tire_pressure"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -676,8 +682,8 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_piston_rings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_piston_rings"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -685,8 +691,8 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_gearbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_gearbox"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -694,8 +700,8 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_engine_head"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_engine_head"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -703,8 +709,8 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_clutch_plates"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_clutch_plates"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -712,8 +718,8 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_starter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_starter"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -721,8 +727,8 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_piston"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_piston"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -730,8 +736,8 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_clutch_press"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_clutch_press"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -739,8 +745,8 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_grinding"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_grinding"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -748,8 +754,8 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_solenoid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_solenoid"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -757,8 +763,8 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_transmission"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_transmission"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -766,11 +772,11 @@
                     android:id="@+id/dialog_edit_wo_corr_maint_valves"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:paddingTop="@dimen/dialog_edit_wo_checkbox_vertical_margin"
+                    android:paddingBottom="@dimen/dialog_edit_wo_checkbox_vertical_margin"
                     android:text="@string/dialog_edit_work_order_corr_maint_valves"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
             </LinearLayout>
         </ScrollView>
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -84,6 +84,7 @@
     <!-- content income -->
     <dimen name="content_income_btn_margin_top">8dp</dimen>
     <dimen name="content_income_text_left_margin">16dp</dimen>
+    <dimen name="content_income_text_top_margin">8dp</dimen>
     <dimen name="content_income_total_text_top_margin">32dp</dimen>
 
     <!-- activity reminders -->
@@ -95,7 +96,9 @@
     </dimen>
     <dimen name="content_reminders_rv_top_padding">@dimen/content_main_rv_top_padding</dimen>
     <dimen name="content_reminders_rv_padding_bottom">@dimen/content_main_rv_padding_bottom</dimen>
-    <dimen name="content_reminders_empty_textview_text_margin_left">@dimen/content_main_empty_textview_text_margin_left</dimen>
+    <dimen name="content_reminders_empty_textview_text_margin_left">
+        @dimen/content_main_empty_textview_text_margin_left
+    </dimen>
 
     <!-- dialog edit uploaded images -->
     <dimen name="dialog_edit_uploaded_images_btn_upload_margin_vertical">4dp</dimen>

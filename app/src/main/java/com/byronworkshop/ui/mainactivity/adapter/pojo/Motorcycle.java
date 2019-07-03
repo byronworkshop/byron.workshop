@@ -1,7 +1,7 @@
 package com.byronworkshop.ui.mainactivity.adapter.pojo;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.byronworkshop.shared.pojo.Image;
 

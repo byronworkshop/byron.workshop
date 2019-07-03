@@ -1,6 +1,6 @@
 package com.byronworkshop.shared.dialogs.adapters.workordercost.pojo;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 

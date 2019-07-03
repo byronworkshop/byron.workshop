@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "809667923333",
+    "firebase_url": "https://byron-workshop-7ac57.firebaseio.com",
+    "project_id": "byron-workshop-7ac57",
+    "storage_bucket": "byron-workshop-7ac57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809667923333:android:47cf0fa69aea839f",
+        "android_client_info": {
+          "package_name": "com.byronworkshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "809667923333-8shvurnbj2cl78ldujl9p9i7ak09peg3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.byronworkshop",
+            "certificate_hash": "ee1592efb75cfcbabad18349acc680b915866e92"
+          }
+        },
+        {
+          "client_id": "809667923333-uo3876mtt2poltimi7o03p7qomqksb52.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.byronworkshop",
+            "certificate_hash": "a86539b1a3577ea6b3c5bd0a8797b65d3e446f51"
+          }
+        },
+        {
+          "client_id": "809667923333-ng5m76p9csbk6j98134qf0j0bks173ev.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "809667923333-ng5m76p9csbk6j98134qf0j0bks173ev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwYTVPVk9A7EccsxGqgnhAZzHCQOEyKMA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "809667923333-ng5m76p9csbk6j98134qf0j0bks173ev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

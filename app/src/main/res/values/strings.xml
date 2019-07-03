@@ -201,7 +201,6 @@
     <string name="dialog_edit_work_order_more_options_close_wo_no_internet">No internet connection</string>
     <string name="dialog_edit_work_order_creation_success">Work order created</string>
     <string name="dialog_edit_work_order_edition_success">Changes saved</string>
-    <string name="dialog_edit_work_order_action_lbl">View</string>
 
     <string name="menu_wo_item_edit_cs">Cost sheet</string>
     <string name="menu_wo_item_upload_images">Images</string>

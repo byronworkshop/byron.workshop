@@ -7,8 +7,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.media.ExifInterface;
 import android.widget.Toast;
+
+import androidx.exifinterface.media.ExifInterface;
 
 import com.byronworkshop.R;
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,19 +9,17 @@
     tools:context=".ui.reports.income.IncomeActivity"
     tools:showIn="@layout/activity_income">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_padding"
-        android:paddingEnd="@dimen/activity_horizontal_padding"
-        android:paddingLeft="@dimen/activity_horizontal_padding"
-        android:paddingRight="@dimen/activity_horizontal_padding"
         android:paddingStart="@dimen/activity_horizontal_padding"
-        android:paddingTop="@dimen/activity_vertical_padding">
+        android:paddingLeft="@dimen/activity_horizontal_padding"
+        android:paddingTop="@dimen/activity_vertical_padding"
+        android:paddingEnd="@dimen/activity_horizontal_padding"
+        android:paddingRight="@dimen/activity_horizontal_padding"
+        android:paddingBottom="@dimen/activity_vertical_padding">
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,12 +41,11 @@
             app:layout_constraintTop_toBottomOf="@+id/content_income_tv_start"
             tools:text="8.000 Bs" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/content_income_btn_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.75"
-            android:drawableLeft="@android:drawable/ic_menu_my_calendar"
             android:drawableStart="@android:drawable/ic_menu_my_calendar"
             android:text="@string/activity_income_from"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
@@ -59,12 +56,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/content_income_btn_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:alpha="0.75"
-            android:drawableLeft="@android:drawable/ic_menu_my_calendar"
             android:drawableStart="@android:drawable/ic_menu_my_calendar"
             android:text="@string/activity_income_until"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
@@ -79,11 +75,11 @@
             android:id="@+id/content_income_tv_start"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/list_item_margin_horizontal"
-            android:layout_marginLeft="@dimen/list_item_margin_horizontal"
-            android:layout_marginRight="@dimen/list_item_margin_horizontal"
             android:layout_marginStart="@dimen/list_item_margin_horizontal"
+            android:layout_marginLeft="@dimen/list_item_margin_horizontal"
             android:layout_marginTop="@dimen/content_income_text_top_margin"
+            android:layout_marginEnd="@dimen/list_item_margin_horizontal"
+            android:layout_marginRight="@dimen/list_item_margin_horizontal"
             android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -97,11 +93,11 @@
             android:id="@+id/content_income_tv_end"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/list_item_margin_horizontal"
-            android:layout_marginLeft="@dimen/list_item_margin_horizontal"
-            android:layout_marginRight="@dimen/list_item_margin_horizontal"
             android:layout_marginStart="@dimen/list_item_margin_horizontal"
+            android:layout_marginLeft="@dimen/list_item_margin_horizontal"
             android:layout_marginTop="@dimen/content_income_text_top_margin"
+            android:layout_marginEnd="@dimen/list_item_margin_horizontal"
+            android:layout_marginRight="@dimen/list_item_margin_horizontal"
             android:gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,5 +106,5 @@
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/content_income_btn_end"
             tools:text="Miércoles, 21 de Mayo 2018" />
-    </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

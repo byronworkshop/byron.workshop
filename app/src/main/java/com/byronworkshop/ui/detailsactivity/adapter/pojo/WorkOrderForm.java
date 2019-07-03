@@ -1,6 +1,6 @@
 package com.byronworkshop.ui.detailsactivity.adapter.pojo;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.Exclude;
 

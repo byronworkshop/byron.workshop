@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_edit_uploaded_images_main"
@@ -34,16 +34,14 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/dialog_edit_uploaded_images_upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dialog_edit_uploaded_images_btn_upload_margin_vertical"
-            android:layout_marginLeft="@dimen/dialog_edit_uploaded_images_horizontal_margin"
             android:layout_marginStart="@dimen/dialog_edit_uploaded_images_horizontal_margin"
             android:layout_marginTop="@dimen/dialog_edit_uploaded_images_vertical_margin"
+            android:layout_marginBottom="@dimen/dialog_edit_uploaded_images_btn_upload_margin_vertical"
             android:alpha="0.75"
-            android:drawableLeft="@android:drawable/ic_menu_upload"
             android:drawableStart="@android:drawable/ic_menu_upload"
             android:text="@string/dialog_edit_uploaded_images_btn_upload"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
@@ -72,18 +70,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dialog_edit_uploaded_images_rv_empty_text_margin_left"
                     android:layout_marginStart="@dimen/dialog_edit_uploaded_images_rv_empty_text_margin_left"
                     android:text="@string/dialog_edit_uploaded_images_rv_empty_records"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dialog_edit_uploaded_images_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/dialog_edit_uploaded_images_rv_padding_top" />
         </LinearLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_edit_cost_sheet_add_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,14 +16,14 @@
             android:descendantFocusability="beforeDescendants"
             android:focusableInTouchMode="true"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/dialog_edit_cost_sheet_vertical_padding"
-            android:paddingEnd="@dimen/dialog_edit_cost_sheet_horizontal_padding"
-            android:paddingLeft="@dimen/dialog_edit_cost_sheet_horizontal_padding"
-            android:paddingRight="@dimen/dialog_edit_cost_sheet_horizontal_padding"
             android:paddingStart="@dimen/dialog_edit_cost_sheet_horizontal_padding"
-            android:paddingTop="@dimen/dialog_edit_cost_sheet_vertical_padding">
+            android:paddingLeft="@dimen/dialog_edit_cost_sheet_horizontal_padding"
+            android:paddingTop="@dimen/dialog_edit_cost_sheet_vertical_padding"
+            android:paddingEnd="@dimen/dialog_edit_cost_sheet_horizontal_padding"
+            android:paddingRight="@dimen/dialog_edit_cost_sheet_horizontal_padding"
+            android:paddingBottom="@dimen/dialog_edit_cost_sheet_vertical_padding">
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/dialog_edit_cost_sheet_add_input_layout_add_cost_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,10 +36,11 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/dialog_edit_cost_sheet_add_cost_desc"
                     android:inputType="textCapSentences"
-                    android:maxLines="1" />
-            </android.support.design.widget.TextInputLayout>
+                    android:maxLines="1"
+                    tools:ignore="Autofill,LabelFor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/dialog_edit_cost_sheet_add_input_layout_add_cost_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,8 +53,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/dialog_edit_cost_sheet_add_cost_amount"
                     android:inputType="number"
-                    android:maxLines="1" />
-            </android.support.design.widget.TextInputLayout>
+                    android:maxLines="1"
+                    tools:ignore="Autofill,LabelFor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -63,7 +66,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="@dimen/dialog_edit_cost_sheet_add_cost_margin_right"
-                    android:layout_marginRight="@dimen/dialog_edit_cost_sheet_add_cost_margin_right"
                     android:orientation="vertical">
 
                     <ImageView
@@ -71,8 +73,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/dialog_edit_cost_sheet_add_cost_type_replacement"
-                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         app:srcCompat="@drawable/ic_cost_replacement" />
 
                     <ImageView
@@ -80,8 +82,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/dialog_edit_cost_sheet_add_cost_type_external"
-                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         app:srcCompat="@drawable/ic_cost_external" />
 
                     <ImageView
@@ -89,8 +91,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:contentDescription="@string/dialog_edit_cost_sheet_add_cost_type_labor_cost"
-                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         app:srcCompat="@drawable/ic_cost_labor" />
                 </LinearLayout>
 
@@ -106,8 +108,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:checked="true"
-                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         android:text="@string/dialog_edit_cost_sheet_add_cost_type_replacement" />
 
                     <RadioButton
@@ -115,8 +117,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         android:text="@string/dialog_edit_cost_sheet_add_cost_type_external" />
 
                     <RadioButton
@@ -124,11 +126,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         android:paddingTop="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
+                        android:paddingBottom="@dimen/dialog_edit_cost_sheet_add_cost_padding_vertical"
                         android:text="@string/dialog_edit_cost_sheet_add_cost_type_labor_cost" />
                 </RadioGroup>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

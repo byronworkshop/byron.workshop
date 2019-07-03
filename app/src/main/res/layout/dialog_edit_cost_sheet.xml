@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/dialog_edit_cost_sheet_vertical_padding"
-        android:paddingEnd="@dimen/dialog_edit_cost_sheet_horizontal_padding"
-        android:paddingLeft="@dimen/dialog_edit_cost_sheet_horizontal_padding"
-        android:paddingRight="@dimen/dialog_edit_cost_sheet_horizontal_padding"
         android:paddingStart="@dimen/dialog_edit_cost_sheet_horizontal_padding"
-        android:paddingTop="@dimen/dialog_edit_cost_sheet_vertical_padding">
+        android:paddingLeft="@dimen/dialog_edit_cost_sheet_horizontal_padding"
+        android:paddingTop="@dimen/dialog_edit_cost_sheet_vertical_padding"
+        android:paddingEnd="@dimen/dialog_edit_cost_sheet_horizontal_padding"
+        android:paddingRight="@dimen/dialog_edit_cost_sheet_horizontal_padding"
+        android:paddingBottom="@dimen/dialog_edit_cost_sheet_vertical_padding">
 
         <TextView
             android:id="@+id/dialog_edit_cost_sheet_title_replacements"
@@ -83,8 +83,8 @@
             android:id="@+id/dialog_edit_cost_sheet_divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:background="@color/colorDivider"
             app:layout_constraintEnd_toEndOf="@+id/dialog_edit_cost_sheet_cost_labor_cost"
             app:layout_constraintLeft_toLeftOf="@+id/dialog_edit_cost_sheet_guideline"
@@ -102,14 +102,13 @@
             app:layout_constraintTop_toBottomOf="@+id/dialog_edit_cost_sheet_divider"
             tools:text="0 Bs" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/dialog_edit_cost_sheet_add_cost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dialog_edit_cost_sheet_btn_add_margin_vertical"
             android:layout_marginTop="@dimen/dialog_edit_cost_sheet_btn_add_margin_vertical"
+            android:layout_marginBottom="@dimen/dialog_edit_cost_sheet_btn_add_margin_vertical"
             android:alpha="0.75"
-            android:drawableLeft="@android:drawable/ic_menu_add"
             android:drawableStart="@android:drawable/ic_menu_add"
             android:text="@string/dialog_edit_cost_sheet_btn_add_cost"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
@@ -118,7 +117,7 @@
             app:layout_constraintStart_toStartOf="@+id/dialog_edit_cost_sheet_title_labor_cost"
             app:layout_constraintTop_toBottomOf="@+id/dialog_edit_cost_sheet_cost_total" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/dialog_edit_cost_sheet_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -148,14 +147,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dialog_edit_cost_sheet_rv_empty_text_margin_left"
                 android:layout_marginStart="@dimen/dialog_edit_cost_sheet_rv_empty_text_margin_left"
                 android:text="@string/dialog_edit_cost_sheet_rv_empty_records"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dialog_edit_cost_sheet_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -166,6 +164,6 @@
             app:layout_constraintStart_toStartOf="@+id/dialog_edit_cost_sheet_guideline"
             app:layout_constraintTop_toBottomOf="@+id/dialog_edit_cost_sheet_add_cost" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

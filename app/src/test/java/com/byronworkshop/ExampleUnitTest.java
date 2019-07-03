@@ -1,4 +1,4 @@
-package com.byronworkshop;
+package com.example.myapplication;
 
 import org.junit.Test;
 

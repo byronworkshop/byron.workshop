@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_edit_motorcycle_main"
@@ -43,12 +43,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/dialog_edit_motorcycle_vertical_padding"
-                android:paddingEnd="@dimen/dialog_edit_motorcycle_horizontal_padding"
-                android:paddingLeft="@dimen/dialog_edit_motorcycle_horizontal_padding"
-                android:paddingRight="@dimen/dialog_edit_motorcycle_horizontal_padding"
                 android:paddingStart="@dimen/dialog_edit_motorcycle_horizontal_padding"
-                android:paddingTop="@dimen/dialog_edit_motorcycle_vertical_padding">
+                android:paddingLeft="@dimen/dialog_edit_motorcycle_horizontal_padding"
+                android:paddingTop="@dimen/dialog_edit_motorcycle_vertical_padding"
+                android:paddingEnd="@dimen/dialog_edit_motorcycle_horizontal_padding"
+                android:paddingRight="@dimen/dialog_edit_motorcycle_horizontal_padding"
+                android:paddingBottom="@dimen/dialog_edit_motorcycle_vertical_padding">
 
                 <FrameLayout
                     android:id="@+id/dialog_edit_motorcycle_avatar_container"
@@ -84,13 +84,12 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <android.support.v7.widget.AppCompatButton
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/dialog_edit_motorcycle_button_pick_image"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/dialog_edit_motorcycle_pick_image_margin"
                             android:alpha="0.75"
-                            android:drawableLeft="@android:drawable/ic_menu_gallery"
                             android:drawableStart="@android:drawable/ic_menu_gallery"
                             android:text="@string/dialog_edit_motorcycle_pick_image"
                             android:theme="@style/ThemeOverlay.AppCompat.Dark"
@@ -107,7 +106,7 @@
                     </LinearLayout>
                 </FrameLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_motorcycle_input_layout_brand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -120,10 +119,11 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/dialog_edit_motorcycle_brand"
                         android:inputType="textCapCharacters"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill,LabelFor" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_motorcycle_input_layout_model"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -136,10 +136,11 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/dialog_edit_motorcycle_model"
                         android:inputType="textCapCharacters"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill,LabelFor" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_motorcycle_input_layout_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -152,10 +153,11 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/dialog_edit_motorcycle_type"
                         android:inputType="textCapCharacters"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill,LabelFor" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_motorcycle_input_layout_cc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -168,10 +170,11 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/dialog_edit_motorcycle_cc"
                         android:inputType="number"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill,LabelFor" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_motorcycle_input_layout_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -184,10 +187,11 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/dialog_edit_motorcycle_color"
                         android:inputType="textCapCharacters"
-                        android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                        android:maxLines="1"
+                        tools:ignore="Autofill,LabelFor" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/dialog_edit_motorcycle_input_layout_license_plate_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -201,9 +205,9 @@
                         android:hint="@string/dialog_edit_motorcycle_license_plate_number"
                         android:inputType="textCapCharacters"
                         android:maxLines="1"
-                        tools:ignore="TextFields" />
-                </android.support.design.widget.TextInputLayout>
+                        tools:ignore="Autofill,LabelFor,TextFields" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

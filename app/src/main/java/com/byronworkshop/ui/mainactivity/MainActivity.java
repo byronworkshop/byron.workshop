@@ -5,23 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +14,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -49,10 +47,14 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -364,17 +366,18 @@ public class MainActivity extends AppCompatActivity
     // ---------------------------------------------------------------------------------------------
     private void onSignedInInitialize(FirebaseUser user) {
         // check providers list
-        if (user == null || user.getProviders() == null) {
+        if (user == null) {
             AuthUI.getInstance().signOut(MainActivity.this);
             return;
         }
 
         // check if provider is 'password'
-        String providerId = user.getProviders().get(0);
-        if (providerId.equals(EmailAuthProvider.PROVIDER_ID)) {
-            if (!user.isEmailVerified()) {
-                showConfirmEmailDialog(user);
-                return;
+        for (UserInfo providerData : user.getProviderData()) {
+            if(providerData.getProviderId().equals(EmailAuthProvider.PROVIDER_ID)) {
+                if (!user.isEmailVerified()) {
+                    showConfirmEmailDialog(user);
+                    return;
+                }
             }
         }
 
@@ -397,8 +400,8 @@ public class MainActivity extends AppCompatActivity
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
-                Button buttonPositive = ((android.support.v7.app.AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
-                final Button buttonNegative = ((android.support.v7.app.AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
+                Button buttonPositive = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+                final Button buttonNegative = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_NEGATIVE);
 
                 buttonPositive.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -584,7 +587,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMotorcycleSaved(@NonNull String msg, @Nullable final String motorcycleId) {
         boolean actionEnabled = motorcycleId != null;
-        
+
         Snackbar snackbar = Snackbar.make(this.mMainContainer, msg, actionEnabled ? Snackbar.LENGTH_INDEFINITE : Snackbar.LENGTH_LONG);
         if (actionEnabled) {
             snackbar.setAction(getString(R.string.dialog_edit_motorcycle_edition_action_view_lbl), new View.OnClickListener() {
