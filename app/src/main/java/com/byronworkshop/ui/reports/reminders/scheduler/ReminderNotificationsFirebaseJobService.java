@@ -45,14 +45,14 @@ public class ReminderNotificationsFirebaseJobService extends JobService {
     private boolean canContinue;
 
     @Override
-    public boolean onStartJob(JobParameters job) {
+    public boolean onStartJob(@NonNull JobParameters  job) {
         this.canContinue = true;
         notifyOutdatedWos(this, job);
         return true;
     }
 
     @Override
-    public boolean onStopJob(JobParameters job) {
+    public boolean onStopJob(@NonNull JobParameters job) {
         this.canContinue = false;
         return true;
     }

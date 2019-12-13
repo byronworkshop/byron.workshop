@@ -440,7 +440,7 @@ public class EditWorkOrderUploadedImagesDialogFragment extends DialogFragment
         // create listeners
         this.mTmpUploadProgressListener = new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
                 int progress = (int) (100 * ((double) taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount()));
                 updateProgress(progress);
             }
